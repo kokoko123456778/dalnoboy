@@ -10,7 +10,7 @@ permissions:
   contents: write
 
 env:
-  APP_ID: com.kokoko.dalnoboy
+  APP_ID: com.kokoko.dalnoboy2
   APP_LABEL: Дальнобойщик
   APK_NAME: Game.apk
   JNI_NAME: game
