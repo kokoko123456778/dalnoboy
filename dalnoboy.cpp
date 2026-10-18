@@ -14565,7 +14565,7 @@ static char msg[200] = ""; static float msgT = 0;
 static void say(const char *s, float t = 3.0f) { snprintf(msg, sizeof msg, "%s", s); msgT = t; }
 static float totalMass() { return TRACTOR_MASS + (G.job.on && G.job.hitched ? TR_EMPTY[CARGO[G.job.cargo].trailer] + G.job.tons : 0.0f); }
 static float tankSize() { return TRUCKS[G.truck].tank * (G.tr[G.truck].up[UP_TANK] ? 1.5f : 1.0f); }
-static float powerGame() { return 1.45f + 0.75f * fmaxv(0.0f, 1.0f - TRUCKS[G.truck].hp / 660.0f); }   // игровой множитель мощности: слабым фурам больше
+static float powerGame() { float hp = TRUCKS[G.truck].hp; return (600.0f + (hp - 210.0f) * 0.6f) / hp; }   // игровая мощность: от ~600 л.с. у старичка до ~870 у V8 (с грузом едет бодро)
 static float enginePower() { return TRUCKS[G.truck].hp * 0.7457f * powerGame() * (1.0f + 0.15f * G.tr[G.truck].up[UP_ENGINE]) * (0.6f + 0.4f * G.tr[G.truck].engineHP / 100.0f); }   // кВт
 static void addFine(const char *w, int sum) { Fine f; snprintf(f.what, sizeof f.what, "%s", w); f.sum = sum; finesLog.push_back(f); if (finesLog.size() > 30) finesLog.erase(finesLog.begin()); G.money -= sum; G.fines++; G.fineSum += sum;
   char b[120]; snprintf(b, sizeof b, "ШТРАФ %d Р: %s", sum, w); say(b, 4.0f); }
@@ -14626,7 +14626,7 @@ static void buildRoad(int edge, int from) {
   R.wide = !e.zimnik && strncmp(e.hw, "М-", 3) == 0; R.ex = R.wide ? LANE_W : 0.0f;
   float curvy = R.rg == RG_URAL ? 1.6f : (R.rg == RG_SOUTH ? 0.6f : (R.rg == RG_ARCTIC ? 1.2f : 1.0f));
   R.a1 = wr(40, 90) * curvy; R.l1 = wr(380, 600); R.p1 = wr(0, 6.28f); R.a2 = wr(10, 26) * curvy; R.l2 = wr(120, 200); R.p2 = wr(0, 6.28f); R.a3 = wr(2, 6); R.l3 = wr(45, 70); R.p3 = wr(0, 6.28f);
-  float hills = R.rg == RG_URAL ? 22.0f : (R.rg == RG_CENTER ? 8.0f : (R.rg == RG_SOUTH ? 5.0f : 4.0f));
+  float hills = R.rg == RG_URAL ? 11.0f : (R.rg == RG_CENTER ? 6.0f : (R.rg == RG_SOUTH ? 4.0f : 3.0f));   // уклоны до ~4-5%, как на трассах
   R.h1 = wr(0.5f, 1.0f) * hills; R.hl1 = wr(260, 420); R.h2 = wr(0.3f, 0.6f) * hills * 0.5f; R.hl2 = wr(90, 150);
   R.forest = R.rg == RG_SOUTH ? 0.06f : (R.rg == RG_ARCTIC ? 0.12f : (R.rg == RG_URAL ? 0.75f : (R.rg == RG_TAIGA ? 0.8f : 0.45f)));
   float wroll = hf(R.seed + (unsigned)(G.clock / 300));
