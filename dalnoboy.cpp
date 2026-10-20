@@ -14429,9 +14429,19 @@ static const City CITIES[] = {
   {"ВОЛГОГРАД", "ВОЛГОГРАД", 44.5f, 48.7f, RG_SOUTH, 62}, {"ВОРОНЕЖ", "ВОРОНЕЖ", 39.2f, 51.66f, RG_CENTER, 63}, {"РОСТОВ-НА-ДОНУ", "РОСТОВ", 39.7f, 47.23f, RG_SOUTH, 63},
   {"КРАСНОДАР", "КРАСНОДАР", 38.97f, 45.04f, RG_SOUTH, 64}, {"ТЮМЕНЬ", "ТЮМЕНЬ", 65.5f, 57.15f, RG_TAIGA, 62}, {"ТОБОЛЬСК", "ТОБОЛЬСК", 68.25f, 58.2f, RG_TAIGA, 63},
   {"ХАНТЫ-МАНСИЙСК", "Х.МАНСИЙСК", 69.0f, 61.0f, RG_TAIGA, 66}, {"НЕФТЕЮГАНСК", "НЕФТЕЮГАНСК", 72.6f, 61.1f, RG_TAIGA, 64}, {"СУРГУТ", "СУРГУТ", 73.4f, 61.25f, RG_TAIGA, 65},
-  {"НОЯБРЬСК", "НОЯБРЬСК", 75.45f, 63.2f, RG_ARCTIC, 69}, {"НОВЫЙ УРЕНГОЙ", "Н.УРЕНГОЙ", 76.7f, 66.08f, RG_ARCTIC, 72}, {"САЛЕХАРД", "САЛЕХАРД", 66.6f, 66.53f, RG_ARCTIC, 78} };
+  {"НОЯБРЬСК", "НОЯБРЬСК", 75.45f, 63.2f, RG_ARCTIC, 69}, {"НОВЫЙ УРЕНГОЙ", "Н.УРЕНГОЙ", 76.7f, 66.08f, RG_ARCTIC, 72}, {"САЛЕХАРД", "САЛЕХАРД", 66.6f, 66.53f, RG_ARCTIC, 78},
+  // добавленные города (новые - в конце списка, чтобы старые сохранения не сломались)
+  {"ТУЛА", "ТУЛА", 37.6f, 54.2f, RG_CENTER, 63}, {"РЯЗАНЬ", "РЯЗАНЬ", 39.7f, 54.62f, RG_CENTER, 63}, {"ПЕНЗА", "ПЕНЗА", 45.0f, 53.2f, RG_CENTER, 62},
+  {"УЛЬЯНОВСК", "УЛЬЯНОВСК", 48.4f, 54.32f, RG_CENTER, 62}, {"ТОЛЬЯТТИ", "ТОЛЬЯТТИ", 49.4f, 53.5f, RG_CENTER, 62}, {"НАБЕРЕЖНЫЕ ЧЕЛНЫ", "Н.ЧЕЛНЫ", 52.4f, 55.73f, RG_CENTER, 61},
+  {"ИЖЕВСК", "ИЖЕВСК", 53.2f, 56.85f, RG_URAL, 62}, {"ОРЕНБУРГ", "ОРЕНБУРГ", 55.1f, 51.77f, RG_URAL, 61}, {"МАГНИТОГОРСК", "МАГНИТОГОРСК", 59.0f, 53.41f, RG_URAL, 62},
+  {"НИЖНИЙ ТАГИЛ", "Н.ТАГИЛ", 59.97f, 57.91f, RG_URAL, 64}, {"КУРГАН", "КУРГАН", 65.34f, 55.44f, RG_URAL, 63}, {"СТАВРОПОЛЬ", "СТАВРОПОЛЬ", 41.97f, 45.04f, RG_SOUTH, 63},
+  {"АСТРАХАНЬ", "АСТРАХАНЬ", 48.03f, 46.35f, RG_SOUTH, 62}, {"НОВОРОССИЙСК", "НОВОРОССИЙСК", 37.77f, 44.72f, RG_SOUTH, 64}, {"СОЧИ", "СОЧИ", 39.72f, 43.6f, RG_SOUTH, 66},
+  {"ИШИМ", "ИШИМ", 69.48f, 56.11f, RG_TAIGA, 63}, {"НИЖНЕВАРТОВСК", "Н.ВАРТОВСК", 76.55f, 60.94f, RG_TAIGA, 65}, {"НЯГАНЬ", "НЯГАНЬ", 65.4f, 62.14f, RG_TAIGA, 67},
+  {"КОГАЛЫМ", "КОГАЛЫМ", 74.48f, 62.26f, RG_TAIGA, 66}, {"НАДЫМ", "НАДЫМ", 72.5f, 65.53f, RG_ARCTIC, 72}, {"ГУБКИНСКИЙ", "ГУБКИНСКИЙ", 76.5f, 64.43f, RG_ARCTIC, 70},
+  {"ЛАБЫТНАНГИ", "ЛАБЫТНАНГИ", 66.4f, 66.66f, RG_ARCTIC, 78} };
 static const int NCITY = (int)(sizeof CITIES / sizeof CITIES[0]);
-enum { C_MSK, C_NN, C_KZN, C_PRM, C_EKB, C_CHL, C_UFA, C_SMR, C_SRT, C_VLG, C_VRN, C_RST, C_KRD, C_TMN, C_TOB, C_HM, C_NEF, C_SUR, C_NOY, C_NUR, C_SLH };
+enum { C_MSK, C_NN, C_KZN, C_PRM, C_EKB, C_CHL, C_UFA, C_SMR, C_SRT, C_VLG, C_VRN, C_RST, C_KRD, C_TMN, C_TOB, C_HM, C_NEF, C_SUR, C_NOY, C_NUR, C_SLH,
+  C_TUL, C_RZN, C_PNZ, C_ULN, C_TLT, C_NCH, C_IZH, C_ORB, C_MGN, C_NTG, C_KRG, C_STV, C_AST, C_NVR, C_SOC, C_ISH, C_NVT, C_NYA, C_KOG, C_NAD, C_GUB, C_LAB };
 
 // ---------- трассы ----------
 struct Edge { int a, b; float km; const char *hw; bool zimnik; };
@@ -14442,7 +14452,18 @@ static const Edge EDGES[] = {
   {C_SMR, C_UFA, 460, "М-5 УРАЛ", false}, {C_UFA, C_CHL, 410, "М-5 УРАЛ", false}, {C_CHL, C_EKB, 210, "М-5", false}, {C_PRM, C_EKB, 360, "Р-242", false},
   {C_EKB, C_TMN, 330, "Р-351", false}, {C_CHL, C_TMN, 350, "Р-402", false}, {C_TMN, C_TOB, 250, "Р-404", false}, {C_TOB, C_HM, 560, "Р-404", false},
   {C_TOB, C_NEF, 590, "Р-404", false}, {C_NEF, C_HM, 250, "Р-404", false}, {C_NEF, C_SUR, 60, "Р-404", false}, {C_SUR, C_NOY, 250, "Р-404", false},
-  {C_NOY, C_NUR, 450, "Р-404", false}, {C_NUR, C_SLH, 520, "ЗИМНИК", true} };
+  {C_NOY, C_NUR, 450, "Р-404", false}, {C_NUR, C_SLH, 520, "ЗИМНИК", true},
+  // новые трассы (в конце, номера старых не меняются)
+  {C_MSK, C_TUL, 185, "М-2 КРЫМ", false}, {C_MSK, C_RZN, 200, "М-5 УРАЛ", false}, {C_TUL, C_RZN, 175, "Р-132", false}, {C_RZN, C_PNZ, 450, "М-5 УРАЛ", false},
+  {C_PNZ, C_TLT, 380, "М-5 УРАЛ", false}, {C_TLT, C_SMR, 90, "М-5 УРАЛ", false}, {C_PNZ, C_SRT, 230, "Р-158", false}, {C_ULN, C_TLT, 160, "Р-178", false},
+  {C_ULN, C_KZN, 230, "Р-241", false}, {C_KZN, C_NCH, 230, "М-7 ВОЛГА", false}, {C_NCH, C_UFA, 290, "М-7 ВОЛГА", false}, {C_NCH, C_IZH, 170, "Р-320", false},
+  {C_IZH, C_PRM, 290, "Р-320", false}, {C_SMR, C_ORB, 420, "Р-239", false}, {C_ORB, C_UFA, 370, "Р-240", false}, {C_CHL, C_MGN, 300, "Р-360", false},
+  {C_MGN, C_UFA, 300, "Р-316", false}, {C_EKB, C_NTG, 140, "Р-352", false}, {C_NTG, C_PRM, 330, "Р-242", false}, {C_CHL, C_KRG, 260, "Р-254 ИРТЫШ", false},
+  {C_KRG, C_TMN, 200, "Р-402", false}, {C_KRG, C_ISH, 300, "Р-254 ИРТЫШ", false}, {C_ISH, C_TMN, 300, "Р-402", false}, {C_KRD, C_STV, 280, "Р-217 КАВКАЗ", false},
+  {C_RST, C_STV, 350, "Р-269", false}, {C_VLG, C_AST, 420, "Р-22 КАСПИЙ", false}, {C_KRD, C_NVR, 150, "А-146", false}, {C_KRD, C_SOC, 290, "А-147", false},
+  {C_SUR, C_NVT, 220, "Р-404", false}, {C_HM, C_NYA, 260, "Р-404", false}, {C_SUR, C_KOG, 200, "Р-404", false}, {C_KOG, C_NOY, 170, "Р-404", false},
+  {C_NOY, C_GUB, 160, "Р-404", false}, {C_GUB, C_NUR, 290, "Р-404", false}, {C_NUR, C_NAD, 230, "Р-404", false}, {C_NAD, C_SLH, 350, "ЗИМНИК", true},
+  {C_LAB, C_SLH, 25, "ЛЕДОВАЯ ПЕРЕПРАВА", true} };
 static const int NEDGE = (int)(sizeof EDGES / sizeof EDGES[0]);
 static int edgeBetween(int a, int b) { for (int i = 0; i < NEDGE; i++) if ((EDGES[i].a == a && EDGES[i].b == b) || (EDGES[i].a == b && EDGES[i].b == a)) return i; return -1; }
 // длина трассы в игре: 5-8 минут езды (короткие - быстрее)
@@ -14451,7 +14472,7 @@ static float edgeLen(int e) { return edgeMinutes(e) * 60.0f * 19.0f; }          
 static int edgeRegion(int e) { int ra = CITIES[EDGES[e].a].rg, rb = CITIES[EDGES[e].b].rg; if (ra == RG_ARCTIC || rb == RG_ARCTIC) return RG_ARCTIC; if (ra == RG_TAIGA || rb == RG_TAIGA) return RG_TAIGA; if (ra == RG_URAL || rb == RG_URAL) return RG_URAL; if (ra == RG_SOUTH && rb == RG_SOUTH) return RG_SOUTH; return ra == RG_SOUTH || rb == RG_SOUTH ? RG_SOUTH : RG_CENTER; }
 // кратчайший путь по трассам (Дейкстра по км)
 static int routePath(int from, int to, int *out, int maxN) {
-  float dist[32]; int prev[32]; bool done[32];
+  float dist[64]; int prev[64]; bool done[64];
   for (int i = 0; i < NCITY; i++) { dist[i] = 1e9f; prev[i] = -1; done[i] = false; }
   dist[from] = 0;
   for (int it = 0; it < NCITY; it++) { int u = -1; for (int i = 0; i < NCITY; i++) if (!done[i] && (u < 0 || dist[i] < dist[u])) u = i; if (u < 0 || dist[u] > 1e8f) break; done[u] = true;
@@ -14466,11 +14487,17 @@ enum { RM_FAST, RM_SHORT, RM_NOZIM, RM_ALT, NRM };
 static const char *RMN[NRM] = {"БЫСТРЫЙ", "КОРОТКИЙ", "БЕЗ ЗИМНИКОВ", "ОБЪЕЗД"};
 static int gRouteMode = RM_FAST;
 // средняя скорость по трассе (км/ч): зимник, север и горы медленнее
+// 4-полосные (по 2 полосы в каждую сторону, с отбойником): вылетные магистрали и М-4 «Дон»
+static bool edgeFour(int e) {
+  if (EDGES[e].zimnik || strncmp(EDGES[e].hw, "М-", 3) != 0) return false;
+  int a = EDGES[e].a, b = EDGES[e].b; auto is = [&](int x, int y) { return (a == x && b == y) || (a == y && b == x); };
+  return strstr(EDGES[e].hw, "ДОН") || strstr(EDGES[e].hw, "КРЫМ") || is(C_MSK, C_RZN) || is(C_MSK, C_NN) || is(C_CHL, C_EKB) || is(C_TLT, C_SMR);
+}
 static float edgeAvgKmh(int e) { if (EDGES[e].zimnik) return 40; int rg = edgeRegion(e); if (rg == RG_ARCTIC) return 56; if (rg == RG_URAL || rg == RG_TAIGA) return 63; return strncmp(EDGES[e].hw, "М-", 3) == 0 ? 72 : 66; }
 static float edgeHours(int e) { return EDGES[e].km / edgeAvgKmh(e); }
 static float routeHours(const int *p, int n) { float s = 0; for (int i = 0; i + 1 < n; i++) s += edgeHours(edgeBetween(p[i], p[i + 1])); return s; }
 static int routePathW(int from, int to, int *out, int maxN, int mode, int ban) {
-  float dist[32]; int prev[32]; bool done[32];
+  float dist[64]; int prev[64]; bool done[64];
   for (int i = 0; i < NCITY; i++) { dist[i] = 1e9f; prev[i] = -1; done[i] = false; }
   dist[from] = 0;
   for (int it = 0; it < NCITY; it++) { int u = -1; for (int i = 0; i < NCITY; i++) if (!done[i] && (u < 0 || dist[i] < dist[u])) u = i; if (u < 0 || dist[u] > 1e8f) break; done[u] = true;
@@ -14534,7 +14561,29 @@ static const CargoDef CARGO[] = {
   {"БРЁВНА", TR_LOG, 20, 28, 0.95f, false, false, false, RG_URAL}, {"ДОСКИ", TR_LOG, 16, 24, 1.0f, false, false, false, RG_TAIGA},
   {"ЗАПЧАСТИ", TR_CONT, 8, 16, 1.2f, false, false, false, -1}, {"ОБОРУДОВАНИЕ", TR_CONT, 12, 22, 1.35f, true, false, false, RG_TAIGA},
   {"ТРУБЫ БОЛЬШИЕ", TR_LOW, 28, 36, 1.7f, false, false, true, RG_ARCTIC}, {"ЭКСКАВАТОР", TR_LOW, 26, 34, 1.8f, true, false, true, RG_TAIGA},
-  {"ТРАНСФОРМАТОР", TR_LOW, 30, 38, 2.0f, true, false, true, RG_URAL} };
+  {"ТРАНСФОРМАТОР", TR_LOW, 30, 38, 2.0f, true, false, true, RG_URAL},
+  // местные грузы городов (добавлены в конец - старые сохранения не ломаются)
+  {"НОВЫЕ АВТОМОБИЛИ", TR_TENT, 10, 16, 1.4f, true, false, false, -1}, {"МЕТАЛЛОПРОКАТ", TR_LOW, 24, 30, 1.3f, false, false, false, -1},
+  {"ЗЕРНО", TR_TENT, 22, 27, 1.05f, false, false, false, -1}, {"МОРСКОЙ КОНТЕЙНЕР", TR_CONT, 18, 26, 1.75f, false, false, false, -1},
+  {"РЫБА", TR_REEF, 14, 20, 1.35f, false, false, false, -1}, {"ХИМИЯ", TR_TANK, 18, 24, 1.65f, false, true, false, -1},
+  {"ГРУЗОВЫЕ КАБИНЫ", TR_TENT, 8, 14, 1.35f, true, false, false, -1}, {"ПОСЫЛКИ МАРКЕТПЛЕЙСА", TR_TENT, 6, 12, 1.2f, true, false, false, -1} };
+enum { CG_CARS = 17, CG_METAL, CG_GRAIN, CG_CONTAINER, CG_FISH, CG_CHEM, CG_CABS, CG_PARCELS };
+// чем славится город: эти грузы там чаще и дороже
+static int cityLocalCargo(int city, int *out) {
+  int n = 0;
+  switch (city) {
+    case C_MSK: out[n++] = CG_PARCELS; out[n++] = 1; break; case C_TLT: case C_NN: out[n++] = CG_CARS; break; case C_SMR: out[n++] = CG_CARS; out[n++] = CG_CHEM; break;
+    case C_NCH: out[n++] = CG_CABS; break; case C_CHL: out[n++] = CG_METAL; out[n++] = 14; break; case C_MGN: case C_NTG: out[n++] = CG_METAL; break;
+    case C_KRD: case C_STV: case C_VRN: out[n++] = CG_GRAIN; out[n++] = 9; break; case C_RST: out[n++] = CG_GRAIN; break; case C_SOC: out[n++] = 6; break;
+    case C_NVR: out[n++] = CG_CONTAINER; out[n++] = CG_GRAIN; break; case C_AST: out[n++] = CG_FISH; break; case C_PRM: case C_KZN: out[n++] = CG_CHEM; break;
+    case C_UFA: case C_SUR: case C_NVT: case C_NEF: case C_KOG: out[n++] = 7; out[n++] = 13; break; case C_NUR: case C_NAD: case C_GUB: case C_NOY: out[n++] = 14; out[n++] = 8; break;
+    case C_IZH: case C_ORB: case C_KRG: case C_TMN: out[n++] = 13; break; case C_TUL: out[n++] = CG_METAL; break; case C_EKB: out[n++] = 16; out[n++] = CG_METAL; break;
+  }
+  return n;
+}
+// времена года: 6 игровых дней каждое, игра начинается летом
+enum { SE_SUMMER, SE_AUTUMN, SE_WINTER, SE_SPRING };
+static const char *SEASONN[4] = {"ЛЕТО", "ОСЕНЬ", "ЗИМА", "ВЕСНА"};
 static const int NCARGO = (int)(sizeof CARGO / sizeof CARGO[0]);
 static const float MASS_LIMIT = 44.0f;                    // разрешённая полная масса, т
 static const float TRACTOR_MASS = 8.0f;
@@ -14560,6 +14609,8 @@ struct GameSt {
   bool weighed; bool manual; int gearSave;
 };
 static GameSt G;
+static int seasonNow() { return ((int)(G.clock / 1440.0f / 6.0f)) % 4; }
+static float hourNow() { return fmodf(G.clock / 60.0f, 24.0f); }
 static std::vector<Fine> finesLog;
 static char msg[200] = ""; static float msgT = 0;
 static void say(const char *s, float t = 3.0f) { snprintf(msg, sizeof msg, "%s", s); msgT = t; }
@@ -14571,7 +14622,7 @@ static void addFine(const char *w, int sum) { Fine f; snprintf(f.what, sizeof f.
   char b[120]; snprintf(b, sizeof b, "ШТРАФ %d Р: %s", sum, w); say(b, 4.0f); }
 
 // ---------- заказы на бирже ----------
-struct Offer { int cargo, to; float tons, pay, hours; bool permitNeed; };
+struct Offer { int cargo, to; float tons, pay, hours; bool permitNeed, local; };
 static std::vector<Offer> offers; static int offersCity = -1; static float offersClock = -100;
 static void genOffers(int city) {
   offers.clear(); offersCity = city; offersClock = G.clock;
@@ -14582,11 +14633,12 @@ static void genOffers(int city) {
     int path[32]; int n = routePath(city, to, path, 32); if (n < 2) continue;
     float km = routeKm(path, n);
     if (k < 3 && n > 3) { to = path[2]; n = routePath(city, to, path, 32); km = routeKm(path, n); }   // часть заказов - недалеко
-    int c = (int)(hsh(s + 3) % NCARGO);
-    for (int t = 0; t < 4; t++) { int rg = CITIES[to].rg; if (CARGO[c].favRegion < 0 || CARGO[c].favRegion == rg || CARGO[c].favRegion == CITIES[city].rg) break; c = (int)(hsh(s + 9 + t) % NCARGO); }
-    Offer o; o.cargo = c; o.to = to; o.tons = CARGO[c].tMin + hf(s + 5) * (CARGO[c].tMax - CARGO[c].tMin); o.tons = floorf(o.tons * 10) / 10;
+    int c = (int)(hsh(s + 3) % 17);   // обычные грузы; местные - ниже
+    for (int t = 0; t < 4; t++) { int rg = CITIES[to].rg; if (CARGO[c].favRegion < 0 || CARGO[c].favRegion == rg || CARGO[c].favRegion == CITIES[city].rg) break; c = (int)(hsh(s + 9 + t) % 17); }
+    int lc[4]; int nl = cityLocalCargo(city, lc); bool local = nl > 0 && (k == 1 || k == 4 || k == 6); if (local) c = lc[(s >> 7) % nl];
+    Offer o; o.local = local; o.cargo = c; o.to = to; o.tons = CARGO[c].tMin + hf(s + 5) * (CARGO[c].tMax - CARGO[c].tMin); o.tons = floorf(o.tons * 10) / 10;
     float north = (CITIES[to].rg == RG_ARCTIC || CITIES[city].rg == RG_ARCTIC) ? 1.35f : 1.0f;
-    o.pay = floorf(km * 42.0f * CARGO[c].rate * (0.75f + o.tons / 28.0f) * north / 100) * 100;
+    o.pay = floorf(km * 42.0f * CARGO[c].rate * (0.75f + o.tons / 28.0f) * north * (local ? 1.15f : 1.0f) / 100) * 100;
     o.hours = km / 55.0f + 4 + hf(s + 6) * 6; o.permitNeed = TRACTOR_MASS + TR_EMPTY[CARGO[c].trailer] + o.tons > MASS_LIMIT || CARGO[c].oversize;
     offers.push_back(o);
   }
@@ -14596,19 +14648,42 @@ static int permitPrice(const Offer &o) { return 3000 + (int)(o.tons * 150); }
 // =====================================================================
 //  ДАЛЬНОБОЙЩИК: трасса между городами и двор склада
 // =====================================================================
-static const float ROAD_HW = 3.75f, LANE = 1.9f, POCKET_W = 10.0f;
-enum { F_VILLAGE, F_FUEL, F_CAFE, F_WEIGH, F_DPS, F_CAM, F_ICE, F_WORKS, NFT };
+static const float ROAD_HW = 3.75f, LANE = 1.9f, POCKET_W = 13.0f;
+enum { F_VILLAGE, F_FUEL, F_CAFE, F_WEIGH, F_DPS, F_CAM, F_ICE, F_WORKS, F_BRIDGE, F_RAIL, F_INTER, F_TOLL, F_CLOSE, F_BROKEN, NFT };
 struct Feat { int type; float s, s0, s1; char name[40]; bool done, flag, stopAsk, redFined; float timer; };
+struct Loop { float a, b, D; int name; bool fuel, inn; };
+struct VBy { float a, b, D; int village; };                        // асфальтовая объездная вокруг посёлка (справа)     // съезд-петля в деревню: от a до b по s, D - на сколько метров в сторону
 struct Road {
-  int edge, from, to, rg; bool zimnik, wide; float L, ex; unsigned seed;            // wide: на трассах М- в нашу сторону 2 полосы, ex - добавка ширины справа
+  int edge, from, to, rg; bool zimnik, wide, four, bypass; float L, ex, exL, bypS, bypD; unsigned seed;   // bypass: в конце съезд на объездную (город - транзитный)   // four: 4 полосы (по 2 в каждую сторону) с отбойником посередине, exL - добавка ширины слева
+             // wide: на трассах М- в нашу сторону 2 полосы, ex - добавка ширины справа
   float a1, l1, p1, a2, l2, p2, a3, l3, p3, h1, hl1, h2, hl2, forest; int weather;   // 0 ясно, 1 дождь, 2 снег, 3 метель
+  int wSeg; bool ice, storm; float fog;                                             // погода меняется по пути: гололёд, гроза, туман
   std::vector<Feat> feats;
+  std::vector<Loop> loops;
+  std::vector<VBy> vbys;
 };
 static Road R;
+// реки: по региону трассы, для известных трасс - настоящие
+static const char *riverFor(int edge, int k) {
+  static const char *CEN[] = {"ОКА", "КЛЯЗЬМА", "СУРА", "МОКША", "ПРОНЯ", "ЦНА", "ВОРОНЕЖ", "ХОПЁР"}, *URL[] = {"КАМА", "БЕЛАЯ", "ЧУСОВАЯ", "ИСЕТЬ", "МИАСС", "УФА", "ПЫШМА", "УРАЛ", "ТУРА"},
+    *STH[] = {"ДОН", "КУБАНЬ", "МЕДВЕДИЦА", "ИЛОВЛЯ", "ЕЯ", "ЧИР", "МАНЫЧ"}, *TAI[] = {"ИРТЫШ", "ТОБОЛ", "ОБЬ", "ТУРА", "ИШИМ", "ВАХ", "ЮГАН", "КАЗЫМ"}, *ARC[] = {"ПУР", "НАДЫМ", "ПЯКУПУР", "ТАЗ", "АГАН"};
+  const Edge &e = EDGES[edge]; int a = e.a, b = e.b;
+  auto is = [&](int x, int y) { return (a == x && b == y) || (a == y && b == x); };
+  if (k == 0) { if (is(C_ULN, C_TLT) || is(C_VLG, C_AST) || is(C_SRT, C_VLG) || is(C_KZN, C_ULN) || is(C_NN, C_KZN)) return "ВОЛГА"; if (is(C_KZN, C_NCH) || is(C_KZN, C_PRM)) return "КАМА";
+    if (is(C_NEF, C_SUR) || is(C_SUR, C_NVT) || is(C_HM, C_NYA)) return "ОБЬ"; if (is(C_TOB, C_HM) || is(C_TOB, C_NEF)) return "ИРТЫШ"; if (is(C_TMN, C_TOB)) return "ТОБОЛ";
+    if (is(C_VRN, C_RST) || is(C_RST, C_KRD)) return "ДОН"; if (is(C_MSK, C_NN) || is(C_RZN, C_PNZ) || is(C_MSK, C_TUL)) return "ОКА"; if (is(C_NCH, C_UFA) || is(C_UFA, C_CHL)) return "БЕЛАЯ"; if (is(C_NOY, C_GUB) || is(C_GUB, C_NUR)) return "ПУР"; }
+  unsigned h = hsh((unsigned)edge * 131u + k * 17u); int rg = edgeRegion(edge);
+  if (rg == RG_CENTER) return CEN[h % 8]; if (rg == RG_URAL) return URL[h % 9]; if (rg == RG_SOUTH) return STH[h % 7]; if (rg == RG_TAIGA) return TAI[h % 8]; return ARC[h % 5];
+}
+static bool isBigRiver(const char *n) { return !strcmp(n, "ВОЛГА") || !strcmp(n, "ОБЬ") || !strcmp(n, "КАМА") || !strcmp(n, "ИРТЫШ") || !strcmp(n, "ДОН") || !strcmp(n, "ОКА") || !strcmp(n, "БЕЛАЯ") || !strcmp(n, "ТОБОЛ"); }
 #define RHW (ROAD_HW + R.ex)                                                       // правый край асфальта
+#define LHW (ROAD_HW + R.exL)                                                      // левый край асфальта (на 4-полосных шире)
 static const float LANE_W = 3.8f;
 static float playerLaneX() { return R.wide ? LANE + LANE_W : LANE; }               // фура держится правее
 static float roadFade(float s) { return smooth01(0, 400, s) * smooth01(0, 400, R.L - s); }
+static float cxAt(float s);
+static float loopOff(const Loop &l, float s);
+static float vbyOff(const VBy &v, float s);
 static float cxAt(float s) { return roadFade(s) * (R.a1 * sinf(s / R.l1 + R.p1) + R.a2 * sinf(s / R.l2 + R.p2) + R.a3 * sinf(s / R.l3 + R.p3)); }
 static float hAt(float s) { return roadFade(s) * (R.h1 * sinf(s / R.hl1) + R.h2 * sinf(s / R.hl2 + 1.3f)); }
 static float slopeAt(float s) { return (hAt(s + 2) - hAt(s - 2)) / 4.0f; }
@@ -14622,17 +14697,17 @@ static void addFeat(int type, float s, float half, const char *name) {
 }
 static void buildRoad(int edge, int from) {
   const Edge &e = EDGES[edge]; R.edge = edge; R.from = from; R.to = e.a == from ? e.b : e.a; R.rg = edgeRegion(edge); R.zimnik = e.zimnik; R.L = edgeLen(edge);
-  R.seed = hsh((unsigned)edge * 7919u + 13u); wrng = R.seed; R.feats.clear();
+  R.seed = hsh((unsigned)edge * 7919u + 13u); wrng = R.seed; R.feats.clear(); R.bypass = false; R.bypS = R.L - 900; R.bypD = 320;
   R.wide = !e.zimnik && strncmp(e.hw, "М-", 3) == 0; R.ex = R.wide ? LANE_W : 0.0f;
+  R.four = R.wide && edgeFour(edge); R.exL = R.four ? LANE_W : 0.0f;
   float curvy = R.rg == RG_URAL ? 1.6f : (R.rg == RG_SOUTH ? 0.6f : (R.rg == RG_ARCTIC ? 1.2f : 1.0f));
   R.a1 = wr(40, 90) * curvy; R.l1 = wr(380, 600); R.p1 = wr(0, 6.28f); R.a2 = wr(10, 26) * curvy; R.l2 = wr(120, 200); R.p2 = wr(0, 6.28f); R.a3 = wr(2, 6); R.l3 = wr(45, 70); R.p3 = wr(0, 6.28f);
   float hills = R.rg == RG_URAL ? 11.0f : (R.rg == RG_CENTER ? 6.0f : (R.rg == RG_SOUTH ? 4.0f : 3.0f));   // уклоны до ~4-5%, как на трассах
   R.h1 = wr(0.5f, 1.0f) * hills; R.hl1 = wr(260, 420); R.h2 = wr(0.3f, 0.6f) * hills * 0.5f; R.hl2 = wr(90, 150);
   R.forest = R.rg == RG_SOUTH ? 0.06f : (R.rg == RG_ARCTIC ? 0.12f : (R.rg == RG_URAL ? 0.75f : (R.rg == RG_TAIGA ? 0.8f : 0.45f)));
-  float wroll = hf(R.seed + (unsigned)(G.clock / 300));
-  R.weather = R.rg == RG_ARCTIC ? (wroll < 0.3f ? 3 : 2) : (R.rg == RG_TAIGA ? (wroll < 0.6f ? 2 : 0) : (R.rg == RG_URAL ? (wroll < 0.35f ? 2 : (wroll < 0.5f ? 1 : 0)) : (wroll < 0.3f ? 1 : 0)));
+  R.wSeg = -1; R.weather = 0; R.ice = R.storm = false; R.fog = 0;
   float L = R.L;
-  if (!R.zimnik) { int nv = L > 7000 ? 3 : 2; float fr[3] = {0.13f, 0.55f, 0.9f}; if (nv == 2) { fr[1] = 0.87f; }
+  if (!R.zimnik) { int nv = L > 7000 ? 3 : 2; float fr[3] = {0.13f, 0.55f, 0.84f}; if (nv == 2) { fr[1] = 0.8f; }   // последний посёлок - не у самого города: там съезд на объездную
     for (int k = 0; k < nv; k++) addFeat(F_VILLAGE, L * (fr[k] + wr(-0.02f, 0.02f)), 280, VILLN[(R.seed + k * 7) % 20]); }
   if (R.zimnik) addFeat(F_ICE, L * 0.5f, 150, "ЛЕДОВАЯ ПЕРЕПРАВА");
   addFeat(F_DPS, L * wr(0.3f, 0.4f), 60, "ДПС");
@@ -14640,10 +14715,47 @@ static void buildRoad(int edge, int from) {
   addFeat(F_FUEL, L * wr(0.22f, 0.28f), 90, "АЗС");
   addFeat(F_FUEL, L * wr(0.76f, 0.82f), 90, "АЗС");
   addFeat(F_CAFE, L * wr(0.46f, 0.52f), 110, "КАФЕ И СТОЯНКА");
+  // мосты через реки (большая река - длинный мост)
+  if (!R.zimnik) { int nb = L > 6500 ? 2 : 1; const char *rv[2] = {riverFor(edge, 0), riverFor(edge, 1)};
+    for (int b = 0; b < nb; b++) { bool big = b == 0 && isBigRiver(rv[0]); float half = big ? wr(95, 130) : wr(28, 45);
+      for (int k = 0; k < 12; k++) { size_t n0 = R.feats.size(); char nm[40]; snprintf(nm, sizeof nm, "Р. %s", rv[b]); addFeat(F_BRIDGE, L * wr(0.12f, 0.88f), half + 40, nm); if (R.feats.size() > n0) { R.feats.back().s0 += 40; R.feats.back().s1 -= 40; R.feats.back().flag = big; break; } } } }
+  // ж/д переезды
+  if (!R.zimnik) { int nr = hf(R.seed + 31) < 0.85f ? (L > 7000 ? 2 : 1) : 0; for (int r = 0; r < nr; r++) for (int k = 0; k < 12; k++) { size_t n0 = R.feats.size(); addFeat(F_RAIL, L * wr(0.1f, 0.9f), 70, "Ж/Д ПЕРЕЕЗД"); if (R.feats.size() > n0) break; } }
+  // развязки с путепроводом на широких трассах
+  if (R.wide) { int ni = L > 7000 ? 2 : 1; for (int r = 0; r < ni; r++) for (int k = 0; k < 12; k++) { size_t n0 = R.feats.size(); addFeat(F_INTER, L * wr(0.12f, 0.88f), 170, VILLN[(R.seed + r * 5 + 11) % 20]); if (R.feats.size() > n0) break; } }
   // дорожные работы: на широкой трассе - сужение, на узкой - реверс по временному светофору
   if (!R.zimnik) { int want = L > 6500 ? 2 : 1; float half = R.wide ? 110.0f : 75.0f;
     for (int k = 0; k < 30 && want > 0; k++) { size_t n0 = R.feats.size(); addFeat(F_WORKS, L * wr(0.15f, 0.88f), half + 30, "ДОРОЖНЫЕ РАБОТЫ"); if (R.feats.size() > n0) { Feat &w = R.feats.back(); w.s0 += 30; w.s1 -= 25; w.flag = !R.wide; want--; } }
     for (int k = 0; k < 30 && want > 0 && L > 5000; k++) { size_t n0 = R.feats.size(); addFeat(F_WORKS, L * wr(0.1f, 0.9f), 95, "ДОРОЖНЫЕ РАБОТЫ"); if (R.feats.size() > n0) { Feat &w = R.feats.back(); w.s0 += 30; w.s1 -= 25; w.flag = !R.wide; want = 0; } } }
+  // съезды в деревни (петли): часть - в обход ДПС или весов
+  R.loops.clear();
+  if (!R.zimnik) { int want = L > 6500 ? 3 : 2; float cand[32]; int nc = 0;
+    for (size_t i = 0; i < R.feats.size() && nc < 4; i++) if (R.feats[i].type == F_DPS || R.feats[i].type == F_WEIGH) cand[nc++] = R.feats[i].s;
+    for (int k = 0; k < 26; k++) cand[nc++] = L * (0.12f + 0.76f * hf(R.seed + 500 + k));
+    for (int k = 0; k < nc && (int)R.loops.size() < want; k++) {
+      Loop lp; float half = 330 + 120 * hf(R.seed + 600 + k); lp.a = cand[k] - half; lp.b = cand[k] + half; lp.D = 72 + 10 * hf(R.seed + 700 + k);
+      if (lp.a < 450 || lp.b > L - 450) continue;
+      bool ok = true;
+      for (size_t i = 0; i < R.feats.size(); i++) { const Feat &f = R.feats[i];
+        if (f.s1 > lp.a - 80 && f.s0 < lp.a + 230) ok = false; if (f.s1 > lp.b - 230 && f.s0 < lp.b + 80) ok = false;
+        if ((f.type == F_VILLAGE || f.type == F_WORKS || f.type == F_FUEL || f.type == F_CAFE || f.type == F_BRIDGE || f.type == F_RAIL || f.type == F_INTER) && f.s1 > lp.a && f.s0 < lp.b) ok = false; }
+      for (size_t i = 0; i < R.loops.size(); i++) if (lp.a < R.loops[i].b + 300 && lp.b > R.loops[i].a - 300) ok = false;
+      if (!ok) continue;
+      int nm = (int)((R.seed >> 3) + k * 7 + 3) % 20; for (int t = 0; t < 20; t++) { bool used = false; for (size_t i = 0; i < R.feats.size(); i++) if (R.feats[i].type == F_VILLAGE && !strcmp(R.feats[i].name, VILLN[nm])) used = true; if (!used) break; nm = (nm + 1) % 20; }
+      lp.name = nm; lp.fuel = true; lp.inn = hf(R.seed + 800 + k) < 0.8f; R.loops.push_back(lp); } }
+  // платный участок на М-4 «Дон», закрытие трассы из-за метели зимой на Севере, сломанная машина на обочине
+  if (R.four && strstr(e.hw, "ДОН")) for (int k = 0; k < 20; k++) { size_t n0 = R.feats.size(); addFeat(F_TOLL, L * wr(0.35f, 0.65f), 60, "ПУНКТ ОПЛАТЫ"); if (R.feats.size() > n0) break; }
+  if (seasonNow() == SE_WINTER && (R.rg == RG_ARCTIC || R.rg == RG_TAIGA) && hf(R.seed + (unsigned)(G.clock / 1440) * 7u) < 0.4f)
+    for (int k = 0; k < 20; k++) { size_t n0 = R.feats.size(); addFeat(F_CLOSE, L * wr(0.3f, 0.6f), 40, "ТРАССА ЗАКРЫТА: МЕТЕЛЬ"); if (R.feats.size() > n0) break; }
+  if (hf(R.seed + 77u + (unsigned)(G.clock / 600)) < 0.75f) for (int k = 0; k < 20; k++) { size_t n0 = R.feats.size(); addFeat(F_BROKEN, L * wr(0.15f, 0.85f), 30, "СЛОМАЛАСЬ МАШИНА"); if (R.feats.size() > n0) break; }
+  // объездные вокруг посёлков: асфальт, 90, без светофоров
+  R.vbys.clear();
+  if (!R.zimnik) for (size_t vi = 0; vi < R.feats.size(); vi++) { const Feat &v = R.feats[vi]; if (v.type != F_VILLAGE || hf(R.seed + 900 + (unsigned)vi) > 0.8f) continue;
+    VBy b; b.a = v.s0 - 260; b.b = v.s1 + 260; b.D = 70 + 20 * hf(R.seed + 950 + (unsigned)vi); b.village = (int)vi; if (b.a < 120 || b.b > L - 250) continue;
+    bool ok = true;
+    for (size_t i = 0; i < R.feats.size(); i++) { const Feat &f = R.feats[i]; if ((int)i == b.village || f.type == F_CAM) continue; if ((f.type == F_WORKS || f.type == F_BROKEN || f.type == F_DPS) && f.s0 > b.a + 230 && f.s1 < b.b - 230) continue; if (f.s1 > b.a - 40 && f.s0 < b.b + 40) ok = false; }
+    for (size_t i = 0; i < R.loops.size(); i++) if (R.loops[i].a < b.b + 150 && R.loops[i].b > b.a - 150) ok = false;
+    if (ok) R.vbys.push_back(b); }
   for (int k = 0; k < 6; k++) { int before = (int)R.feats.size(); addFeat(F_CAM, L * (0.1f + 0.14f * k + wr(0, 0.05f)), 15, "КАМЕРА"); (void)before; }
   std::sort(R.feats.begin(), R.feats.end(), [](const Feat &a, const Feat &b) { return a.s < b.s; });
   for (size_t i = 0; i < R.feats.size(); i++) if (R.feats[i].type == F_DPS) R.feats[i].stopAsk = hf(R.seed + (unsigned)G.clock) < 0.55f;
@@ -14657,22 +14769,54 @@ static int limitAt(float s) {
     if (f.type == F_DPS && s > f.s - 250 && s < f.s + 80) lim = imin(lim, 50);
     if (f.type == F_ICE && s > f.s0 && s < f.s1) lim = imin(lim, 20);
     if (f.type == F_WORKS && s > f.s0 - 150 && s < f.s1 + 30) lim = imin(lim, f.flag ? 40 : 50);
-    if (f.type == F_WORKS && s > f.s0 - 300 && s <= f.s0 - 150) lim = imin(lim, 70); }
+    if (f.type == F_WORKS && s > f.s0 - 300 && s <= f.s0 - 150) lim = imin(lim, 70);
+    if (f.type == F_RAIL && s > f.s - 160 && s < f.s + 12) lim = imin(lim, 60);
+    if (f.type == F_TOLL && s > f.s - 200 && s < f.s + 40) lim = imin(lim, 20);
+    if (f.type == F_CLOSE && !f.done && s > f.s - 300 && s < f.s + 10) lim = imin(lim, 40); }
   return lim;
 }
 // карман справа (АЗС, кафе, весы): асфальт до ROAD_HW + 10
 static const Feat *pocketAt(float s) { for (size_t i = 0; i < R.feats.size(); i++) { const Feat &f = R.feats[i]; if ((f.type == F_FUEL || f.type == F_CAFE || f.type == F_WEIGH) && s > f.s0 && s < f.s1) return &f; } return NULL; }
 // поверхность под колесом: 0 асфальт, 1 обочина/гравий, 2 трава/снег (вязко), 3 лёд
+static float bypassOff(float s) { if (!R.bypass || s < R.bypS) return -1; return RHW + 4.5f + 42.0f * smooth01(R.bypS, R.bypS + R.bypD, s); }
+static void placeBypass() {                                  // съезд на объездную - после последнего посёлка, АЗС, моста и т.п.
+  R.bypS = R.L - 900;
+  for (int it = 0; it < 3; it++) { for (size_t i = 0; i < R.feats.size(); i++) { const Feat &f = R.feats[i]; if (f.type == F_CAM) continue; if (f.s1 > R.bypS - 120) R.bypS = fmaxv(R.bypS, f.s1 + 100); }
+    for (size_t i = 0; i < R.loops.size(); i++) if (R.loops[i].b > R.bypS - 150) R.bypS = fmaxv(R.bypS, R.loops[i].b + 150);
+    for (size_t i = 0; i < R.vbys.size(); i++) if (R.vbys[i].b > R.bypS - 150) R.bypS = fmaxv(R.bypS, R.vbys[i].b + 150); }
+  R.bypS = fminv(R.bypS, R.L - 260); R.bypD = clampf((R.L - R.bypS) * 0.6f, 140.0f, 320.0f);
+}   // объездная уходит вправо
 static int surfaceAt(float x, float s) {
   float d = x - cxAt(s);
+  { float bo = bypassOff(s); if (bo > 0 && fabsf(d - bo) < 4.6f) return 0; }
+  for (size_t i = 0; i < R.vbys.size(); i++) { float o = vbyOff(R.vbys[i], s); if (o > 0 && fabsf(d - o) < 4.6f) return 0; }
   for (size_t i = 0; i < R.feats.size(); i++) { const Feat &f = R.feats[i]; if (f.type == F_ICE && s > f.s0 - 40 && s < f.s1 + 40 && fabsf(d) < 40) return 3; }
-  if (d > -ROAD_HW - 0.2f && d < RHW + 0.2f) return 0;
+  if (d > -LHW - 0.2f && d < RHW + 0.2f) return 0;
   if (d > 0 && d < RHW + POCKET_W && pocketAt(s)) return 0;
-  if (d > -ROAD_HW - 1.6f && d < RHW + 1.6f) return 1;
+  if (d > -LHW - 1.6f && d < RHW + 1.6f) return 1;
+  for (size_t i = 0; i < R.loops.size(); i++) { float lo = loopOff(R.loops[i], s); if (lo >= 0 && fabsf(d - lo) < 3.4f) return 1; }   // грунтовка в деревню
   return 2;
+}
+// погода по участкам пути (2,5 км): зависит от региона, времени года, суток; гроза, гололёд, утренний туман
+static void weatherAt(float s, int &w, bool &storm, bool &ice, float &fog) {
+  int seg = (int)(s / 2500.0f), se = seasonNow(), rg = R.rg; unsigned day = (unsigned)(G.clock / 1440.0f);
+  float u = hf(R.seed * 3u + seg * 977u + day * 131u), u2 = hf(R.seed * 5u + seg * 313u + day * 71u), hr = hourNow();
+  bool north = rg == RG_ARCTIC || rg == RG_TAIGA; storm = false;
+  if (se == SE_SUMMER) { if (rg == RG_ARCTIC) w = u < 0.6f ? 0 : (u < 0.95f ? 1 : 2); else { w = u < 0.6f ? 0 : 1; storm = u > 0.85f && rg != RG_TAIGA; } }
+  else if (se == SE_AUTUMN) { if (north) w = u < 0.35f ? 0 : (u < 0.6f ? 1 : (u < 0.9f || rg == RG_TAIGA ? 2 : 3)); else w = u < 0.4f ? 0 : (u < 0.88f || rg == RG_SOUTH ? 1 : 2); }
+  else if (se == SE_WINTER) { if (rg == RG_SOUTH) w = u < 0.45f ? 0 : (u < 0.75f ? 1 : 2); else { float cl = rg == RG_ARCTIC ? 0.25f : (rg == RG_CENTER ? 0.35f : 0.3f), bl = rg == RG_ARCTIC ? 0.65f : (rg == RG_CENTER ? 0.82f : 0.75f); w = u < cl ? 0 : (u < bl ? 2 : 3); } }
+  else { if (north) w = u < 0.4f ? 0 : (u < 0.8f ? 2 : 1); else { w = u < 0.5f ? 0 : (u < 0.85f ? 1 : (rg == RG_SOUTH ? 1 : 2)); storm = rg == RG_SOUTH && u > 0.85f; } }
+  if (R.zimnik) { w = u < 0.3f ? 3 : 2; storm = false; }
+  for (size_t i = 0; i < R.feats.size(); i++) if (R.feats[i].type == F_CLOSE && !R.feats[i].done && (int)(R.feats[i].s / 2500.0f) == seg) w = 3;   // метель у закрытого участка
+  bool cold = se == SE_WINTER || ((se == SE_AUTUMN || se == SE_SPRING) && (hr < 8 || hr > 20)) || (north && se != SE_SUMMER);
+  ice = !R.zimnik && cold && (w == 1 || (se == SE_WINTER && w == 0 && u2 < 0.18f));
+  float pf = se == SE_AUTUMN || se == SE_SPRING ? 0.55f : (se == SE_SUMMER ? 0.3f : 0.2f); fog = 0;
+  if (hr > 4.5f && hr < 9.5f && hf(R.seed * 7u + day * 17u + seg / 3) < pf) fog = smooth01(4.5f, 6.0f, hr) * (1 - smooth01(8.0f, 9.5f, hr));
+  if ((se == SE_AUTUMN || se == SE_SPRING) && u2 > 0.9f && w != 3) fog = fmaxv(fog, 0.75f);
 }
 static float gripAt(int surf) {
   float base = surf == 0 ? 0.85f : (surf == 1 ? 0.6f : (surf == 2 ? 0.4f : 0.18f));
+  if (R.ice && surf < 2) base *= 0.45f;                                            // гололёд
   if (R.weather == 1 && surf < 2) base *= 0.75f;
   if (R.weather >= 2) base *= surf == 3 ? 1.0f : 0.5f;
   if (R.zimnik && surf == 0) base = 0.38f;
@@ -14687,15 +14831,19 @@ static int treesInCell(int cell, int side, TreeP *out) {
   if (s < 60 || s > R.L - 60) return 0;
   // в посёлках, у ДПС и карманов деревьев у дороги нет
   float minOff = ROAD_HW + 7;
-  for (size_t i = 0; i < R.feats.size(); i++) { const Feat &f = R.feats[i]; if (s > f.s0 - 40 && s < f.s1 + 40) { if (f.type == F_VILLAGE) minOff = 34; else if (f.type == F_ICE) return 0; else if (f.type == F_WORKS) minOff = ROAD_HW + 14; else if (side > 0) minOff = ROAD_HW + POCKET_W + 14; } }
-  if (side > 0) minOff += R.ex;
+  if (R.bypass && side > 0 && s > R.bypS - 80) minOff = RHW + 72;                     // справа - съезд на объездную
+  for (size_t i = 0; i < R.feats.size(); i++) { const Feat &f = R.feats[i]; if (s > f.s0 - 40 && s < f.s1 + 40) { if (f.type == F_VILLAGE) minOff = 34; else if (f.type == F_ICE) return 0; else if (f.type == F_WORKS) minOff = ROAD_HW + 14; else if (f.type == F_BRIDGE) return 0; else if (f.type == F_RAIL) { if (fabsf(s - f.s) < 14) return 0; } else if (f.type == F_INTER) minOff = ROAD_HW + 40; else if (side > 0) minOff = ROAD_HW + POCKET_W + 14; } }
+  if (side > 0) minOff += R.ex; else minOff += R.exL;
+  bool nearLoop = false; float loopX = 0, loopW = 14; if (side > 0) for (size_t i = 0; i < R.loops.size(); i++) { const Loop &l = R.loops[i]; if (s > l.a - 12 && s < l.b + 12) { nearLoop = true; float lo = loopOff(l, fminv(fmaxv(s + 6, l.a), l.b)); loopX = lo; loopW = (s > l.a + 160 && s < l.b - 160) ? 34.0f : 12.0f; } }
   int tries = R.rg == RG_SOUTH ? 1 : 3;
   for (int k = 0; k < tries; k++) {
     unsigned q = hsh(h + k * 31u); if ((q & 1023) / 1024.0f > R.forest * (k == 0 ? 1.2f : 0.9f)) continue;
     TreeP t; float off = minOff + ((q >> 10) & 1023) / 1024.0f * 70.0f; t.z = s + ((q >> 20) & 255) / 255.0f * 12.0f; t.x = cxAt(t.z) + side * off;
-    if (R.rg == RG_SOUTH) { t.kind = 2; if ((q >> 3) % 3) { t.x = cxAt(t.z) + side * (ROAD_HW + 16 + (side > 0 ? R.ex : 0)); } }        // лесополосы вдоль трассы
+    if (R.rg == RG_SOUTH) { t.kind = 2; if ((q >> 3) % 3) { t.x = cxAt(t.z) + side * (ROAD_HW + 16 + (side > 0 ? R.ex : R.exL)); } }        // лесополосы вдоль трассы
     else if (R.rg == RG_ARCTIC) t.kind = 3; else if (R.rg == RG_CENTER) t.kind = (q >> 28) & 1 ? 1 : 0; else t.kind = ((q >> 28) & 3) == 0 ? 1 : 0;
     t.h = t.kind == 3 ? 3.5f + ((q >> 5) & 7) * 0.4f : 8.0f + ((q >> 5) & 15) * 0.6f; t.r = t.kind == 2 ? 1.6f : (t.kind == 3 ? 1.0f : 2.0f);
+    if (nearLoop && fabsf((t.x - cxAt(t.z)) - loopX) < loopW) continue;
+    if (side > 0) { bool onV = false; for (size_t i = 0; i < R.vbys.size(); i++) { float o = vbyOff(R.vbys[i], fminv(fmaxv(t.z, R.vbys[i].a), R.vbys[i].b)); if (t.z > R.vbys[i].a - 15 && t.z < R.vbys[i].b + 15 && fabsf((t.x - cxAt(t.z)) - o) < 12) onV = true; } if (onV) continue; }   // не на объездной   // деревья не растут на грунтовке и в деревне
     out[n++] = t;
   }
   return n;
@@ -14707,8 +14855,9 @@ static int housesNear(const Feat &f, float sFrom, float sTo, HouseP *out, int ma
   for (int i = (int)floorf((fmaxv(sFrom, f.s0) - f.s0) / 26.0f); ; i++) { float z = f.s0 + 13 + i * 26.0f; if (z > f.s1 - 10 || z > sTo || n >= maxN - 1) break;
     for (int side = -1; side <= 1; side += 2) { unsigned q = hsh((unsigned)(z * 3) + side * 5u + R.seed); if ((q & 7) == 0) continue;
       if (fabsf(z - f.s) < 20) continue;                                        // перекрёсток
+      if (side > 0 && R.bypass && z > R.bypS - 40) continue;                     // там съезд на объездную
       HouseP h; h.w = 7 + (q >> 4 & 3); h.d = 8 + (q >> 6 & 3); h.h = 3.0f + (R.rg == RG_TAIGA || R.rg == RG_ARCTIC ? ((q >> 8) & 3) * 3.0f : 0.0f);
-      h.x = cxAt(z) + side * (ROAD_HW + 10 + h.w * 0.5f + ((q >> 10) & 3) + (side > 0 ? R.ex : 0)); h.z = z; h.col = HC[(q >> 12) % 6]; h.roof = (q >> 15) & 1 ? RGB(110, 50, 40) : RGB(70, 90, 110); h.yaw = headAt(z);
+      h.x = cxAt(z) + side * (ROAD_HW + 10 + h.w * 0.5f + ((q >> 10) & 3) + (side > 0 ? R.ex : R.exL)); h.z = z; h.col = HC[(q >> 12) % 6]; h.roof = (q >> 15) & 1 ? RGB(110, 50, 40) : RGB(70, 90, 110); h.yaw = headAt(z);
       if (n < maxN) out[n++] = h; } }
   return n;
 }
@@ -14717,6 +14866,33 @@ static int lightState(const Feat &f) { float t = fmodf(gTime + f.s * 0.37f, 30.0
 static float villageT(const Feat &f) { return fmodf(gTime + f.s * 0.37f, 30.0f); }
 // поперечная улица: зелёный, пока у нас красный (с паузами на расчистку)
 static int crossState(const Feat &f) { float t = villageT(f); return (t >= 20.5f && t < 27.0f) ? 0 : (t >= 27.0f && t < 28.5f ? 1 : 2); }
+
+// ---------- съезды-петли в деревни ----------
+static float vbyOff(const VBy &v, float s) { if (s < v.a || s > v.b) return -1; float t = fminv(smooth01(v.a, v.a + 240, s), smooth01(v.b, v.b - 240, s)); return RHW + 4.5f + (v.D - RHW - 4.5f) * t; }
+static int vbyAt(float x, float s) { float d = x - cxAt(s); for (size_t i = 0; i < R.vbys.size(); i++) { float o = vbyOff(R.vbys[i], s); if (o >= 0 && fabsf(d - o) < 4.8f && (o > RHW + 9 || d > RHW + 2)) return (int)i; } return -1; }
+static float loopOff(const Loop &l, float s) { if (s < l.a || s > l.b) return -1; float t = fminv(smooth01(l.a, l.a + 150, s), smooth01(l.b, l.b - 150, s)); return RHW + 1.5f + (l.D - RHW - 1.5f) * t; }
+static int loopAt(float x, float s) { float d = x - cxAt(s); for (size_t i = 0; i < R.loops.size(); i++) { float lo = loopOff(R.loops[i], s); if (lo >= 0 && fabsf(d - lo) < 3.6f) return (int)i; } return -1; }
+static float loopFuelZ(const Loop &l) { return (l.a + l.b) * 0.5f - 60; }
+static float loopInnZ(const Loop &l) { return (l.a + l.b) * 0.5f + 60; }
+// дома вдоль деревенской улицы (по обе стороны грунтовки)
+static int loopHouses(const Loop &l, float sFrom, float sTo, HouseP *out, int maxN) {
+  int n = 0; static const u32 HC[] = {RGB(170, 140, 100), RGB(150, 110, 80), RGB(140, 160, 180), RGB(196, 190, 176), RGB(130, 150, 100), RGB(170, 85, 66)};
+  float z0 = l.a + 175, z1 = l.b - 175; float mid = (l.a + l.b) * 0.5f;
+  for (int i = (int)fmaxv(0.0f, floorf((sFrom - z0) / 23.0f)); ; i++) { float z = z0 + i * 23.0f; if (z > z1 || z > sTo || n >= maxN - 1) break;
+    for (int side = -1; side <= 1; side += 2) { unsigned q = hsh((unsigned)(z * 7) + side * 13u + R.seed + 99u); if ((q & 7) == 0) continue;
+      if (fabsf(z - loopFuelZ(l)) < 16 && side > 0) continue; if (fabsf(z - loopInnZ(l)) < 16 && side > 0) continue; (void)mid;
+      HouseP h; h.w = 6 + (q >> 4 & 3); h.d = 7 + (q >> 6 & 3); h.h = 2.8f + ((q >> 8) & 1) * 1.2f;
+      h.x = cxAt(z) + loopOff(l, z) + side * (3.4f + 4.5f + h.w * 0.5f); h.z = z; h.col = HC[(q >> 12) % 6]; h.roof = (q >> 15) & 1 ? RGB(110, 50, 40) : RGB(80, 100, 90); h.yaw = headAt(z);
+      if (n < maxN) out[n++] = h; } }
+  return n;
+}
+
+// ---------- ж/д переезд: 0 открыт, 1 мигает (закрывается), 2 закрыт - идёт поезд, 3 открывается ----------
+static float railT(const Feat &f) { return fmodf(gTime + f.s * 0.21f, 95.0f); }
+static int railState(const Feat &f) { float t = railT(f); return t < 50 ? 0 : (t < 56 ? 1 : (t < 86 ? 2 : (t < 89 ? 3 : 0))); }
+static float trainX(const Feat &f) { float t = railT(f); return t < 58 || t > 86 ? 1e9f : -420.0f + (t - 58) * 34.0f; }   // голова поезда по оси x (поперёк дороги)
+static const float TRAIN_LEN = 260.0f;
+static bool trainOnRoad(const Feat &f) { float x = trainX(f); return x < 1e8f && x > -LHW - 4 && x - TRAIN_LEN < RHW + 4; }
 
 // ---------- дорожные работы ----------
 // закрытая полоса: на широкой - правая (внешняя), на узкой - наша
@@ -14730,7 +14906,7 @@ static float worksClosedFrom(const Feat &f, float s) {
   return x0;
 }
 // временный светофор реверса: dir 1 - наше направление, -1 встречное. 0 зелёный, 1 жёлтый, 2 красный
-static int worksLightBase(const Feat &f, int dir) { float t = fmodf(gTime + f.s * 0.13f, 46.0f); if (dir < 0) t = fmodf(t + 23.0f, 46.0f); return t < 13 ? 0 : (t < 15 ? 1 : 2); }
+static int worksLightBase(const Feat &f, int dir) { float t = fmodf(gTime + f.s * 0.13f, 64.0f); if (dir < 0) t = fmodf(t + 32.0f, 64.0f); return t < 23 ? 0 : (t < 26 ? 1 : 2); }   // зелёный 23 с
 static float worksStop(const Feat &f, int dir) { return dir > 0 ? f.s0 - 32 : f.s1 + 42; }
 // техника на закрытой полосе (для отрисовки и столкновений): x, z, полуширина, полудлина, тип
 struct WMach { float x, z, hw, hd; int kind; };   // 0 экскаватор, 1 каток, 2 самосвал
@@ -14742,18 +14918,174 @@ static int worksMachines(const Feat &f, WMach *o) {
 }
 
 // ---------- двор склада ----------
-struct YBox { float x0, z0, x1, z1, h; u32 col; };
+struct YBox { float x0, z0, x1, z1, h; u32 col; int kind; };   // kind: 0 двор рисует сам, 1 здание города, 2 невидимая граница
 static std::vector<YBox> ybox;
 static const float SLOT_X[5] = {-24, -12, 0, 12, 24}, KING_Z = 52.0f;
 static int ySlot = 2; static bool yArrive = false;
+// ================= ГОРОД вокруг склада: улицы, дома, достопримечательности =================
+static const float TXS[5] = {-240, -120, 0, 120, 240}, TZS[5] = {180, 300, 420, 540, 660};   // оси улиц
+static const float ST_HW = 7.0f, T_X0 = -290, T_X1 = 290, T_Z0 = 125, T_Z1 = 705, T_EXIT = 770;
+// style: 0 панелька, 1 хрущёвка, 2 кирпичный дом с магазинами, 3 стеклянная высотка, 4 магазин, 5 новый ЖК, 6 сервис (АЗС/СТО/салон/гостиница), 7 гаражи
+struct TBld { float x0, z0, x1, z1, h; int style, sign; u32 col; };
+enum { POI_FUEL, POI_STO, POI_SALON, POI_HOTEL, POI_CARGO, NPOI };
+struct TPoi { int type; float x0, z0, x1, z1; };
+struct TTree { float x, z, h; };
+enum { LM_KREMLIN_RED, LM_KREMLIN_WHITE, LM_CATHEDRAL, LM_SKYSCRAPER, LM_MOTHERLAND, LM_STELE, LM_FERRIS, LM_STADIUM, LM_OIL, LM_POLAR, LM_LIGHTHOUSE, LM_TVTOWER, NLM };
+struct TLand { int type; float x, z; char name[96]; };
+static std::vector<TBld> tbld; static std::vector<TPoi> tpoi; static std::vector<TTree> ttree; static TLand tland[2]; static int townCity = -1;
+static const char *SHOPN[] = {"ПРОДУКТЫ", "АПТЕКА", "ШАУРМА", "КАФЕ", "ПЕКАРНЯ", "ЦВЕТЫ", "ХОЗТОВАРЫ", "ШИНОМОНТАЖ", "ПЯТЁРОЧКА", "СТОЛОВАЯ", "БАНК", "ПОЧТА", "АВТОЗАПЧАСТИ", "МАГНИТ", "ПИЦЦА", "ОДЕЖДА"};
+static const int NSHOPN = sizeof(SHOPN) / sizeof(SHOPN[0]);
+static void townLandmarks(int city, int *t, const char **n) {
+  switch (city) {
+    case C_MSK: t[0] = LM_KREMLIN_RED; n[0] = "КРЕМЛЬ"; t[1] = LM_SKYSCRAPER; n[1] = "МОСКВА-СИТИ"; return;
+    case C_NN: t[0] = LM_KREMLIN_RED; n[0] = "НИЖЕГОРОДСКИЙ КРЕМЛЬ"; t[1] = LM_CATHEDRAL; n[1] = "СОБОР"; return;
+    case C_KZN: t[0] = LM_KREMLIN_WHITE; n[0] = "КАЗАНСКИЙ КРЕМЛЬ И МЕЧЕТЬ"; t[1] = LM_STADIUM; n[1] = "СТАДИОН"; return;
+    case C_PRM: t[0] = LM_TVTOWER; n[0] = "ТЕЛЕБАШНЯ"; t[1] = LM_CATHEDRAL; n[1] = "СОБОР"; return;
+    case C_EKB: t[0] = LM_CATHEDRAL; n[0] = "ХРАМ-НА-КРОВИ"; t[1] = LM_SKYSCRAPER; n[1] = "НЕБОСКРЁБ"; return;
+    case C_CHL: t[0] = LM_STELE; n[0] = "МОНУМЕНТ"; t[1] = LM_CATHEDRAL; n[1] = "СОБОР"; return;
+    case C_UFA: t[0] = LM_STELE; n[0] = "МОНУМЕНТ ДРУЖБЫ"; t[1] = LM_TVTOWER; n[1] = "ТЕЛЕБАШНЯ"; return;
+    case C_SMR: t[0] = LM_STELE; n[0] = "СТЕЛА «ЛАДЬЯ»"; t[1] = LM_STADIUM; n[1] = "СТАДИОН"; return;
+    case C_VLG: t[0] = LM_MOTHERLAND; n[0] = "РОДИНА-МАТЬ ЗОВЁТ!"; t[1] = LM_STADIUM; n[1] = "СТАДИОН"; return;
+    case C_VRN: t[0] = LM_CATHEDRAL; n[0] = "БЛАГОВЕЩЕНСКИЙ СОБОР"; t[1] = LM_STELE; n[1] = "СТЕЛА"; return;
+    case C_RST: t[0] = LM_STELE; n[0] = "СТЕЛА ОСВОБОДИТЕЛЯМ"; t[1] = LM_FERRIS; n[1] = "КОЛЕСО ОБОЗРЕНИЯ"; return;
+    case C_KRD: t[0] = LM_STADIUM; n[0] = "СТАДИОН"; t[1] = LM_FERRIS; n[1] = "КОЛЕСО ОБОЗРЕНИЯ"; return;
+    case C_TMN: t[0] = LM_SKYSCRAPER; n[0] = "БИЗНЕС-ЦЕНТР"; t[1] = LM_CATHEDRAL; n[1] = "СОБОР"; return;
+    case C_TOB: case C_RZN: case C_AST: t[0] = LM_KREMLIN_WHITE; n[0] = city == C_TOB ? "ТОБОЛЬСКИЙ КРЕМЛЬ" : (city == C_RZN ? "РЯЗАНСКИЙ КРЕМЛЬ" : "АСТРАХАНСКИЙ КРЕМЛЬ"); t[1] = LM_STELE; n[1] = "МОНУМЕНТ"; return;
+    case C_TUL: t[0] = LM_KREMLIN_RED; n[0] = "ТУЛЬСКИЙ КРЕМЛЬ"; t[1] = LM_STELE; n[1] = "МОНУМЕНТ"; return;
+    case C_SLH: case C_LAB: t[0] = LM_POLAR; n[0] = "СТЕЛА «ПОЛЯРНЫЙ КРУГ»"; t[1] = city == C_SLH ? LM_CATHEDRAL : LM_OIL; n[1] = city == C_SLH ? "СОБОР" : "ПАМЯТНИК ГАЗОВИКАМ"; return;
+    case C_NUR: case C_NAD: t[0] = LM_OIL; n[0] = "ПАМЯТНИК ГАЗОДОБЫТЧИКАМ"; t[1] = LM_POLAR; n[1] = "СТЕЛА «ПОЛЯРНЫЙ КРУГ»"; return;
+    case C_NEF: case C_SUR: case C_NOY: case C_NVT: case C_NYA: case C_KOG: case C_GUB: t[0] = LM_OIL; n[0] = "ПАМЯТНИК НЕФТЯНИКАМ"; t[1] = city == C_SUR ? LM_SKYSCRAPER : LM_CATHEDRAL; n[1] = city == C_SUR ? "БИЗНЕС-ЦЕНТР" : "СОБОР"; return;
+    case C_HM: t[0] = LM_STELE; n[0] = "МОНУМЕНТ ПЕРВООТКРЫВАТЕЛЯМ"; t[1] = LM_CATHEDRAL; n[1] = "СОБОР"; return;
+    case C_MGN: t[0] = LM_STELE; n[0] = "МОНУМЕНТ «ТЫЛ - ФРОНТУ»"; t[1] = LM_TVTOWER; n[1] = "ТЕЛЕБАШНЯ"; return;
+    case C_NTG: t[0] = LM_TVTOWER; n[0] = "БАШНЯ НА ЛИСЬЕЙ ГОРЕ"; t[1] = LM_CATHEDRAL; n[1] = "СОБОР"; return;
+    case C_TLT: case C_NCH: t[0] = LM_STELE; n[0] = "МОНУМЕНТ"; t[1] = city == C_TLT ? LM_TVTOWER : LM_STADIUM; n[1] = city == C_TLT ? "ТЕЛЕБАШНЯ" : "СТАДИОН"; return;
+    case C_NVR: t[0] = LM_LIGHTHOUSE; n[0] = "МАЯК"; t[1] = LM_STELE; n[1] = "МОНУМЕНТ"; return;
+    case C_SOC: t[0] = LM_FERRIS; n[0] = "КОЛЕСО ОБОЗРЕНИЯ"; t[1] = LM_LIGHTHOUSE; n[1] = "МАЯК"; return;
+  }
+  t[0] = LM_CATHEDRAL; n[0] = "СОБОР"; t[1] = LM_STELE; n[1] = "МОНУМЕНТ";
+}
+static void tAddBox(float x0, float z0, float x1, float z1, float h, int kind) { YBox b; memset(&b, 0, sizeof b); b.x0 = x0; b.z0 = z0; b.x1 = x1; b.z1 = z1; b.h = h; b.kind = kind; ybox.push_back(b); }
+static void tAddBld(float x0, float z0, float x1, float z1, float h, int style, u32 col, int sign) {
+  TBld t; t.x0 = x0; t.z0 = z0; t.x1 = x1; t.z1 = z1; t.h = h; t.style = style; t.col = col; t.sign = sign; tbld.push_back(t); tAddBox(x0, z0, x1, z1, h, 1); }
+static void tAddTree(float x, float z, float h) { TTree t; t.x = x; t.z = z; t.h = h; ttree.push_back(t); tAddBox(x - 0.4f, z - 0.4f, x + 0.4f, z + 0.4f, h, 2); }
+static void tPoi(int type, float x0, float z0, float x1, float z1) { TPoi p; p.type = type; p.x0 = x0; p.z0 = z0; p.x1 = x1; p.z1 = z1; tpoi.push_back(p); }
+static float townBX(int i, int k) { return i == 0 ? (k ? TXS[0] - ST_HW : T_X0) : (i == 5 ? (k ? T_X1 : TXS[4] + ST_HW) : (k ? TXS[i] - ST_HW : TXS[i - 1] + ST_HW)); }
+static float townBZ(int j, int k) { return j == 0 ? (k ? TZS[0] - ST_HW : T_Z0) : (j == 5 ? (k ? T_Z1 : TZS[4] + ST_HW) : (k ? TZS[j] - ST_HW : TZS[j - 1] + ST_HW)); }
+static void buildTown(int city) {
+  tbld.clear(); tpoi.clear(); ttree.clear(); townCity = city;
+  unsigned seed = hsh((unsigned)city * 977u + 5u); auto rr = [&](float a, float b) { seed = seed * 1103515245u + 12345u; return a + (b - a) * ((seed >> 8) & 65535) / 65535.0f; };
+  int rg = CITIES[city].rg; bool north = rg == RG_ARCTIC || rg == RG_TAIGA, south = rg == RG_SOUTH;
+  static const u32 PANEL[] = {RGB(214, 210, 200), RGB(200, 204, 210), RGB(222, 214, 196), RGB(196, 200, 188)}, NORTHC[] = {RGB(214, 80, 70), RGB(70, 130, 200), RGB(240, 200, 60), RGB(90, 170, 110), RGB(230, 140, 60)};
+  static const u32 BRICK[] = {RGB(180, 96, 72), RGB(214, 190, 150), RGB(200, 170, 120), RGB(160, 82, 64)}, GLASS[] = {RGB(90, 130, 170), RGB(110, 150, 160), RGB(70, 90, 120)};
+  const char *ln[2]; int lt[2]; townLandmarks(city, lt, ln);
+  for (int k = 0; k < 2; k++) { tland[k].type = lt[k]; snprintf(tland[k].name, sizeof tland[k].name, "%s", ln[k]); }
+  tland[0].x = 60; tland[0].z = 360; tland[1].x = -60; tland[1].z = 480;
+  int sgn = 0;
+  for (int i = 0; i < 6; i++) for (int j = 0; j < 6; j++) {
+    float x0 = townBX(i, 0), x1 = townBX(i, 1), z0 = townBZ(j, 0), z1 = townBZ(j, 1), in = 6;   // 3 м тротуар + отступ
+    bool edge = i == 0 || i == 5 || j == 0 || j == 5;
+    if (edge && city == C_NVR && i == 5 && (j == 3 || j == 4)) {                        // причал с кранами
+      static const float CZ[4] = {450, 505, 575, 630}; for (int k = 0; k < 4; k++) for (int a = -1; a <= 1; a += 2) for (int b = -1; b <= 1; b += 2) { float lx = townBX(4, 1) + 30 + a * 5, lz = CZ[k] + b * 5; if (lz > z0 && lz < z1) tAddBox(lx - 0.5f, lz - 0.5f, lx + 0.5f, lz + 0.5f, 20, 2); }
+      continue; }
+    if (edge) {
+      if (j == 0 && (i == 2 || i == 3)) { for (float x = x0 + 8; x < x1 - 6; x += 12) tAddTree(x, z0 + 6, rr(5, 8)); continue; }   // у ворот склада - сквер
+      if (j == 5 && (i == 2 || i == 3)) continue;                                                  // выезд на трассу
+      // окраина: гаражи, магазинчики, частные дома и деревья
+      bool alongX = (j == 0 || j == 5) && !(i == 0 || i == 5); float L = alongX ? x1 - x0 : z1 - z0;
+      for (float t = 8; t < L - 14; ) { float w = rr(14, 24); if (t + w > L - 6) break; int kind = (int)rr(0, 3.99f);
+        float a = t, b = t + w; float d0 = in, d1 = in + rr(10, 16);
+        float bx0 = alongX ? x0 + a : (i == 0 ? x1 - d1 : x0 + d0), bx1 = alongX ? x0 + b : (i == 0 ? x1 - d0 : x0 + d1);
+        float bz0 = alongX ? (j == 0 ? z1 - d1 : z0 + d0) : z0 + a, bz1 = alongX ? (j == 0 ? z1 - d0 : z0 + d1) : z0 + b;
+        if (kind == 0) tAddBld(bx0, bz0, bx1, bz1, rr(4, 7), 4, mixc(BRICK[(int)rr(0, 3.99f)], RGB(240, 240, 240), 0.3f), sgn++ % NSHOPN);
+        else if (kind == 1) tAddBld(bx0, bz0, bx1, bz1, 3.0f, 7, RGB(150, 150, 146), -1);
+        else if (kind == 2) tAddBld(bx0, bz0, bx1, bz1, rr(12, 16), 1, north ? NORTHC[(int)rr(0, 4.99f)] : BRICK[(int)rr(0, 3.99f)], -1);
+        else { float cx = (bx0 + bx1) * 0.5f, cz = (bz0 + bz1) * 0.5f; tAddTree(cx - 3, cz, rr(5, 9)); tAddTree(cx + 3, cz + 2, rr(5, 9)); }
+        t = b + rr(4, 10); }
+      continue; }
+    // ----- особые кварталы -----
+    if (i == 3 && j == 2) {                                                                        // центральная площадь с главной достопримечательностью
+      for (float x = x0 + 8; x < x1 - 4; x += 14) { tAddTree(x, z0 + 7, 6); tAddTree(x, z1 - 7, 6); } continue; }
+    if (i == 2 && j == 3) { for (float x = x0 + 8; x < x1 - 4; x += 16) tAddTree(x, z1 - 7, 6); continue; }   // вторая достопримечательность
+    if (i == 2 && j == 2) {                                                                        // парк с фонтаном
+      for (int k = 0; k < 40; k++) { float x = rr(x0 + 8, x1 - 8), z = rr(z0 + 8, z1 - 8); if (fabsf(x - (x0 + x1) * 0.5f) < 12 && fabsf(z - (z0 + z1) * 0.5f) < 12) continue; tAddTree(x, z, rr(6, 11)); }
+      tAddBox((x0 + x1) * 0.5f - 4, (z0 + z1) * 0.5f - 4, (x0 + x1) * 0.5f + 4, (z0 + z1) * 0.5f + 4, 0.8f, 2); continue; }
+    if (i == 2 && j == 1) {                                                                        // АЗС
+      tAddBld(x0 + 8, z1 - 34, x0 + 34, z1 - 16, 4.5f, 6, RGB(235, 235, 238), 100 + POI_FUEL);
+      for (int k = 0; k < 2; k++) tAddBox(x0 + 44, z0 + 22 + k * 18 - 0.6f, x0 + 84, z0 + 22 + k * 18 + 0.6f, 1.2f, 2);   // островки с колонками
+      tPoi(POI_FUEL, x0 + 40, z0 + 8, x1 - 6, z0 + 58); continue; }
+    if (i == 3 && j == 1) {                                                                        // СТО
+      tAddBld(x0 + 18, z1 - 34, x1 - 14, z1 - 10, 8, 6, RGB(205, 208, 214), 100 + POI_STO);
+      tPoi(POI_STO, x0 + 14, z0 + 8, x1 - 10, z1 - 36); continue; }
+    if (i == 4 && j == 2) {                                                                        // автосалон
+      tAddBld(x0 + 24, z1 - 40, x1 - 10, z1 - 12, 9, 6, RGB(150, 190, 215), 100 + POI_SALON);
+      for (int k = 0; k < 3; k++) tAddBox(x0 + 40 + k * 22 - 1.3f, z1 - 56.5f, x0 + 40 + k * 22 + 1.3f, z1 - 48.5f, 3.5f, 2);   // тягачи на площадке
+      tPoi(POI_SALON, x0 + 10, z0 + 8, x1 - 8, z1 - 60); continue; }
+    if (i == 1 && j == 2) {                                                                        // гостиница
+      tAddBld(x0 + 34, z1 - 34, x0 + 74, z1 - 12, 30, 6, RGB(200, 180, 150), 100 + POI_HOTEL);
+      tPoi(POI_HOTEL, x0 + 8, z0 + 8, x1 - 8, z1 - 38); continue; }
+    if (city == C_NVR && i == 4 && (j == 3 || j == 4)) {                                    // порт: штабели контейнеров
+      for (float cz = z0 + 14; cz < z1 - 10; cz += 26) for (int q = 0; q < 6; q++) { float cx = x0 + 18 + q * 16; tAddBox(cx - 6, cz - 1.3f, cx + 6, cz + 1.3f, 6, 2); }
+      continue; }
+    // ----- жилые кварталы -----
+    int type; float dc = fabsf(i - 2.5f) + fabsf(j - 2.5f);
+    if (north) type = (int)rr(0, 1.99f) ? 0 : 5; else if (dc < 1.6f) type = (int)rr(0, 2.99f) == 0 ? 3 : 2; else if (j == 4) type = (int)rr(0, 1.99f) ? 5 : 0; else type = (int)rr(0, 2.99f) == 0 ? 1 : 0;
+    if (south && type == 3) type = 2;
+    float a0 = x0 + in, a1 = x1 - in, b0 = z0 + in, b1 = z1 - in;
+    if (type == 0) { u32 c = PANEL[(int)rr(0, 3.99f)]; float h = (int)rr(9, 12.99f) * 2.9f + 0.6f;
+      tAddBld(a0 + 4, b0 + 2, a1 - 4, b0 + 14, h, 0, c, -1); tAddBld(a0 + 4, b1 - 14, a1 - 4, b1 - 2, h, 0, c, -1); tAddBld(a0 + 2, b0 + 26, a0 + 14, b1 - 26, h, 0, mixc(c, RGB(120, 140, 170), 0.1f), -1);
+      for (int k = 0; k < 6; k++) tAddTree(rr(a0 + 24, a1 - 8), rr(b0 + 22, b1 - 22), rr(5, 9)); }
+    else if (type == 1) { for (int q = 0; q < 4; q++) { float qx = q & 1 ? (a0 + a1) * 0.5f + 4 : a0 + 2, qz = q & 2 ? (b0 + b1) * 0.5f + 6 : b0 + 4;
+        tAddBld(qx, qz, qx + (a1 - a0) * 0.5f - 6, qz + 11, 14.5f, 1, BRICK[(int)rr(0, 3.99f)], -1); }
+      for (int k = 0; k < 8; k++) tAddTree(rr(a0 + 4, a1 - 4), (b0 + b1) * 0.5f + rr(-3, 3), rr(6, 10)); }
+    else if (type == 2) { u32 c = BRICK[(int)rr(0, 3.99f)]; float h = rr(15, 21);
+      tAddBld(a0, b0, a1 - 20, b0 + 14, h, 2, c, sgn++ % NSHOPN); tAddBld(a0 + 20, b1 - 14, a1, b1, h, 2, mixc(c, RGB(255, 255, 255), 0.15f), sgn++ % NSHOPN);
+      tAddBld(a0, b0 + 26, a0 + 14, b1, h * 0.9f, 2, c, sgn++ % NSHOPN); tAddBld(a1 - 14, b0, a1, b1 - 26, h * 0.9f, 2, c, sgn++ % NSHOPN); }
+    else if (type == 3) { u32 c = GLASS[(int)rr(0, 2.99f)]; tAddBld(a0 + 4, b0 + 4, a0 + 32, b0 + 32, rr(55, 95), 3, c, -1); tAddBld(a1 - 30, b1 - 30, a1 - 4, b1 - 4, rr(45, 80), 3, mixc(c, RGB(200, 210, 220), 0.2f), -1);
+      tAddBld(a1 - 34, b0 + 6, a1 - 4, b0 + 22, 6, 4, RGB(220, 220, 225), sgn++ % NSHOPN); }
+    else { for (int q = 0; q < 3; q++) { float qx = a0 + 6 + q * ((a1 - a0 - 12) / 3), w = 22; float qz = q == 1 ? b1 - 28 : b0 + 6;
+        tAddBld(qx, qz, qx + w, qz + 22, rr(40, 70), 5, north ? NORTHC[(int)rr(0, 4.99f)] : mixc(PANEL[(int)rr(0, 3.99f)], NORTHC[(int)rr(0, 4.99f)], 0.35f), -1); }
+      for (int k = 0; k < 5; k++) tAddTree(rr(a0 + 6, a1 - 6), rr(b0 + 34, b1 - 34), rr(4, 7)); }
+  }
+  // достопримечательности: столкновение по основанию
+  for (int k = 0; k < 2; k++) { const TLand &L = tland[k]; float r = 8;
+    switch (L.type) { case LM_KREMLIN_RED: case LM_KREMLIN_WHITE: r = 0; break; case LM_STADIUM: r = 36; break; case LM_MOTHERLAND: r = 14; break; case LM_FERRIS: r = 10; break; case LM_SKYSCRAPER: r = 15; break; case LM_TVTOWER: r = 7; break; case LM_CATHEDRAL: r = 14; break; }
+    if (r > 0) tAddBox(L.x - r, L.z - r, L.x + r, L.z + r, 10, 2);
+    else { float h = 32; tAddBox(L.x - h, L.z - h, L.x + h, L.z - h + 2, 12, 2); tAddBox(L.x - h, L.z + h - 2, L.x + h, L.z + h, 12, 2); tAddBox(L.x - h, L.z - h, L.x - h + 2, L.z + h, 12, 2); tAddBox(L.x + h - 2, L.z - h, L.x + h, L.z + h, 12, 2); } }
+  tPoi(POI_CARGO, -14, 31, 14, 46);                                                            // биржа грузов - у ворот склада
+  // невидимые границы города
+  tAddBox(T_X0 - 4, T_Z0 - 4, -50, T_Z0, 4, 2); tAddBox(50, T_Z0 - 4, T_X1 + 4, T_Z0, 4, 2);
+  for (int sd = -1; sd <= 1; sd += 2) { float xa = sd < 0 ? T_X0 - 4 : T_X1, xb = sd < 0 ? T_X0 : T_X1 + 4, gz = TZS[2];     // боковые стены с выездами на запад и восток
+    tAddBox(xa, T_Z0, xb, gz - 9, 4, 2); tAddBox(xa, gz + 9, xb, T_Z1, 4, 2);
+    float ra = sd < 0 ? T_X0 - 95 : T_X1, rb = sd < 0 ? T_X0 : T_X1 + 95; tAddBox(ra, gz - 13, rb, gz - 9, 4, 2); tAddBox(ra, gz + 9, rb, gz + 13, 4, 2); }
+  tAddBox(T_X0, T_Z1, -9, T_Z1 + 4, 4, 2); tAddBox(9, T_Z1, T_X1, T_Z1 + 4, 4, 2);
+  tAddBox(-13, T_Z1, -9, T_EXIT + 10, 4, 2); tAddBox(9, T_Z1, 13, T_EXIT + 10, 4, 2);
+}
+// выезды из города: 0 север, 1 запад, 2 восток; куда ведёт - по направлению на соседний город
+static int townGateTo(int city, int other) { float dx = (CITIES[other].lon - CITIES[city].lon) * cosf(CITIES[city].lat * 0.01745f), dy = CITIES[other].lat - CITIES[city].lat;
+  if (dy > fabsf(dx) * 0.8f) return 0; return dx < 0 ? 1 : 2; }
+static int townLight(int ix, int iz, int axis) {                                // 0 зелёный, 1 жёлтый, 2 красный; axis 0 - вдоль Z, 1 - вдоль X
+  float t = fmodf(gTime + (float)(hsh((unsigned)(ix * 7 + iz * 13)) % 30), 30.0f);
+  if (axis == 0) return t < 12 ? 0 : (t < 14 ? 1 : 2);
+  return t >= 15 && t < 27 ? 0 : (t >= 27 && t < 29 ? 1 : 2);
+}
 static void buildYard(int city, bool arrive, int slot) {
   ybox.clear(); yArrive = arrive; ySlot = slot;
   u32 wc = PAINTS[city % NPAINT];
-  YBox b;
+  YBox b; memset(&b, 0, sizeof b);
   b.x0 = -45; b.x1 = 45; b.z0 = -2; b.z1 = 30; b.h = 9; b.col = mixc(RGB(190, 190, 186), wc, 0.15f); ybox.push_back(b);          // склад
   for (int s = -1; s <= 1; s += 2) { b.x0 = s < 0 ? -50 : 48; b.x1 = s < 0 ? -48 : 50; b.z0 = -2; b.z1 = 125; b.h = 2.2f; b.col = RGB(150, 150, 140); ybox.push_back(b); }   // забор
   for (int s = -1; s <= 1; s += 2) { b.x0 = s < 0 ? -50 : 7; b.x1 = s < 0 ? -7 : 50; b.z0 = 123; b.z1 = 125; b.h = 2.2f; b.col = RGB(150, 150, 140); ybox.push_back(b); }  // ворота посередине
   b.x0 = 9; b.x1 = 14; b.z0 = 116; b.z1 = 121; b.h = 2.8f; b.col = RGB(220, 220, 210); ybox.push_back(b);                   // будка охраны
+  buildTown(city);
+}
+
+// разрывы отбойника на 4-полосных: перекрёстки в сёлах и ж/д переезды
+static bool medianGap(float z) {
+  if (!R.four) return true;
+  for (size_t i = 0; i < R.feats.size(); i++) { const Feat &f = R.feats[i];
+    if (f.type == F_VILLAGE && fabsf(z - f.s) < 22) return true;
+    if (f.type == F_RAIL && fabsf(z - f.s) < 14) return true; }
+  return false;
 }
 
 // =====================================================================
@@ -14829,7 +15161,7 @@ static void rigStep(float dt) {
   float Fengb = (pedGas < 0.05f && rig.gear > 0 && rig.shiftT <= 0) ? m * g * 0.012f * clampf(rig.rpm / 1800, 0, 1.2f) : 0;
   float Fret = (retOn && G.tr[G.truck].up[UP_RETARDER] && fabsf(rig.v) > 3) ? m * g * 0.06f : (retOn ? m * g * 0.025f * clampf(fabsf(rig.v) / 10, 0, 1) : 0);
   rig.brakeHeat = clampf(rig.brakeHeat + (pedBrake * fabsf(rig.v) * 0.12f - 0.8f) * dt, 0, 100);
-  float roll = (surf >= 2 ? 0.05f : 0.006f) * m * g, aero = 0.5f * 1.2f * (G.job.on && G.job.hitched ? 7.5f : 5.0f) * rig.v * rig.v;
+  float roll = (surf >= 2 ? 0.05f : (surf == 1 ? 0.012f : 0.006f)) * m * g, aero = 0.5f * 1.2f * (G.job.on && G.job.hitched ? 7.5f : 5.0f) * rig.v * rig.v;
   float Fnet = Fdrive - m * g * slope;                                         // тяга минус уклон (вдоль курса)
   float Rm = roll + aero + Fengb + Fret + Fb;                                     // всё, что тормозит движение
   if (fabsf(rig.v) < 0.05f) { if (fabsf(Fnet) <= roll + Fb) rig.v = 0; else rig.v += (Fnet - (Fnet > 0 ? 1.0f : -1.0f) * (roll + Fb)) / m * dt; }
@@ -14838,8 +15170,10 @@ static void rigStep(float dt) {
   // расход топлива: пересчёт в реальные километры трассы
   float kmScale = gs == GS_ROAD ? EDGES[R.edge].km * 1000.0f / R.L : 1.0f;
   float Pout = fabsf(Teng * rig.rpm * 6.2831853f / 60.0f) / 1000.0f;            // кВт
-  float lps = (Pout / 1.45f * 0.20f / 0.84f / 3600.0f) + 0.0005f;     // л/с реального времени (расход как у настоящего мотора)
-  G.fuel = fmaxv(0.0f, G.fuel - lps * dt * kmScale); tripFuel += lps * dt * kmScale;                            // на трассе 1 с игры = kmScale с реального пути
+  float Preq = fmaxv(0.0f, (roll + aero + m * g * slope) * fabsf(rig.v)) / 1000.0f;                   // сколько нужно, чтобы просто ехать, кВт
+  float Pfuel = fminv(Pout, Preq + 0.12f * fmaxv(0.0f, Pout - Preq));                                   // разгон в пол «стоит» недорого: расход как у ровной езды
+  float lps = (Pfuel * 0.185f / 0.84f / 3600.0f) + 0.0004f;     // л/с реального времени
+  G.fuel = fmaxv(0.0f, G.fuel - lps * dt * kmScale); if (fabsf(rig.v) > 1.0f) tripFuel += lps * dt * kmScale;   // стоянки в средний расход не считаем                            // на трассе 1 с игры = kmScale с реального пути
   // поворот и занос
   float yawRate = rig.v / WB * tanf(rig.steer);
   float maxYaw = mu * g / fmaxv(fabsf(rig.v), 1.0f) * 1.15f;
@@ -14853,14 +15187,14 @@ static void rigStep(float dt) {
   if (rig.hitched) { V3 K1 = kingpin(), d = K1 - A0; float l = sqrtf(d.x * d.x + d.z * d.z); if (l > 0.01f) { V3 A1 = K1 - d * (TR_LT / l); rig.tyaw = atan2f(K1.x - A1.x, K1.z - A1.z); } (void)K0;
     float ang = wrapA(rig.yaw - rig.tyaw);
     if (fabsf(ang) > 1.35f) { rig.tyaw = wrapA(rig.yaw - 1.35f * (ang > 0 ? 1.0f : -1.0f)); rig.v *= 0.5f; if (msgT <= 0) say("СЛОЖИЛСЯ! ЕДЬ ВПЕРЁД, ЧТОБЫ ВЫПРЯМИТЬ"); } }
-  // столкновения: два круга тягача и четыре круга прицепа
+  // столкновения: три круга тягача и четыре круга прицепа
   hitStrength = 0;
-  for (int k = 0; k < 2; k++) { V3 c = v3(rig.x, 0, rig.z) + fwd(rig.yaw) * (k == 0 ? WB + 0.9f : 0.2f); float cx = c.x, cz = c.z;
+  for (int k = 0; k < 3; k++) { V3 c = v3(rig.x, 0, rig.z) + fwd(rig.yaw) * (k == 0 ? WB + 0.9f : k == 1 ? WB * 0.55f : 0.2f); float cx = c.x, cz = c.z;
     if (collideRig(cx, cz, 1.25f)) { rig.x += cx - c.x; rig.z += cz - c.z; hitStrength = fmaxv(hitStrength, fabsf(rig.v)); } }
   if (rig.hitched) for (int k = 0; k < 4; k++) { V3 K = kingpin(); V3 c = K - fwd(rig.tyaw) * (1.0f + k * 3.8f); float cx = c.x, cz = c.z;
     if (collideRig(cx, cz, 1.25f)) { V3 push = v3(cx - c.x, 0, cz - c.z); rig.x += push.x * 0.6f; rig.z += push.z * 0.6f; rig.tyaw = wrapA(rig.tyaw + (push.x * cosf(rig.tyaw) - push.z * sinf(rig.tyaw)) * 0.02f); hitStrength = fmaxv(hitStrength, fabsf(rig.v) * 0.7f); } }
   if (hitStrength > 0.5f) { float hs = hitStrength; rig.v *= hs > 4 ? -0.15f : 0.3f;
-    if (hs > 2.0f && rig.crashT <= 0) { rig.crashT = 1.0f; sThud = clampf(hs / 10, 0.3f, 1); float dmg = (hs - 1.5f) * 2.2f;
+    if (hs > 3.0f && rig.crashT <= 0) { rig.crashT = 1.0f; sThud = clampf(hs / 10, 0.3f, 1); float dmg = (hs - 2.5f) * 1.8f;   // толчки до ~11 км/ч не бьют кузов
       G.tr[G.truck].body = fmaxv(0.0f, G.tr[G.truck].body - dmg); if (hs > 8) G.tr[G.truck].engineHP = fmaxv(0.0f, G.tr[G.truck].engineHP - dmg * 0.3f);
       if (G.job.on && G.job.hitched) { G.job.damage = fminv(100.0f, G.job.damage + dmg * (CARGO[G.job.cargo].fragile ? 1.2f : 0.5f)); }
       char b[80]; snprintf(b, sizeof b, "УДАР! КУЗОВ %d%%%s", (int)G.tr[G.truck].body, G.job.on && G.job.hitched ? (CARGO[G.job.cargo].fragile ? ", ХРУПКИЙ ГРУЗ ПОВРЕЖДЁН" : ", ГРУЗ ПОВРЕЖДЁН") : ""); say(b); } }
@@ -14874,7 +15208,7 @@ static void rigStep(float dt) {
 }
 
 // ---------- трафик ----------
-struct TCar { float s, off, v, vPref, len; int lane, model, truckType; u32 col; bool crashed, brake; float crashT; };
+struct TCar { float s, off, v, vPref, len; int lane, model, truckType; u32 col; bool crashed, brake; float crashT; int special; float lifeT; };   // special: 1 военный грузовик, 2 машина сопровождения, 3 трактор, 4 снегоуборщик, 5 автобус
 static std::vector<TCar> traffic;
 static int walkVillage = -1; static bool walkBusy = false;              // пешеходы на зебре (см. перекрёсток)
 // умный временный светофор: пока в зоне едут встречные - для нас красный
@@ -14884,7 +15218,7 @@ static int worksLight(const Feat &f, int dir) {
   if (dir < 0) { float r0 = fminv(rig.z, trailerAxle().z); if (rig.z > f.s0 - 30 && r0 < f.s1 + 40 && rig.x - cxAt(rig.z) < ROAD_HW + 0.5f) return 2; }
   return l;
 }
-static float laneX(int lane) { return lane == 2 ? LANE + LANE_W : lane * LANE; }
+static float laneX(int lane) { return lane == 2 ? LANE + LANE_W : lane == -2 ? -(LANE + LANE_W) : lane * LANE; }
 static float tcarX(const TCar &c) { return cxAt(c.s) + laneX(c.lane) + c.off; }
 static float tcarYaw(const TCar &c) { return headAt(c.s) + (c.lane < 0 ? 3.14159f : 0.0f); }
 static void spawnCar(float s, int lane) {
@@ -14896,16 +15230,57 @@ static void spawnCar(float s, int lane) {
   for (size_t i = 0; i < traffic.size(); i++) if (traffic[i].lane == lane && fabsf(traffic[i].s - s) < 30) return;
   traffic.push_back(c);
 }
+static void tcarHitRig(TCar &c, float d) {
+    // столкновение с фурой: машину проверяем по всей длине (у грузовика - кабина и весь прицеп), разбитые тоже твёрдые
+    { float cyaw = tcarYaw(c); V3 cb = v3(tcarX(c), 0, c.s);
+      static const float OT[6] = {4.0f, 1.0f, -2.5f, -6.0f, -9.5f, -12.2f}, OC[2] = {1.3f, -1.3f};
+      static const float OS[3] = {3.5f, 0.0f, -3.5f}; bool longS = c.special == 1 || c.special == 4 || c.special == 5;
+      const float *offs = c.truckType ? OT : (longS ? OS : OC); int no = c.truckType ? 6 : (longS ? 3 : 2); float cr = c.truckType || longS ? 1.3f : 1.0f;
+      bool hitDone = false;
+      for (int k = 0; k < 6 && !hitDone; k++) { V3 rp = k < 2 ? v3(rig.x, 0, rig.z) + fwd(rig.yaw) * (k == 0 ? WB + 0.9f : 0.2f) : (rig.hitched ? kingpin() - fwd(rig.tyaw) * (1.0f + (k - 2) * 3.8f) : v3(1e9f, 0, 1e9f));
+        for (int q = 0; q < no && !hitDone; q++) { V3 cp = cb + fwd(cyaw) * offs[q];
+          float dx = cp.x - rp.x, dz = cp.z - rp.z, rr = 1.25f + cr, d2 = dx * dx + dz * dz; if (d2 > rr * rr) continue;
+          hitDone = true;
+          float rel = fabsf(c.v * d - rig.v * cosf(rig.yaw - headAt(rig.z)));
+          if (!c.crashed && rel > 2.5f) { bool theirFault = c.lane > 0 && (k >= 2 || (c.v > rig.v + 1.0f && c.s < rig.z + WB + 1.0f)); c.crashed = true; c.v = 0; sThud = 1; float dmg = rel * 1.6f; G.tr[G.truck].body = fmaxv(0.0f, G.tr[G.truck].body - dmg); rig.v *= 0.4f;
+            if (G.job.on && G.job.hitched) G.job.damage = fminv(100.0f, G.job.damage + dmg * (CARGO[G.job.cargo].fragile ? 1.2f : 0.5f));
+            if (theirFault) say("В ВАС ВРЕЗАЛИСЬ СЗАДИ. ВИНОВАТ ДРУГОЙ ВОДИТЕЛЬ"); else addFine("ДТП", 5000); }
+          else if ((rp.x - cb.x) * sinf(cyaw) + (rp.z - cb.z) * cosf(cyaw) > 0) c.v = fminv(c.v, 0.0f);   // фура перед машиной - машина стоит; если фура сзади неё - пусть уезжает
+          // выталкиваем фуру из машины: сквозь неё не проехать
+          float dd = sqrtf(fmaxv(d2, 1e-6f)), pen = rr - dd; if (d2 < 1e-6f) { dx = 0; dz = 1; dd = 1; }
+          rig.x -= dx / dd * pen; rig.z -= dz / dd * pen;
+          float vx = sinf(rig.yaw) * rig.v, vz = cosf(rig.yaw) * rig.v, into = (vx * dx + vz * dz) / dd;   // гасим скорость в сторону машины
+          if (into > 0) rig.v *= 0.2f;
+        } } }
+}
+// особые машины: колонна военных с сопровождением, трактор, снегоуборщик зимой, междугородний автобус
+static void makeSpecial(size_t idx) {
+  TCar &c = traffic[idx]; float r = frand(0, 1); int se = seasonNow();
+  if (c.lane < 0 && r < 0.08f) { c.special = 5; c.truckType = 0; c.len = 12; c.vPref = 22; return; }
+  if (c.lane != 1) return;
+  if (se == SE_WINTER && R.rg != RG_SOUTH && !R.zimnik && r < 0.07f) { c.special = 4; c.truckType = 0; c.len = 10; c.vPref = 11; c.col = RGB(240, 140, 20); return; }
+  if ((se == SE_SUMMER || se == SE_AUTUMN) && (R.rg == RG_CENTER || R.rg == RG_SOUTH || R.rg == RG_URAL) && r < 0.11f) { c.special = 3; c.truckType = 0; c.len = 5; c.vPref = 7; c.lifeT = frand(60, 150); c.col = r < 0.06f ? RGB(200, 40, 30) : RGB(40, 120, 60); return; }
+  if (r < 0.15f) { bool have = false; for (size_t i = 0; i < traffic.size(); i++) if (traffic[i].special == 1) have = true; if (have) return;
+    float s0 = c.s; c.special = 2; c.truckType = 0; c.len = 4.6f; c.vPref = 16; c.model = 0; c.col = RGB(235, 238, 240); TCar base = c;
+    for (int k = 1; k <= 5; k++) { TCar m = base; m.special = 1; m.len = 9; m.s = s0 - 6 - k * 20; m.col = RGB(70, 86, 56); if (m.s > 30) traffic.push_back(m); } return; }
+  if (r < 0.19f) { c.special = 5; c.truckType = 0; c.len = 12; c.vPref = 22; }
+}
 static void updateTraffic(float dt) {
   float ps = rig.z;
   // поддерживаем машины вокруг
-  int want = R.zimnik ? 5 : (R.rg == RG_ARCTIC || R.rg == RG_TAIGA ? 8 : 12);
+  int want = R.zimnik ? 7 : (R.rg == RG_ARCTIC || R.rg == RG_TAIGA ? 13 : (R.four ? 25 : 19));
+  for (size_t i = 0; i < traffic.size(); i++) if (traffic[i].special == 3) { traffic[i].lifeT -= dt; if (traffic[i].lifeT < 0 && fabsf(traffic[i].s - ps) > 140) traffic[i].s = -1e6f; }   // трактор свернул в поле
   for (size_t i = 0; i < traffic.size();) { if (fabsf(traffic[i].s - ps) > 750 || traffic[i].s < 5 || traffic[i].s > R.L - 5) traffic.erase(traffic.begin() + i); else i++; }
-  int tries = 0; while ((int)traffic.size() < want && tries++ < 4) { int lane = (rand() & 1) ? 1 : -1; if (lane > 0 && R.wide && (rand() % 3)) lane = 2; float s = ps + (lane > 0 ? (rand() & 1 ? frand(350, 700) : -frand(250, 600)) : frand(400, 720)); if (s > 30 && s < R.L - 30) spawnCar(s, lane); }
+  { float hr = hourNow(); bool rush = ((hr > 7.5f && hr < 9.5f) || (hr > 17 && hr < 19.5f)) && (ps < 3500 || ps > R.L - 3500); if (rush) want = want * 3 / 2; }   // час пик у городов
+  int tries = 0; while ((int)traffic.size() < want && tries++ < 4) { int lane = (rand() % 5) < 3 ? 1 : -1; if (lane > 0 && R.wide && (rand() % 3)) lane = 2; if (lane < 0 && R.four && (rand() % 3)) lane = -2; float s = ps + (lane > 0 ? (rand() & 1 ? frand(350, 700) : -frand(250, 600)) : frand(400, 720));
+    if (s > 30 && s < R.L - 30) { size_t n0 = traffic.size(); spawnCar(s, lane); if (traffic.size() > n0) makeSpecial(traffic.size() - 1); } }
   float pOff = rig.x - cxAt(rig.z); V3 TA = rig.hitched ? kingpin() - fwd(rig.tyaw) * 12.6f : v3(rig.x, 0, rig.z); float pOffT = TA.x - cxAt(TA.z);
   float rigS0 = fminv(rig.z, trailerAxle().z) - 3, rigS1 = fmaxv(rig.z, trailerAxle().z) + 6;
   for (size_t i = 0; i < traffic.size(); i++) {
-    TCar &c = traffic[i]; if (c.crashed) { c.v = 0; c.crashT += dt; continue; }
+    TCar &c = traffic[i]; if (c.crashed) { c.v = 0; c.crashT += dt;   // разбитая машина тоже твёрдая; через 6 с откатывается на обочину, через 20 с уезжает
+      if (c.crashT > 6) { float sh = c.lane > 0 ? (R.wide && c.lane == 2 ? 2.2f : LANE_W + 1.0f) : (R.four ? -(LHW + 0.4f) - laneX(c.lane) : -(LANE_W + 1.0f)); c.off += clampf(sh - c.off, -dt * 1.2f, dt * 1.2f); }
+      if (c.crashT > 20) { c.crashed = false; c.crashT = 0; }
+      tcarHitRig(c, c.lane > 0 ? 1.0f : -1.0f); continue; }
     float d = c.lane > 0 ? 1.0f : -1.0f, target = fminv(c.vPref, limitAt(c.s) / 3.6f * (c.truckType ? 0.95f : 1.08f));
     float myX = laneX(c.lane) + c.off;
     float gap = 1e9f;
@@ -14913,10 +15288,14 @@ static void updateTraffic(float dt) {
       if (fabsf(laneX(o.lane) + o.off - myX) > 2.4f) continue; float ds = (o.s - c.s) * d; if (ds > 0 && ds < gap) gap = ds - o.len * 0.5f - c.len * 0.5f; }
     // фура игрока на их пути (по боковому смещению)
     if (fabsf(pOff - myX) < 2.8f || fabsf(pOffT - myX) < 2.8f) { float ds = ((c.lane > 0 ? rigS0 : rigS1) - c.s) * d; if (ds > -2 && ds < gap) gap = ds - c.len * 0.5f; }
+    // закрытая из-за метели трасса: все стоят у шлагбаума
+    for (size_t k = 0; k < R.feats.size(); k++) { const Feat &f = R.feats[k]; if (f.type != F_CLOSE || f.done) continue; float stop = f.s - 8 * d, ds = (stop - c.s) * d; if (ds > -2 && ds < 120) gap = fminv(gap, ds - c.len * 0.5f); }
     // светофоры
     for (size_t k = 0; k < R.feats.size(); k++) { const Feat &f = R.feats[k]; if (f.type != F_VILLAGE) continue; float stop = f.s - 14 * d, ds = (stop - c.s) * d;
       if (ds > 0 && ds < 70 && lightState(f) != 0 && (lightState(f) == 2 || ds > c.v * 1.2f)) gap = fminv(gap, ds - c.len * 0.5f);
       if (ds > 0 && ds < 70 && walkBusy && (int)k == walkVillage) gap = fminv(gap, ds - c.len * 0.5f); }
+    for (size_t k = 0; k < R.feats.size(); k++) { const Feat &f = R.feats[k]; if (f.type != F_RAIL) continue; float stop = f.s - 11 * d, ds = (stop - c.s) * d;   // ж/д переезд
+      if (ds > 0 && ds < 90 && railState(f) != 0) gap = fminv(gap, ds - c.len * 0.5f); }
     // дорожные работы
     float offT = 0;
     for (size_t k = 0; k < R.feats.size(); k++) { const Feat &f = R.feats[k]; if (f.type != F_WORKS) continue;
@@ -14941,15 +15320,7 @@ static void updateTraffic(float dt) {
     float vt = target; if (gap < 60) vt = fminv(vt, fmaxv(0.0f, (gap - 6) * 0.45f));
     c.brake = vt < c.v - 0.5f;
     c.v += clampf(vt - c.v, -6.0f * dt, 2.0f * dt); c.s += c.v * d * dt;
-    // столкновение с фурой
-    V3 cp = v3(tcarX(c), 0, c.s);
-    for (int k = 0; k < 6 && !c.crashed; k++) { V3 rp = k < 2 ? v3(rig.x, 0, rig.z) + fwd(rig.yaw) * (k == 0 ? WB + 0.9f : 0.2f) : (rig.hitched ? kingpin() - fwd(rig.tyaw) * (1.0f + (k - 2) * 3.8f) : v3(1e9f, 0, 1e9f));
-      float dx = cp.x - rp.x, dz = cp.z - rp.z, rr = 1.25f + (c.truckType ? 1.3f : 1.0f); if (dx * dx + dz * dz > rr * rr) continue;
-      float rel = fabsf(c.v * d - rig.v * cosf(rig.yaw - headAt(rig.z)));
-      if (rel > 2.5f) { bool theirFault = c.lane > 0 && (k >= 2 || (c.v > rig.v + 1.0f && c.s < rig.z + WB + 1.0f)); c.crashed = true; c.v = 0; sThud = 1; float dmg = rel * 1.6f; G.tr[G.truck].body = fmaxv(0.0f, G.tr[G.truck].body - dmg); rig.v *= 0.4f;
-        if (G.job.on && G.job.hitched) G.job.damage = fminv(100.0f, G.job.damage + dmg * (CARGO[G.job.cargo].fragile ? 1.2f : 0.5f));
-        if (theirFault) say("В ВАС ВРЕЗАЛИСЬ СЗАДИ. ВИНОВАТ ДРУГОЙ ВОДИТЕЛЬ"); else addFine("ДТП", 5000); }
-      else { c.v = fminv(c.v, 0.0f); c.s -= d * 0.5f; } }
+    tcarHitRig(c, d);
   }
 }
 
@@ -14970,14 +15341,14 @@ static void updateCrossing(float dt) {
   if (walkVillage != vi) { for (int k = 0; k < 3; k++) walkers[k].cyc = -999; walkVillage = vi; }
   float zz = f.s - 10.0f;
   for (int k = 0; k < 3; k++) { Walker &w = walkers[k];
-    if (w.cyc != cyc) { w.cyc = cyc; unsigned h = hsh((unsigned)cyc * 31u + k * 7u + (unsigned)f.s); w.dir = (h & 1) ? 1 : -1; w.x = w.dir > 0 ? -ROAD_HW - 1.6f - k * 0.7f : RHW + 1.6f + k * 0.7f; w.done = (h >> 3) % 4 == 0; w.ph = 0;
+    if (w.cyc != cyc) { w.cyc = cyc; unsigned h = hsh((unsigned)cyc * 31u + k * 7u + (unsigned)f.s); w.dir = (h & 1) ? 1 : -1; w.x = w.dir > 0 ? -LHW - 1.6f - k * 0.7f : RHW + 1.6f + k * 0.7f; w.done = (h >> 3) % 4 == 0; w.ph = 0;
       static const u32 WC[] = {RGB(170, 40, 40), RGB(40, 70, 150), RGB(60, 120, 60), RGB(200, 160, 40), RGB(90, 60, 110), RGB(40, 40, 46)}; w.col = WC[(h >> 5) % 6]; }
     float st = 20.0f + k * 0.9f;
     if (!w.done && t >= st) {
       bool blocked = false; for (int q = 0; q < 3; q++) { float ox = pts[q].x - cxAt(pts[q].z); if (fabsf(pts[q].z - zz) < 2.6f && fabsf(ox - (w.x + w.dir * 1.2f)) < 2.2f) blocked = true; }
       if (!blocked) { w.x += w.dir * 1.6f * dt; w.ph += dt * 6; }
-      if ((w.dir > 0 && w.x > RHW + 1.8f) || (w.dir < 0 && w.x < -ROAD_HW - 1.8f)) w.done = true;
-      if (!w.done && w.x > -ROAD_HW - 0.5f && w.x < RHW + 0.5f) walkBusy = true; } }
+      if ((w.dir > 0 && w.x > RHW + 1.8f) || (w.dir < 0 && w.x < -LHW - 1.8f)) w.done = true;
+      if (!w.done && w.x > -LHW - 0.5f && w.x < RHW + 0.5f) walkBusy = true; } }
   // штраф: въехал на зебру, когда по ней идут
   float fz = pts[0].z; if (prevFrontZ < zz - 1.5f && fz >= zz - 1.5f && walkBusy && pedFineCyc != cyc && fabsf(rig.v) > 1.0f) { pedFineCyc = cyc; addFine("НЕ ПРОПУСТИЛ ПЕШЕХОДА", 1500); }
   prevFrontZ = fz;
@@ -14990,7 +15361,7 @@ static void updateCrossing(float dt) {
     bool ok = true; for (size_t j = 0; j < xcars.size(); j++) if (xcars[j].dir == x.dir && fabsf(xcars[j].x - x.x) < 14) ok = false; if (ok) xcars.push_back(x); }
   for (size_t i = 0; i < xcars.size();) { XCar &x = xcars[i];
     if (x.crashed) { x.v = 0; i++; continue; }
-    float sl = x.dir > 0 ? -ROAD_HW - 3.5f : RHW + 3.5f, ds = (sl - x.x) * x.dir, gap = 1e9f;
+    float sl = x.dir > 0 ? -LHW - 3.5f : RHW + 3.5f, ds = (sl - x.x) * x.dir, gap = 1e9f;
     if (ds > 0 && ds < 45 && (cs != 0 || rigInX)) gap = ds - 2.3f;
     for (size_t j = 0; j < xcars.size(); j++) { if (j == i || xcars[j].dir != x.dir) continue; float d2 = (xcars[j].x - x.x) * x.dir; if (d2 > 0 && d2 - 5.0f < gap) gap = d2 - 5.0f; }
     float lz = xLaneZ(f, x.dir);
@@ -15014,11 +15385,26 @@ static bool collideRoad(float &x, float &z, float r) {
   for (size_t i = 0; i < R.feats.size(); i++) { const Feat &f = R.feats[i]; if (z < f.s0 - 30 || z > f.s1 + 30) continue;
     if (f.type == F_VILLAGE) { HouseP h[64]; int n = housesNear(f, z - 20, z + 20, h, 64);
       for (int k = 0; k < n; k++) { float hw = h[k].w * 0.5f + r, hd = h[k].d * 0.5f + r; if (fabsf(x - h[k].x) < hw && fabsf(z - h[k].z) < hd) { float px = hw - fabsf(x - h[k].x), pz = hd - fabsf(z - h[k].z); if (px < pz) x += (x > h[k].x ? px : -px); else z += (z > h[k].z ? pz : -pz); hit = true; } } }
+    if (f.type == F_RAIL && railState(f) == 2) { for (int sd = -1; sd <= 1; sd += 2) { float bz = f.s - sd * 8.0f, x0 = sd > 0 ? cxAt(bz) : cxAt(bz) - LHW, x1 = sd > 0 ? cxAt(bz) + RHW : cxAt(bz);   // опущенный шлагбаум
+        float cx2 = clampf(x, x0, x1), dx = x - cx2, dz = z - bz; if (fabsf(dz) < r + 0.1f && fabsf(dx) < r) { z = bz + (dz >= 0 ? 1.0f : -1.0f) * (r + 0.1f); hit = true; } } }
     if (f.type == F_WORKS) { WMach m[3]; int n = worksMachines(f, m);
       for (int k = 0; k < n; k++) { float hw = m[k].hw + r, hd = m[k].hd + r; if (fabsf(x - m[k].x) < hw && fabsf(z - m[k].z) < hd) { float px = hw - fabsf(x - m[k].x), pz = hd - fabsf(z - m[k].z); if (px < pz) x += (x > m[k].x ? px : -px); else z += (z > m[k].z ? pz : -pz); hit = true; } } }
-    if (f.type == F_FUEL) { float bx = cxAt(f.s) + RHW + 5.5f, hw = 0.75f + r, hd = 13.0f + r;      // островок с колонками
+    if (f.type == F_TOLL) { float c0 = cxAt(f.s); float ix[4] = {ROAD_HW, RHW + 1.0f, -LHW + LANE_W * (R.four ? 1.0f : 0.0f), -LHW - 1.0f};   // островки касс
+      for (int k = 0; k < 4; k++) { float bx = c0 + ix[k], hw = 0.6f + r, hd = 7.0f + r; if (fabsf(x - bx) < hw && fabsf(z - f.s) < hd) { float pxx = hw - fabsf(x - bx), pz = hd - fabsf(z - f.s); if (pxx < pz) x += (x > bx ? pxx : -pxx); else z += (z > f.s ? pz : -pz); hit = true; } }
+      if (!f.done) { float bz = f.s + 2.0f, x0 = c0 + 0.3f, x1 = c0 + RHW; float cx2 = clampf(x, x0, x1), dx = x - cx2, dz = z - bz; if (fabsf(dz) < r + 0.1f && fabsf(dx) < r) { z = bz + (dz >= 0 ? 1.0f : -1.0f) * (r + 0.1f); hit = true; } } }   // шлагбаум, пока не заплатил
+    if (f.type == F_CLOSE && !f.done) { for (int sd = -1; sd <= 1; sd += 2) { float bz = f.s - sd * 6.0f, x0 = sd > 0 ? cxAt(bz) - 0.2f : cxAt(bz) - LHW - 1, x1 = sd > 0 ? cxAt(bz) + RHW + 1 : cxAt(bz) + 0.2f;
+        float cx2 = clampf(x, x0, x1), dx = x - cx2, dz = z - bz; if (fabsf(dz) < r + 0.1f && fabsf(dx) < r) { z = bz + (dz >= 0 ? 1.0f : -1.0f) * (r + 0.1f); hit = true; } } }
+    if (f.type == F_BROKEN) { float bx = cxAt(f.s) + RHW + 2.2f, hw = 1.0f + r, hd = 2.3f + r; if (fabsf(x - bx) < hw && fabsf(z - f.s) < hd) { float pxx = hw - fabsf(x - bx), pz = hd - fabsf(z - f.s); if (pxx < pz) x += (x > bx ? pxx : -pxx); else z += (z > f.s ? pz : -pz); hit = true; } }
+    if (f.type == F_FUEL) { float bx = cxAt(f.s) + RHW + 8.0f, hw = 0.75f + r, hd = 8.5f + r;      // островок с колонками
       if (fabsf(x - bx) < hw && fabsf(z - f.s) < hd) { float pxx = hw - fabsf(x - bx), pz = hd - fabsf(z - f.s); if (pxx < pz) x += (x > bx ? pxx : -pxx); else z += (z > f.s ? pz : -pz); hit = true; } }
   }
+  for (size_t i = 0; i < R.loops.size(); i++) { const Loop &l = R.loops[i]; if (z < l.a + 150 || z > l.b - 150) continue;
+    HouseP h[16]; int n = loopHouses(l, z - 20, z + 20, h, 16);
+    WMach extra[2]; int ne = 0; float fz = loopFuelZ(l), iz = loopInnZ(l);
+    if (fabsf(z - fz) < 20) { extra[ne].x = cxAt(fz) + loopOff(l, fz) + 5.2f; extra[ne].z = fz; extra[ne].hw = 0.6f; extra[ne].hd = 0.6f; ne++; }
+    if (l.inn && fabsf(z - iz) < 25) { extra[ne].x = cxAt(iz) + loopOff(l, iz) + 3.4f + 4.5f + 5.0f; extra[ne].z = iz; extra[ne].hw = 5.0f; extra[ne].hd = 6.0f; ne++; }
+    for (int k = 0; k < n + ne; k++) { float bx, bz, hw2, hd2; if (k < n) { bx = h[k].x; bz = h[k].z; hw2 = h[k].w * 0.5f; hd2 = h[k].d * 0.5f; } else { const WMach &e = extra[k - n]; bx = e.x; bz = e.z; hw2 = e.hw; hd2 = e.hd; }
+      float hw = hw2 + r, hd = hd2 + r; if (fabsf(x - bx) < hw && fabsf(z - bz) < hd) { float px = hw - fabsf(x - bx), pz = hd - fabsf(z - bz); if (px < pz) x += (x > bx ? px : -px); else z += (z > bz ? pz : -pz); hit = true; } } }
   return hit;
 }
 static bool collideYard(float &x, float &z, float r) {
@@ -15043,7 +15429,8 @@ static bool collideRig(float &cx, float &cz, float r) {
 
 // ---------- события трассы: камеры, светофоры, ДПС, весы, АЗС, лёд ----------
 static float prevZ = 0, iceCrack = 0, blinkT = 0, sleepyT = 0;
-static bool nearFuel = false, nearCafe = false; static const Feat *dpsCheck = NULL; static float dpsT = 0;
+static bool nearFuel = false, nearCafe = false, nearRural = false, nearInn = false; static float potholeT = 0;
+static int playerLimit() { return loopAt(rig.x, rig.z) >= 0 ? 40 : (vbyAt(rig.x, rig.z) >= 0 ? 90 : limitAt(rig.z)); }   // на грунтовке 40 static const Feat *dpsCheck = NULL; static float dpsT = 0;
 static void arriveEndOfRoad();
 static void iceFail();
 static float rigOff() { return rig.x - cxAt(rig.z); }
@@ -15054,14 +15441,63 @@ static void dpsInspect() {
   if (G.tr[G.truck].body < 25) { addFine("НЕИСПРАВНОЕ ТС", 1500); n++; }
   if (!n) say("ИНСПЕКТОР: ДОКУМЕНТЫ В ПОРЯДКЕ. СЧАСТЛИВОГО ПУТИ!", 3.5f);
 }
+static float medianMsgT = 0;
+static void medianCollide(float dt) {          // отбойник посередине 4-полосной: на встречку не выехать
+  medianMsgT -= dt; if (!R.four) return;
+  V3 pts[7]; int n = 0; pts[n++] = v3(rig.x, 0, rig.z) + fwd(rig.yaw) * (WB + 0.9f); pts[n++] = v3(rig.x, 0, rig.z) + fwd(rig.yaw) * (WB * 0.55f); pts[n++] = v3(rig.x, 0, rig.z) + fwd(rig.yaw) * 0.2f;
+  if (rig.hitched) for (int k = 0; k < 4; k++) pts[n++] = kingpin() - fwd(rig.tyaw) * (1.0f + k * 3.8f);
+  float push = 0; for (int k = 0; k < n; k++) { if (medianGap(pts[k].z)) continue; float o = pts[k].x - cxAt(pts[k].z), lim = 0.3f + 1.25f; if (o < lim && o > -lim) push = fmaxv(push, o >= 0 ? lim - o : 0); }
+  if (push > 0) { rig.x += push; float sp = fabsf(rig.v); rig.v *= expf(-dt * 1.2f);
+    if (sp > 3) { if (sp > 8) G.tr[G.truck].body = fmaxv(0.0f, G.tr[G.truck].body - dt * (sp - 8) * 0.08f); if (hf((unsigned)(gTime * 9)) < dt * 5) sThud = 0.35f; }
+    if (medianMsgT <= 0) { medianMsgT = 4; say("ОТБОЙНИК! НА 4-ПОЛОСНОЙ НА ВСТРЕЧКУ НЕ ВЫЕХАТЬ"); } }
+}
+static bool nearClose = false, nearBroken = false; static Feat *closeF = NULL, *brokenF = NULL; static float lightningT = 3, flashA = 0;
+static void updateWeather(float dt) {
+  static float acc = 0; acc += dt; int seg = (int)(rig.z / 2500.0f); if (acc < 1.0f && seg == R.wSeg) return; acc = 0;
+  int w; bool st, ice; float fog; weatherAt(rig.z, w, st, ice, fog); bool first = R.wSeg < 0; int ow = R.weather; bool oi = R.ice, os = R.storm; float of = R.fog;
+  R.weather = w; R.storm = st; R.ice = ice; R.fog += (fog - R.fog) * (first ? 1.0f : 0.25f); R.wSeg = seg;
+  if (first) return;
+  if (ice && !oi) say("ГОЛОЛЁД! СБРОСЬ СКОРОСТЬ, НЕ ТОРМОЗИ РЕЗКО", 4);
+  else if (st && !os) say("ГРОЗА! ЛИВЕНЬ, ДЕРЖИ ДИСТАНЦИЮ", 4);
+  else if (w != ow) say(w == 0 ? "ПРОЯСНИЛОСЬ" : (w == 1 ? "НАЧАЛСЯ ДОЖДЬ" : (w == 2 ? "ПОШЁЛ СНЕГ" : "МЕТЕЛЬ! ВИДИМОСТЬ ПЛОХАЯ")), 3);
+  else if (fog > 0.5f && of < 0.3f) say("ТУМАН: ВКЛЮЧИ ФАРЫ", 3);
+}
 static void roadEvents(float dt) {
+  medianCollide(dt); updateWeather(dt);
+  // гроза: молнии
+  if (R.storm) { lightningT -= dt; if (lightningT < 0) { lightningT = frand(4, 14); flashA = 1; sThud = 0.25f; } } flashA = fmaxv(0.0f, flashA - dt * 4);
+  nearClose = nearBroken = false;
   float z = rig.z, off = rigOff(), kmh = speedKmh();
-  nearFuel = nearCafe = false;
+  nearFuel = nearCafe = nearRural = nearInn = false;
+  // съезды в деревни: дешёвая заправка, гостевой дом, ямы на грунтовке
+  { int li = loopAt(rig.x, z); if (li >= 0) { const Loop &l = R.loops[li]; float lo = loopOff(l, z);
+      if (l.fuel && fabsf(z - loopFuelZ(l)) < 14 && fabsf(off - lo) < 4 && fabsf(rig.v) < 0.6f) { nearFuel = true; nearRural = true; }
+      if (l.inn && fabsf(z - loopInnZ(l)) < 16 && fabsf(off - lo) < 4 && fabsf(rig.v) < 0.6f) { nearCafe = true; nearInn = true; }
+      potholeT -= dt;
+      if (kmh > 45 && z > l.a + 120 && z < l.b - 120) { if (G.job.on && G.job.hitched) G.job.damage = fminv(100.0f, G.job.damage + dt * (kmh - 45) * (CARGO[G.job.cargo].fragile ? 0.05f : 0.02f));
+        if (potholeT <= 0) { potholeT = 4; sThud = 0.4f; say("ЯМЫ НА ГРУНТОВКЕ! СБАВЬ ДО 40, ГРУЗ ТРЯСЁТ"); } } } }
   for (size_t i = 0; i < R.feats.size(); i++) { Feat &f = R.feats[i];
     bool crossed = prevZ < f.s && z >= f.s;
     switch (f.type) {
-      case F_CAM: if (crossed) { int lim = limitAt(f.s); if (kmh > lim + 20) { char b[64]; snprintf(b, sizeof b, "ПРЕВЫШЕНИЕ СКОРОСТИ (%d ПРИ %d)", (int)kmh, lim); addFine(b, kmh > lim + 40 ? 1500 : 750); } } break;
-      case F_VILLAGE: if (prevZ < f.s - 14 && z >= f.s - 14 && lightState(f) == 2 && off > -ROAD_HW - 1 && off < RHW + 1) addFine("ПРОЕЗД НА КРАСНЫЙ", 1000); break;
+      case F_TOLL:
+        if (!f.done && z > f.s - 16 && z < f.s + 1 && off > 0 && off < RHW && fabsf(rig.v) < 1.2f) { int price = rig.hitched ? 2400 : 1200; G.money -= price; f.done = true; char b[96]; snprintf(b, sizeof b, "ОПЛАТА ПРОЕЗДА %d Р. ШЛАГБАУМ ОТКРЫТ", price); say(b, 3); sPick = 1; }
+        break;
+      case F_CLOSE: if (!f.done && z > f.s - 60 && z < f.s && off > -LHW && fabsf(rig.v) < 1.0f) { nearClose = true; closeF = &f; } break;
+      case F_BROKEN: if (!f.done && z > f.s - 40 && z < f.s + 4 && off > ROAD_HW - 1.5f && fabsf(rig.v) < 0.6f) { nearBroken = true; brokenF = &f; } break;
+      case F_CAM: if (crossed && off < RHW + 15) { int lim = limitAt(f.s); if (kmh > lim + 20) { char b[64]; snprintf(b, sizeof b, "ПРЕВЫШЕНИЕ СКОРОСТИ (%d ПРИ %d)", (int)kmh, lim); addFine(b, kmh > lim + 40 ? 1500 : 750); } } break;
+      case F_VILLAGE: if (prevZ < f.s - 14 && z >= f.s - 14 && lightState(f) == 2 && off > -LHW - 1 && off < RHW + 1) addFine("ПРОЕЗД НА КРАСНЫЙ", 1000); break;
+      case F_RAIL: {
+        int rs = railState(f); float st = f.s - 9.5f;
+        if (prevZ < st && z >= st && (rs == 2 || (rs == 1 && railT(f) > 52.5f)) && off < RHW + 1 && !f.redFined)   // 2,5 с на остановку, если замигало прямо перед носом { f.redFined = true; addFine("ВЫЕЗД НА ЗАКРЫТЫЙ ПЕРЕЕЗД", 5000); }
+        if (rs == 0) f.redFined = false;
+        if (crossed && kmh > 45) { sThud = 0.5f; }                                     // рельсы трясут
+        // поезд: если фура на путях
+        if (trainOnRoad(f) && !f.done) { float tx = trainX(f); V3 pts[3] = {v3(rig.x, 0, rig.z) + fwd(rig.yaw) * (WB + 0.9f), rig.hitched ? kingpin() : v3(rig.x, 0, rig.z), rig.hitched ? trailerAxle() - fwd(rig.tyaw) * 3.0f : v3(rig.x, 0, rig.z)};
+          for (int q = 0; q < 3; q++) { float ox = pts[q].x - cxAt(pts[q].z); if (fabsf(pts[q].z - f.s) < 2.6f && ox < tx + 1 && ox > tx - TRAIN_LEN - 1) {
+              f.done = true; sThud = 1; G.tr[G.truck].body = fmaxv(0.0f, G.tr[G.truck].body - 55); G.tr[G.truck].engineHP = fmaxv(0.0f, G.tr[G.truck].engineHP - 25);
+              if (G.job.on && G.job.hitched) G.job.damage = fminv(100.0f, G.job.damage + 45); rig.v = 0; rig.z -= 4; say("СТОЛКНОВЕНИЕ С ПОЕЗДОМ! ФУРА РАЗБИТА, ГРУЗ ПОВРЕЖДЁН", 6); break; } } }
+        if (!trainOnRoad(f)) f.done = false;
+      } break;
       case F_WORKS: {
         if (f.flag) { float st = worksStop(f, 1); if (prevZ < st && z >= st && worksLight(f, 1) == 2 && off < ROAD_HW + 1 && !f.redFined) { f.redFined = true; addFine("КРАСНЫЙ НА РЕВЕРСЕ", 1000); } }
         if (z < f.s0 - 60 || z > f.s1 + 60) break;
@@ -15075,7 +15511,7 @@ static void roadEvents(float dt) {
       case F_DPS:
         if (!f.stopAsk || f.done) break;
         if (z > f.s - 45 && z < f.s + 10 && off > 0 && fabsf(rig.v) < 0.5f) { f.timer += dt; if (f.timer > 1.2f) { f.done = true; dpsInspect(); } }
-        else if (z > f.s + 12) { f.done = true; addFine("НЕ ОСТАНОВИЛСЯ ПО ТРЕБОВАНИЮ ДПС", 3000); }
+        else if (z > f.s + 12) { f.done = true; if (off < RHW + 20) addFine("НЕ ОСТАНОВИЛСЯ ПО ТРЕБОВАНИЮ ДПС", 3000); }   // объехал через деревню - не видели
         break;
       case F_WEIGH:
         if (!(G.job.on && G.job.hitched) || f.done) break;
@@ -15085,7 +15521,7 @@ static void roadEvents(float dt) {
               if (m > MASS_LIMIT && !G.job.permit) { snprintf(b, sizeof b, "ВЕС %.1f Т ПРИ НОРМЕ %.0f Т", m, MASS_LIMIT); addFine(b, 10000); }
               else { snprintf(b, sizeof b, "ВЕСЫ: %.1f Т%s. ПРОЕЗЖАЙТЕ", m, m > MASS_LIMIT ? " (ЕСТЬ СПЕЦРАЗРЕШЕНИЕ)" : ""); say(b, 4); sPick = 1; } } } }
         break;
-      case F_FUEL: if (fabsf(z - f.s) < 16 && off > RHW + 1.0f && off < RHW + 9.5f && fabsf(rig.v) < 0.6f) nearFuel = true; break;
+      case F_FUEL: if (fabsf(z - f.s) < 18 && off > RHW + 1.0f && off < RHW + 12.5f && fabsf(rig.v) < 0.6f) nearFuel = true; break;
       case F_CAFE: if (z > f.s0 + 10 && z < f.s1 - 10 && off > RHW + 1.0f && fabsf(rig.v) < 0.6f) nearCafe = true; break;
       case F_ICE:
         if (z > f.s0 && z < f.s1) { float m = totalMass(); bool heavy = m > 30.0f, fast = kmh > 25;
@@ -15104,7 +15540,8 @@ static void roadEvents(float dt) {
   blinkT = fmaxv(0.0f, blinkT - dt);
   if (blinkT > 0.3f) joySteer += sinf(gTime * 1.7f) * 0.25f;            // засыпает - руль уводит
   // съехал далеко с дороги - мягко возвращаем
-  if (fabsf(off) > 110) { rig.x = cxAt(rig.z) + (off > 0 ? 100.0f : -100.0f); rig.v *= 0.5f; }
+  float offLim = 110; for (size_t i = 0; i < R.vbys.size(); i++) { float o = vbyOff(R.vbys[i], rig.z); if (o > 0) offLim = fmaxv(offLim, o + 15); }
+  if (fabsf(off) > offLim) { rig.x = cxAt(rig.z) + (off > 0 ? 100.0f : -100.0f); rig.v *= 0.5f; }
   if (rig.z < 3 && rig.v < 0) { rig.z = 3; rig.v = 0; }
   if (rig.z > R.L - 22) arriveEndOfRoad();
 }
@@ -15125,6 +15562,8 @@ static void obox(V3 c, V3 X, V3 Y, V3 Z, float hx, float hy, float hz, u32 col, 
   quadFace(c + Y * hy, X * hx, Z * hz, Y, col, lit); quadFace(c - Y * hy, X * hx, Z * hz, Y * -1.0f, col, lit);
   quadFace(c + Z * hz, X * hx, Y * hy, Z, col, lit); quadFace(c - Z * hz, X * hx, Y * hy, Z * -1.0f, col, lit);
 }
+// первая точка сетки с шагом step от base, не раньше from (чтобы предметы стояли на месте, а не ездили за камерой)
+static float gridFrom(float base, float from, float step) { return from <= base ? base : base + ceilf((from - base) / step) * step; }
 static void glowAt(V3 p, float rad, u32 col, int a) {
   int sx, sy; float z; if (!projectPt(p, sx, sy, z)) return;
   if (sx < -40 || sy < -40 || sx > IW + 40 || sy > IH + 40) return;
@@ -15161,6 +15600,7 @@ static void setupLight(bool road) {
   float dusk = clampf(1.0f - fabsf(dayK - 0.5f) * 2.0f, 0, 1);
   fogCol = mixc(mixc(RGB(6, 8, 18), day, dayK), RGB(214, 140, 96), dusk * 0.5f);
   float far = w == 0 ? 420.0f : (w == 1 ? 230.0f : (w == 2 ? 200.0f : 115.0f));
+  if (road && R.fog > 0.01f) { far = far + (70.0f - far) * R.fog; fogCol = mixc(fogCol, RGB(196, 200, 204), R.fog * dayK * 0.8f); }
   fogA = far * 0.35f * dayK + 25 * nk; fogB = far * dayK + (lightsOn ? 110.0f : 60.0f) * nk * (w == 3 ? 0.7f : 1.0f);
   if (!road) { fogA = 120; fogB = 300 * dayK + 140 * nk; }
   drawR = fogB + 10;
@@ -15168,7 +15608,7 @@ static void setupLight(bool road) {
   hlPos = v3(rig.x, groundH(rig.x, rig.z) + 1.0f, rig.z) + fwd(rig.yaw) * (WB + 1.4f); hlDir = fwd(rig.yaw); hlRange = G.tr[G.truck].up[UP_LIGHTS] ? 110.0f : 70.0f;
   nLampsNear = 0;
   if (road && nk > 0.1f) for (size_t i = 0; i < R.feats.size() && nLampsNear < 10; i++) { const Feat &f = R.feats[i]; if (fabsf(f.s - rig.z) > 220) continue;
-    if (f.type == F_VILLAGE) { for (float s = fmaxv(f.s0, rig.z - 60); s < fminv(f.s1, rig.z + 160) && nLampsNear < 10; s += 40) lampsNear[nLampsNear++] = v3(cxAt(s) + RHW + 1.5f, 0, s); }
+    if (f.type == F_VILLAGE) { for (float s = gridFrom(f.s0, rig.z - 60, 40); s < fminv(f.s1, rig.z + 160) && nLampsNear < 10; s += 40) lampsNear[nLampsNear++] = v3(cxAt(s) + RHW + 1.5f, 0, s); }
     else if (f.type != F_CAM && f.type != F_ICE) lampsNear[nLampsNear++] = v3(cxAt(f.s) + RHW + 4, 0, f.s); }
 }
 
@@ -15248,9 +15688,20 @@ static void drawRigAll(bool simple) {
 static u32 groundCol(float s, int band) {
   int rg = R.rg; unsigned h = hsh((unsigned)(s / 9) * 31u + band * 7u);
   u32 base = rg == RG_SOUTH ? RGB(150, 150, 80) : (rg == RG_URAL ? RGB(84, 116, 62) : (rg == RG_CENTER ? RGB(96, 128, 66) : RGB(230, 234, 240)));
+  { int se = seasonNow(); bool north = rg == RG_ARCTIC || rg == RG_TAIGA;              // времена года
+    if (se == SE_SUMMER && north) base = rg == RG_ARCTIC ? RGB(128, 134, 92) : RGB(92, 122, 70);
+    else if (se == SE_AUTUMN) base = north ? RGB(150, 128, 90) : (rg == RG_SOUTH ? RGB(160, 140, 90) : RGB(150, 136, 72));
+    else if (se == SE_WINTER) base = rg == RG_SOUTH ? RGB(170, 168, 150) : RGB(230, 234, 240);
+    else if (se == SE_SPRING) base = north ? RGB(200, 204, 206) : (rg == RG_SOUTH ? RGB(110, 150, 70) : RGB(112, 130, 70)); }
   if (R.weather >= 2 && rg != RG_ARCTIC && rg != RG_TAIGA) base = RGB(222, 226, 232);
-  if (rg == RG_SOUTH && band >= 2) { static const u32 F[] = {RGB(214, 180, 50), RGB(170, 150, 70), RGB(120, 140, 60), RGB(140, 110, 70)}; base = F[(hsh((unsigned)(s / 120) + band) & 3)]; }
+  if (rg == RG_SOUTH && band >= 2 && seasonNow() == SE_SUMMER) { static const u32 F[] = {RGB(214, 180, 50), RGB(170, 150, 70), RGB(120, 140, 60), RGB(140, 110, 70)}; base = F[(hsh((unsigned)(s / 120) + band) & 3)]; }
   return mixc(base, (h & 1) ? shadec(base, 0.9f) : mixc(base, RGB(255, 255, 255), 0.06f), ((h >> 4) & 255) / 255.0f);
+}
+static void drawMedian(float c0, float h0, float z, float c1, float h1, float z1) {   // бетонный отбойник «нью-джерси» по оси дороги
+  float len = sqrtf((c1 - c0) * (c1 - c0) + (z1 - z) * (z1 - z)), yaw = atan2f(c1 - c0, z1 - z); V3 m = v3((c0 + c1) * 0.5f, (h0 + h1) * 0.5f, (z + z1) * 0.5f);
+  drawBox(m + v3(0, 0.12f, 0), v3(0.3f, 0.12f, len * 0.5f), yaw, RGB(150, 148, 142), true);
+  drawBox(m + v3(0, 0.55f, 0), v3(0.13f, 0.32f, len * 0.5f), yaw, RGB(208, 206, 198), true);
+  if (fmodf(z, 16) < 4) drawBox(m + v3(0, 0.7f, 0), v3(0.135f, 0.05f, 0.12f), yaw, RGB(250, 200, 40), false);   // катафоты
 }
 static void drawRoadSurface() {
   float cz = camEye.z, zA = fmaxv(0.0f, cz - 60), zB = fminv(R.L, cz + drawR);
@@ -15263,9 +15714,24 @@ static void drawRoadSurface() {
     if (!seen(mid, 220)) { z = z1; continue; }
     bool ice = false; for (size_t i = 0; i < R.feats.size(); i++) if (R.feats[i].type == F_ICE && z > R.feats[i].s0 - 40 && z < R.feats[i].s1 + 40) ice = true;
     const Feat *pk = pocketAt(z + st * 0.5f);
+    const Feat *br = NULL; for (size_t i = 0; i < R.feats.size(); i++) if (R.feats[i].type == F_BRIDGE && z + st > R.feats[i].s0 && z < R.feats[i].s1) br = &R.feats[i];
+    if (br) {                                                                 // река под мостом: вода и спуск берегов
+      bool frozen = R.weather >= 2 || R.rg == RG_ARCTIC || R.rg == RG_TAIGA; u32 wc = frozen ? RGB(205, 222, 235) : RGB(52, 92, 120);
+      float dep = br->flag ? 9.0f : 6.0f, bank = fminv(30.0f, (br->s1 - br->s0) * 0.3f);
+      auto yAt = [&](float zz, float hh) { float t = fminv(smooth01(br->s0, br->s0 + bank, zz), smooth01(br->s1, br->s1 - bank, zz)); return hh - dep * t; };
+      float y0 = yAt(z, h0), y1 = yAt(z1, h1);
+      for (int side = -1; side <= 1; side += 2) { float a0 = side > 0 ? RHW + 0.3f : LHW + 0.3f, a1 = 260;
+        u32 col = (y0 < h0 - dep + 0.5f && y1 < h1 - dep + 0.5f) ? mixc(wc, shadec(wc, 0.85f), hf((unsigned)(z * 0.3f)) * 0.5f) : groundCol(z, 2 * side);
+        quad4(v3(c0 + side * a0, y0, z), v3(c0 + side * a1, y0, z), v3(c1 + side * a1, y1, z1), v3(c1 + side * a0, y1, z1), col); }
+      u32 ac2 = mixc(asph, RGB(50, 52, 56), hf((unsigned)(z * 0.25f)) * 0.25f);
+      quad4(v3(c0 - LHW, h0 + 0.02f, z), v3(c0 + RHW, h0 + 0.02f, z), v3(c1 + RHW, h1 + 0.02f, z1), v3(c1 - LHW, h1 + 0.02f, z1), ac2);
+      if (d < 160) { u32 lc = RGB(225, 225, 215); for (int sd = -1; sd <= 1; sd += 2) { float x = sd > 0 ? RHW - 0.2f : -(LHW - 0.2f); quad4(v3(c0 + x - 0.07f, h0 + 0.03f, z), v3(c0 + x + 0.07f, h0 + 0.03f, z), v3(c1 + x + 0.07f, h1 + 0.03f, z1), v3(c1 + x - 0.07f, h1 + 0.03f, z1), lc); }
+        quad4(v3(c0 - 0.07f, h0 + 0.03f, z), v3(c0 + 0.07f, h0 + 0.03f, z), v3(c1 + 0.07f, h1 + 0.03f, z1), v3(c1 - 0.07f, h1 + 0.03f, z1), lc); }
+      if (R.four && d < 400 && !medianGap(z + st * 0.5f)) drawMedian(c0, h0 + 0.02f, z, c1, h1 + 0.02f, z1);
+      z = z1; continue; }
     // земля полосами: обочина, ближняя, дальняя
     static const float BX[5] = {ROAD_HW, ROAD_HW + 1.6f, ROAD_HW + 14, ROAD_HW + 45, ROAD_HW + 220};
-    for (int side = -1; side <= 1; side += 2) for (int b = 0; b < 4; b++) { float ex = side > 0 ? R.ex : 0.0f, a0 = BX[b] + ex, a1 = BX[b + 1] + ex; if (b == 0 && side > 0 && pk) a1 = RHW + POCKET_W;
+    for (int side = -1; side <= 1; side += 2) for (int b = 0; b < 4; b++) { float ex = side > 0 ? R.ex : R.exL, a0 = BX[b] + ex, a1 = BX[b + 1] + ex; if (b == 0 && side > 0 && pk) a1 = RHW + POCKET_W;
         if (b == 1 && side > 0 && pk) a0 = RHW + POCKET_W;
         u32 col = b == 0 ? (snowRoad ? RGB(200, 204, 210) : RGB(130, 124, 110)) : groundCol(z, b * side);
         if (b == 0 && side > 0 && pk) col = asph;
@@ -15273,23 +15739,25 @@ static void drawRoadSurface() {
         float y0 = h0 - (b >= 2 ? 0.05f : 0.0f), y1 = h1 - (b >= 2 ? 0.05f : 0.0f);
         quad4(v3(c0 + side * a0, y0, z), v3(c0 + side * a1, y0, z), v3(c1 + side * a1, y1, z1), v3(c1 + side * a0, y1, z1), col); }
     // асфальт
-    u32 ac = mixc(asph, RGB(50, 52, 56), hf((unsigned)(z * 0.25f)) * 0.25f);
-    quad4(v3(c0 - ROAD_HW, h0 + 0.02f, z), v3(c0 + RHW, h0 + 0.02f, z), v3(c1 + RHW, h1 + 0.02f, z1), v3(c1 - ROAD_HW, h1 + 0.02f, z1), ac);
+    u32 ac = mixc(asph, RGB(50, 52, 56), hf((unsigned)(z * 0.25f)) * 0.25f); if (R.ice) ac = mixc(ac, RGB(150, 166, 186), 0.35f);
+    quad4(v3(c0 - LHW, h0 + 0.02f, z), v3(c0 + RHW, h0 + 0.02f, z), v3(c1 + RHW, h1 + 0.02f, z1), v3(c1 - LHW, h1 + 0.02f, z1), ac);
     if (d < 160) {
       u32 lc = R.zimnik ? RGB(170, 175, 182) : RGB(225, 225, 215);
       if (R.zimnik) { for (int s = -1; s <= 1; s += 2) for (int k = -1; k <= 1; k += 2) { float x = s * LANE + k * 0.95f; quad4(v3(c0 + x - 0.25f, h0 + 0.03f, z), v3(c0 + x + 0.25f, h0 + 0.03f, z), v3(c1 + x + 0.25f, h1 + 0.03f, z1), v3(c1 + x - 0.25f, h1 + 0.03f, z1), RGB(185, 190, 198)); } }
       else {
-        if (R.wide && fmodf(z, 12) < 3) quad4(v3(c0 + RHW - 0.07f, h0 + 0.03f, z), v3(c0 + RHW + 0.07f, h0 + 0.03f, z), v3(c1 + RHW + 0.07f, h1 + 0.03f, z1), v3(c1 + RHW - 0.07f, h1 + 0.03f, z1), lc);   // разделитель двух наших полос
-        for (int s = -1; s <= 1; s += 2) { float x = s > 0 ? RHW - 0.2f : -(ROAD_HW - 0.2f); if (s > 0 && pk && fmodf(z, 8) >= 4) continue; quad4(v3(c0 + x - 0.07f, h0 + 0.03f, z), v3(c0 + x + 0.07f, h0 + 0.03f, z), v3(c1 + x + 0.07f, h1 + 0.03f, z1), v3(c1 + x - 0.07f, h1 + 0.03f, z1), lc); }
+        if (fmodf(z, 12) < 3) for (int sd = -1; sd <= 1; sd += 2) if (sd > 0 ? R.wide : R.four) { float x = sd * ROAD_HW; quad4(v3(c0 + x - 0.07f, h0 + 0.03f, z), v3(c0 + x + 0.07f, h0 + 0.03f, z), v3(c1 + x + 0.07f, h1 + 0.03f, z1), v3(c1 + x - 0.07f, h1 + 0.03f, z1), lc); }   // разделители полос одного направления
+        for (int s = -1; s <= 1; s += 2) { float x = s > 0 ? RHW - 0.2f : -(LHW - 0.2f); if (s > 0 && pk && fmodf(z, 8) >= 4) continue; quad4(v3(c0 + x - 0.07f, h0 + 0.03f, z), v3(c0 + x + 0.07f, h0 + 0.03f, z), v3(c1 + x + 0.07f, h1 + 0.03f, z1), v3(c1 + x - 0.07f, h1 + 0.03f, z1), lc); }
         bool solid = false; for (size_t i = 0; i < R.feats.size(); i++) { const Feat &f = R.feats[i]; if ((f.type == F_VILLAGE || f.type == F_DPS) && z > f.s - 60 && z < f.s + 40) solid = true; }
-        if (solid || fmodf(z, 12) < 4) quad4(v3(c0 - 0.07f, h0 + 0.03f, z), v3(c0 + 0.07f, h0 + 0.03f, z), v3(c1 + 0.07f, h1 + 0.03f, z1), v3(c1 - 0.07f, h1 + 0.03f, z1), lc);
+        if (R.four) { for (int sd = -1; sd <= 1; sd += 2) { float x = sd * 0.55f; quad4(v3(c0 + x - 0.07f, h0 + 0.03f, z), v3(c0 + x + 0.07f, h0 + 0.03f, z), v3(c1 + x + 0.07f, h1 + 0.03f, z1), v3(c1 + x - 0.07f, h1 + 0.03f, z1), lc); } }   // сплошные у отбойника
+        else if (solid || fmodf(z, 12) < 4) quad4(v3(c0 - 0.07f, h0 + 0.03f, z), v3(c0 + 0.07f, h0 + 0.03f, z), v3(c1 + 0.07f, h1 + 0.03f, z1), v3(c1 - 0.07f, h1 + 0.03f, z1), lc);
       }
     }
+    if (R.four && d < 400 && !medianGap(z + st * 0.5f)) drawMedian(c0, h0 + 0.02f, z, c1, h1 + 0.02f, z1);
     z = z1;
   }
 }
 static void signPost(V3 base, float hgt, u32 col) { drawBox(base + v3(0, hgt * 0.5f, 0), v3(0.05f, hgt * 0.5f, 0.05f), 0, RGB(150, 150, 150), true); (void)col; }
-struct Label { V3 p; char t[64]; u32 bg, fg; int kind; float w, h, yaw; int nl; };   // kind 0 табличка в воздухе, 1 знак ограничения, 2 щит на столбах, 3 знак АЗС, 4 знак кафе
+struct Label { V3 p; char t[112]; u32 bg, fg; int kind; float w, h, yaw; int nl; };   // kind 0 табличка в воздухе, 1 знак ограничения, 2 щит на столбах, 3 знак АЗС, 4 знак кафе
 static std::vector<Label> labels;
 static void vdisc(V3 c, float r, float yaw, u32 col) {                        // вертикальный круг, смотрит на водителя (-Z)
   V3 X = v3(cosf(yaw), 0, -sinf(yaw)), N = v3(-sinf(yaw), 0, -cosf(yaw)); V3 pts[16];
@@ -15299,19 +15767,22 @@ static void vdisc(V3 c, float r, float yaw, u32 col) {                        //
 static void addLabel(V3 p, const char *t, u32 bg, u32 fg, int kind) {
   Label l; memset(&l, 0, sizeof l); l.p = p; l.bg = bg; l.fg = fg; l.kind = kind; l.nl = 1;
   // на щитах ". " - перенос строки
-  { int k = 0; for (const char *q = t; *q && k < 62; q++) { if (kind >= 2 && q[0] == '.' && q[1] == ' ') { l.t[k++] = '\n'; q++; } else l.t[k++] = *q; } l.t[k] = 0; }
+  { int k = 0; for (const char *q = t; *q && k < 110; q++) { if (kind >= 2 && q[0] == '.' && q[1] == ' ') { l.t[k++] = '\n'; q++; } else l.t[k++] = *q; } l.t[k] = 0; }
   if (kind >= 1 && gs != GS_YARD && gs != GS_CITY) {
     float gy = hAt(p.z), yaw = headAt(p.z); l.yaw = yaw;
     V3 N = v3(-sinf(yaw), 0, -cosf(yaw)), X = v3(cosf(yaw), 0, -sinf(yaw));
     if (!seen(v3(p.x, gy + 2.5f, p.z), 6)) { labels.push_back(l); return; }
     u32 post = RGB(150, 152, 158);
     if (kind == 1) {                                                         // ограничение скорости
-      V3 c = v3(p.x, gy + 2.3f, p.z); drawBox(v3(p.x, gy + 1.1f, p.z + 0.06f), v3(0.04f, 1.1f, 0.04f), 0, post, true);
-      vdisc(c, 0.52f, yaw, RGB(210, 30, 30)); vdisc(c + N * 0.02f, 0.40f, yaw, RGB(248, 248, 248)); l.p = c + N * 0.03f; l.w = 0.8f; l.h = 0.8f;
-    } else if (kind == 2) {                                                  // щит с надписью
+      V3 c = v3(p.x + 0.4f, gy + 2.8f, p.z); drawBox(v3(p.x + 0.4f, gy + 1.3f, p.z + 0.06f), v3(0.05f, 1.3f, 0.05f), 0, post, true);
+      vdisc(c, 0.85f, yaw, RGB(210, 30, 30)); vdisc(c + N * 0.02f, 0.66f, yaw, RGB(248, 248, 248)); l.p = c + N * 0.03f; l.w = 1.3f; l.h = 1.3f;
+    } else if (kind == 2 || kind == 5 || kind == 6) {                                     // щит с надписью (5 - табло цен на стеле, без столбов)
       int nl = 1, cur = 0, mx = 0; for (const char *q = l.t; ; q++) { if (*q == '\n' || !*q) { mx = imax(mx, cur); cur = 0; if (!*q) break; nl++; } else if ((*q & 0xC0) != 0x80) cur++; }
-      l.nl = nl; l.w = mx * 0.5f + 0.7f; l.h = nl * 0.75f + 0.4f;
-      if (p.x - cxAt(p.z) > 0 && p.x - cxAt(p.z) < RHW + 3) p.x += fmaxv(0.0f, l.w * 0.5f - 0.6f);   // щит у обочины целиком за краем дороги
+      l.nl = nl; l.w = mx * 0.72f + 0.9f; l.h = nl * 1.05f + 0.5f;
+      if (kind == 6) { V3 c6 = p; drawBox(c6, v3(l.w * 0.5f + 0.06f, l.h * 0.5f + 0.06f, 0.03f), yaw, RGB(245, 245, 245), true); drawBox(c6 + N * 0.035f, v3(l.w * 0.5f - 0.02f, l.h * 0.5f - 0.02f, 0.005f), yaw, bg, false); l.p = c6 + N * 0.05f; labels.push_back(l); return; }
+      if (kind == 5) { l.w = 1.9f; l.h = nl * 0.55f + 0.3f; V3 c5 = p; drawBox(c5, v3(l.w * 0.5f, l.h * 0.5f, 0.02f), yaw, bg, false); l.p = c5 + N * 0.03f; labels.push_back(l); return; }
+      { float off = p.x - cxAt(p.z), need = l.w * 0.5f + 1.2f;                         // щит у обочины целиком за краем дороги, ни сантиметра над полосой
+        if (off > 0 && off < RHW + need) p.x = cxAt(p.z) + RHW + need; else if (off < 0 && off > -(LHW + need)) p.x = cxAt(p.z) - LHW - need; }
       float cy = fmaxv(p.y, gy + 2.0f + l.h * 0.5f); V3 c = v3(p.x, cy, p.z);
       bool white = CR(bg) > 200 && CG(bg) > 200;
       drawBox(c, v3(l.w * 0.5f + 0.07f, l.h * 0.5f + 0.07f, 0.03f), yaw, white ? RGB(20, 20, 20) : RGB(245, 245, 245), true);
@@ -15335,23 +15806,24 @@ static void addLabel(V3 p, const char *t, u32 bg, u32 fg, int kind) {
   labels.push_back(l);
 }
 // ---------- дорожные знаки (настоящие формы) ----------
-enum { SG_WORKS, SG_LIGHTS, SG_NARROW, SG_NOOVERTAKE, SG_END, SG_DETOUR_L, SG_ZEBRA };
-static const float SGS = 1.35f;                                              // знаки чуть крупнее настоящих, чтобы видно на телефоне
+enum { SG_WORKS, SG_LIGHTS, SG_NARROW, SG_RAIL, SG_NOOVERTAKE, SG_END, SG_DETOUR_L, SG_ZEBRA };
+static const float SGS = 1.8f;                                              // знаки чуть крупнее настоящих, чтобы видно на телефоне
 static void sPoly(V3 c, float yaw, const float *uv, int n, float d, u32 col) { V3 X = v3(cosf(yaw), 0, -sinf(yaw)), N = v3(-sinf(yaw), 0, -cosf(yaw)); V3 p[16]; for (int i = 0; i < n; i++) p[i] = c + X * (uv[i * 2] * SGS) + v3(0, uv[i * 2 + 1] * SGS, 0) + N * d; faceN(p, n, N, col, false); }
 static void sRect(V3 c, float yaw, float u, float v, float hw, float hh, float d, u32 col) { V3 X = v3(cosf(yaw), 0, -sinf(yaw)), N = v3(-sinf(yaw), 0, -cosf(yaw)); u *= SGS; v *= SGS; hw *= SGS; hh *= SGS; V3 q = c + X * u + v3(0, v, 0) + N * d;
   V3 p[4] = {q - X * hw - v3(0, hh, 0), q + X * hw - v3(0, hh, 0), q + X * hw + v3(0, hh, 0), q - X * hw + v3(0, hh, 0)}; faceN(p, 4, N, col, false); }
 static void roadSign(float s, int type) {
   float gy = hAt(s), yaw = headAt(s); V3 base = v3(cxAt(s) + RHW + 1.7f, gy, s); if (!seen(base + v3(0, 2.5f, 0), 3)) return;
   V3 N = v3(-sinf(yaw), 0, -cosf(yaw));
-  drawBox(base + v3(0, 1.4f, 0) - N * 0.06f, v3(0.04f, 1.4f, 0.04f), 0, RGB(150, 152, 158), true);
-  V3 c = base + v3(0, 2.6f, 0); u32 K = RGB(20, 20, 20), W = RGB(248, 248, 248), Rd = RGB(210, 30, 30);
-  if (type <= SG_NARROW) {                                                   // треугольник: красная кайма, белое поле
+  drawBox(base + v3(0, 1.6f, 0) - N * 0.06f, v3(0.05f, 1.6f, 0.05f), 0, RGB(150, 152, 158), true);
+  V3 c = base + v3(0, 3.0f, 0); u32 K = RGB(20, 20, 20), W = RGB(248, 248, 248), Rd = RGB(210, 30, 30);
+  if (type <= SG_RAIL) {                                                   // треугольник: красная кайма, белое поле
     float o[6] = {0, 0.62f, 0.54f, -0.31f, -0.54f, -0.31f}, in[6] = {0, 0.44f, 0.385f, -0.225f, -0.385f, -0.225f};
     sPoly(c, yaw, o, 3, 0.0f, Rd); sPoly(c, yaw, in, 3, 0.012f, W);
     if (type == SG_WORKS) { float pile[6] = {0.05f, -0.17f, 0.2f, -0.17f, 0.125f, -0.08f}; sPoly(c, yaw, pile, 3, 0.02f, K); sRect(c, yaw, 0, -0.185f, 0.22f, 0.012f, 0.02f, K);
       sRect(c, yaw, -0.07f, -0.06f, 0.035f, 0.08f, 0.02f, K); sRect(c, yaw, -0.05f, 0.06f, 0.03f, 0.03f, 0.02f, K); sRect(c, yaw, -0.1f, -0.15f, 0.02f, 0.04f, 0.02f, K); sRect(c, yaw, -0.03f, -0.15f, 0.02f, 0.04f, 0.02f, K);
       sRect(c, yaw, 0.0f, -0.03f, 0.07f, 0.012f, 0.02f, K); sRect(c, yaw, 0.08f, -0.09f, 0.012f, 0.06f, 0.02f, K); }
     else if (type == SG_LIGHTS) { sRect(c, yaw, 0, -0.03f, 0.075f, 0.17f, 0.02f, K); u32 L3[3] = {RGB(230, 30, 30), RGB(240, 190, 20), RGB(30, 190, 70)}; for (int k = 0; k < 3; k++) sRect(c, yaw, 0, 0.08f - k * 0.11f, 0.042f, 0.042f, 0.026f, L3[k]); }
+    else if (type == SG_RAIL) { sRect(c, yaw, 0, -0.04f, 0.2f, 0.025f, 0.02f, K); sRect(c, yaw, 0, -0.14f, 0.2f, 0.02f, 0.02f, K); for (int k = -2; k <= 2; k++) sRect(c, yaw, k * 0.09f, -0.06f, 0.015f, 0.12f, 0.02f, K); }   // забор: переезд со шлагбаумом
     else { sRect(c, yaw, -0.12f, -0.04f, 0.025f, 0.17f, 0.02f, K); sRect(c, yaw, 0.13f, -0.14f, 0.025f, 0.07f, 0.02f, K); sRect(c, yaw, 0.095f, -0.05f, 0.025f, 0.035f, 0.02f, K); sRect(c, yaw, 0.06f, 0.06f, 0.025f, 0.08f, 0.02f, K); }
   } else if (type == SG_ZEBRA) {                                            // пешеходный переход: синий квадрат, белый треугольник, человек
     sRect(c, yaw, 0, 0, 0.42f, 0.42f, 0.0f, RGB(250, 250, 250)); sRect(c, yaw, 0, 0, 0.39f, 0.39f, 0.01f, RGB(30, 80, 170));
@@ -15369,21 +15841,21 @@ static void roadSign(float s, int type) {
   }
 }
 static void drawLabels() {
-  for (size_t i = 0; i < labels.size(); i++) { const Label &l = labels[i]; int sx, sy; float z; if (!projectPt(l.p, sx, sy, z) || z > 220) continue;
+  for (size_t i = 0; i < labels.size(); i++) { const Label &l = labels[i]; int sx, sy; float z; if (!projectPt(l.p, sx, sy, z) || z > 420) continue;
     if (!gGL && sx >= 0 && sy >= 0 && sx < IW && sy < IH && zb[sy * IW + sx] > (1.0f / z) * 1.08f) continue;
     float ppm = focal / fmaxv(z, 0.5f);                                     // пикселей на метр на этом расстоянии
-    if (l.kind == 1) { int s2 = (int)(0.42f * ppm / (6.0f * (int)strlen(l.t))); if (s2 >= 1) drawText(sx + s2 / 2, sy - s2 * 7 / 2, l.t, s2, RGB(10, 10, 10), 1); continue; }
-    if (l.kind == 2 || l.kind >= 3) {
+    if (l.kind == 1) { float fit = 0.95f * ppm / (6.0f * (int)strlen(l.t)); int s2 = (int)fit; if (s2 < 1 && 0.66f * ppm >= 5) s2 = 1; if (s2 >= 1) drawText(sx + s2 / 2, sy - s2 * 7 / 2, l.t, s2, RGB(10, 10, 10), 1); continue; }   // цифры видно издалека
+    if (l.kind >= 2) { bool svc = l.kind == 3 || l.kind == 4;
       if (l.w <= 0) continue;
-      char lines[4][64]; int n = 0; const char *q = l.t; while (n < 4) { const char *e = strchr(q, '\n'); int len = e ? (int)(e - q) : (int)strlen(q); if (len > 63) len = 63; memcpy(lines[n], q, len); lines[n][len] = 0; n++; if (!e) break; q = e + 1; }
+      char lines[4][112]; int n = 0; const char *q = l.t; while (n < 4) { const char *e = strchr(q, '\n'); int len = e ? (int)(e - q) : (int)strlen(q); if (len > 111) len = 111; memcpy(lines[n], q, len); lines[n][len] = 0; n++; if (!e) break; q = e + 1; }
       int mxw = 1; for (int k = 0; k < n; k++) mxw = imax(mxw, textW(lines[k], 1));
-      float bw = (l.w - 0.3f) * ppm, lh = l.kind >= 3 ? 0.6f * ppm : (l.h - 0.3f) * ppm / n;
-      int sc = (int)fminv(bw / mxw, lh / 9.0f); sc = imin(sc, fs * 3);
-      u32 fg = l.kind >= 3 ? RGB(255, 255, 255) : l.fg;
+      float bw = (l.w - 0.3f) * ppm, lh = svc ? 0.6f * ppm : (l.h - 0.3f) * ppm / n;
+      float fsc = fminv(bw / mxw, lh / 9.0f); int sc = imin((int)fsc, fs * 3); if (sc < 1 && fsc > 0.55f) sc = 1;   // мелким шрифтом читается и издалека
+      u32 fg = svc ? RGB(255, 255, 255) : l.fg;
       if (sc >= 1) { int y0 = sy - (n * 9 * sc) / 2 + sc; for (int k = 0; k < n; k++) drawText(sx, y0 + k * 9 * sc, lines[k], sc, fg, 1); }
-      else if (l.kind == 2 && bw > 6) { int h = (int)fmaxv(1.0f, lh * 0.35f); for (int k = 0; k < n; k++) { int yy = sy - (int)(n * lh) / 2 + (int)(k * lh + lh * 0.35f); fillRect(sx - (int)(bw * 0.4f), yy, (int)(bw * 0.8f), h, mixc(fg, l.bg, 0.4f)); } }
+      else if (!svc && bw > 6) { int h = (int)fmaxv(1.0f, lh * 0.35f); for (int k = 0; k < n; k++) { int yy = sy - (int)(n * lh) / 2 + (int)(k * lh + lh * 0.35f); fillRect(sx - (int)(bw * 0.4f), yy, (int)(bw * 0.8f), h, mixc(fg, l.bg, 0.4f)); } }
       continue; }
-    int sc = clampi((int)(fs * 26 / fmaxv(z, 1.0f)), 1, fs * 2); if (z > 140) continue;
+    if (z > 140 || z < 7) continue; int sc = clampi((int)(fs * 26 / fmaxv(z, 1.0f)), 1, fs);
     int w = textW(l.t, sc) + sc * 6, h = sc * 11; fillRect(sx - w / 2, sy - h / 2, w, h, l.bg); drawText(sx, sy - sc * 3, l.t, sc, l.fg, 1); }
 }
 static void drawHouse(const HouseP &h, float y) {
@@ -15400,44 +15872,56 @@ static void drawHouse(const HouseP &h, float y) {
 }
 static void drawTreeP(const TreeP &t) {
   float y = hAt(t.z); if (!seen(v3(t.x, y + t.h * 0.5f, t.z), t.h * 0.6f)) return;
-  bool snow = R.rg == RG_TAIGA || R.rg == RG_ARCTIC || R.weather >= 2;
+  int se = seasonNow(); bool snow = R.weather >= 2 || (se == SE_WINTER && R.rg != RG_SOUTH) || ((R.rg == RG_TAIGA || R.rg == RG_ARCTIC) && se != SE_SUMMER && se != SE_AUTUMN);
   float dx = t.x - camEye.x, dz = t.z - camEye.z, dist = sqrtf(dx * dx + dz * dz);
   if (t.kind == 0 || t.kind == 3) { drawBox(v3(t.x, y + t.h * 0.15f, t.z), v3(0.15f, t.h * 0.15f, 0.15f), 0, RGB(80, 58, 40), true);
     int n = dist < 60 ? 3 : 1; for (int k = 0; k < n; k++) { float fr = n == 1 ? 0.5f : k / (float)(n - 1), yy = y + t.h * (0.3f + 0.55f * fr), w = t.r * (1.0f - 0.55f * fr);
       u32 c = t.kind == 3 ? RGB(70, 80, 50) : mixc(RGB(30, 62, 38), RGB(46, 84, 48), fr); if (snow) c = mixc(c, RGB(235, 240, 245), 0.45f);
       drawBox(v3(t.x, yy, t.z), v3(w, t.h * (n == 1 ? 0.35f : 0.16f), w), 0.6f * k, c, true); } }
   else { drawBox(v3(t.x, y + t.h * 0.3f, t.z), v3(0.13f, t.h * 0.3f, 0.13f), 0, t.kind == 1 ? RGB(225, 225, 215) : RGB(110, 90, 70), true);
-    u32 c = t.kind == 2 ? RGB(80, 120, 60) : RGB(90, 130, 64); if (snow) c = RGB(120, 110, 100);
+    u32 c = t.kind == 2 ? RGB(80, 120, 60) : RGB(90, 130, 64); if (se == SE_AUTUMN) c = (hsh((unsigned)(t.z * 3 + t.x)) & 1) ? RGB(220, 170, 40) : RGB(200, 110, 40); if (snow) c = RGB(120, 110, 100);
     drawBox(v3(t.x, y + t.h * (t.kind == 2 ? 0.65f : 0.7f), t.z), v3(t.r * (t.kind == 2 ? 0.7f : 1.0f), t.h * (t.kind == 2 ? 0.35f : 0.22f), t.r * (t.kind == 2 ? 0.7f : 1.0f)), 0.4f, c, true); }
 }
 static void drawPocketStuff(const Feat &f) {
   float c = cxAt(f.s), y = hAt(f.s), yaw = headAt(f.s); V3 X = v3(cosf(yaw), 0, -sinf(yaw));
   V3 base = v3(c, y, f.s) + X * (ROAD_HW + 5.5f);
   if (f.type == F_FUEL) {
-    float px = c + RHW + 5.5f; u32 red = RGB(200, 30, 30);
-    // островок с двумя колонками
-    drawBox(v3(px, y + 0.09f, f.s), v3(0.75f, 0.09f, 13.0f), yaw, RGB(205, 205, 200), true);
-    for (int k = -1; k <= 1; k += 2) { float pz = f.s + k * 7.5f; V3 p = v3(px, y + 0.18f, pz);
-      drawBox(p + v3(0, 0.95f, 0), v3(0.42f, 0.95f, 0.32f), yaw, RGB(236, 236, 240), true);
-      drawBox(p + v3(0, 2.0f, 0), v3(0.45f, 0.12f, 0.36f), yaw, red, true);
-      drawBox(p + v3(0, 1.45f, -0.33f), v3(0.28f, 0.18f, 0.01f), yaw, SHINE(RGB(30, 220, 120), 160), false);   // табло
+    // АЗС в сине-голубом «трассовом» стиле: тёмно-синий навес с голубой полосой, белые колонки, высокая стела с ценами
+    float px = c + RHW + 8.0f; u32 navy = RGB(18, 38, 92), cyan = RGB(0, 165, 225), white = RGB(240, 242, 246);
+    drawBox(v3(px, y + 0.09f, f.s), v3(0.75f, 0.09f, 8.5f), yaw, RGB(205, 205, 200), true);
+    for (int k = -1; k <= 1; k += 2) { float pz = f.s + k * 4.5f; V3 p = v3(px, y + 0.18f, pz);
+      drawBox(p + v3(0, 0.95f, 0), v3(0.42f, 0.95f, 0.32f), yaw, white, true);
+      drawBox(p + v3(0, 2.0f, 0), v3(0.45f, 0.14f, 0.36f), yaw, navy, true);
+      drawBox(p + v3(0, 1.72f, 0), v3(0.43f, 0.05f, 0.33f), yaw, cyan, false);                      // голубая полоса
+      drawBox(p + v3(0, 1.4f, -0.33f), v3(0.28f, 0.17f, 0.01f), yaw, SHINE(RGB(20, 30, 40), 120), false); // табло
+      drawBox(p + v3(-0.12f, 1.43f, -0.345f), v3(0.1f, 0.05f, 0.005f), yaw, SHINE(RGB(120, 230, 255), 220), false);
       for (int s2 = -1; s2 <= 1; s2 += 2) { drawBox(p + v3(s2 * 0.44f, 1.0f, 0), v3(0.03f, 0.22f, 0.12f), yaw, RGB(30, 30, 30), true); drawBox(p + v3(s2 * 0.5f, 0.55f, 0), v3(0.02f, 0.45f, 0.02f), yaw, RGB(25, 25, 25), true); }
-      drawBox(p + v3(0, 0.25f, -0.4f), v3(0.4f, 0.25f, 0.06f), yaw, RGB(250, 200, 40), true); }       // отбойник
-    // навес с подсветкой
-    for (int a = -1; a <= 1; a += 2) for (int b = -1; b <= 1; b += 2) drawBox(v3(px + a * 3.6f, y + 3.1f, f.s + b * 11), v3(0.18f, 3.1f, 0.18f), yaw, RGB(225, 225, 228), true);
-    drawBox(v3(px, y + 6.4f, f.s), v3(5.2f, 0.3f, 15), yaw, RGB(236, 238, 242), true);
-    drawBox(v3(px, y + 6.4f, f.s), v3(5.25f, 0.18f, 15.05f), yaw, red, false);
-    for (int k = -2; k <= 2; k++) drawBox(v3(px, y + 6.08f, f.s + k * 5.5f), v3(1.6f, 0.02f, 0.5f), yaw, gNK > 0.3f ? SHINE(RGB(255, 252, 235), 255) : RGB(250, 250, 245), false);
-    addLabel(v3(px, y + 7.2f, f.s - 15), "АЗС", red, RGB(255, 255, 255), 0);
-    // магазин с витриной
-    V3 sh = v3(c + RHW + 19, y, f.s);
-    drawBox(sh + v3(0, 2.0f, 0), v3(4, 2, 7), yaw, RGB(226, 226, 220), true); drawBox(sh + v3(0, 4.1f, 0), v3(4.3f, 0.15f, 7.3f), yaw, red, true);
-    drawBox(sh + v3(-4.02f, 1.5f, -2.5f), v3(0.02f, 1.0f, 3.5f), yaw, gNK > 0.3f ? SHINE(RGB(250, 220, 150), 230) : SHINE(RGB(60, 90, 120), 200), false);
-    drawBox(sh + v3(-4.02f, 1.1f, 3.2f), v3(0.02f, 1.1f, 0.7f), yaw, RGB(60, 70, 80), false);
-    addLabel(sh + v3(-4.3f, 4.8f, 0), "МАГАЗИН  КАФЕ", RGB(30, 80, 170), RGB(255, 255, 255), 0);
-    // стела с ценами у въезда
-    { float sz = f.s0 + 18, sx = cxAt(sz) + RHW + POCKET_W + 2.5f, sy = hAt(sz); drawBox(v3(sx, sy + 3.2f, sz), v3(0.9f, 3.2f, 0.3f), headAt(sz), red, true); drawBox(v3(sx, sy + 0.3f, sz), v3(1.0f, 0.3f, 0.4f), headAt(sz), RGB(120, 120, 120), true);
-      char b[48]; float pr = CITIES[R.from].fuelPrice + 2; snprintf(b, sizeof b, "ДТ %.0f. АИ92 %.0f", pr, pr - 9); addLabel(v3(sx, sy + 4.8f, sz - 0.35f), b, RGB(15, 15, 18), RGB(255, 220, 60), 2); }
+      drawBox(p + v3(0, 0.25f, -0.4f), v3(0.4f, 0.25f, 0.06f), yaw, RGB(250, 200, 40), true); }
+    // опоры в синей облицовке
+    for (int b2 = -1; b2 <= 1; b2 += 2) { drawBox(v3(px, y + 3.1f, f.s + b2 * 7.6f), v3(0.32f, 3.1f, 0.32f), yaw, navy, true); drawBox(v3(px, y + 1.1f, f.s + b2 * 7.6f), v3(0.34f, 0.05f, 0.34f), yaw, cyan, false); }
+    // навес: белый низ, тёмно-синий борт, голубая полоса по краю
+    drawBox(v3(px, y + 6.2f, f.s), v3(6.0f, 0.12f, 13), yaw, white, true);
+    drawBox(v3(px, y + 6.6f, f.s), v3(6.05f, 0.35f, 13.05f), yaw, navy, true);
+    drawBox(v3(px, y + 6.42f, f.s), v3(6.1f, 0.09f, 13.1f), yaw, cyan, false);
+    for (int k = -2; k <= 2; k++) for (int q = -1; q <= 1; q += 2) drawBox(v3(px + q * 2.8f, y + 6.06f, f.s + k * 4.8f), v3(0.9f, 0.02f, 0.45f), yaw, gNK > 0.3f ? SHINE(RGB(255, 255, 250), 255) : RGB(250, 250, 248), false);
+    if (gNK > 0.3f) for (int k = -1; k <= 1; k++) glowAt(v3(px - 2.8f, y + 5.9f, f.s + k * 6), 1.2f, RGB(230, 245, 255), (int)(70 * gNK));
+    addLabel(v3(px - 6.1f, y + 6.6f, f.s - 13.2f), "ТОПЛИВО", navy, RGB(255, 255, 255), 0);
+    // магазин: стеклянный фасад, синий фриз с голубой полосой
+    V3 sh = v3(c + RHW + 22, y, f.s);
+    drawBox(sh + v3(0.6f, 2.0f, 0), v3(3.4f, 2, 7), yaw, RGB(226, 228, 232), true);
+    drawBox(sh + v3(-2.82f, 1.55f, -1.0f), v3(0.02f, 1.45f, 5.6f), yaw, gNK > 0.3f ? SHINE(RGB(250, 230, 170), 230) : SHINE(RGB(90, 150, 190), 210), false);
+    for (int k = -2; k <= 3; k++) drawBox(sh + v3(-2.85f, 1.55f, -1.0f + k * 2.0f - 1.0f), v3(0.03f, 1.45f, 0.05f), yaw, RGB(200, 204, 210), true);   // рамы витрин
+    drawBox(sh + v3(-2.84f, 1.1f, 5.6f), v3(0.02f, 1.1f, 0.7f), yaw, RGB(70, 90, 110), false);
+    drawBox(sh + v3(0.4f, 4.35f, 0), v3(3.75f, 0.45f, 7.3f), yaw, navy, true); drawBox(sh + v3(0.4f, 3.98f, 0), v3(3.78f, 0.08f, 7.33f), yaw, cyan, false);
+    addLabel(sh + v3(-3.4f, 4.4f, 0), "МАГАЗИН · КАФЕ · WC", navy, RGB(255, 255, 255), 0);
+    // высокая стела у въезда: синяя, голубой верх с эмблемой-каплей, белые цены
+    { float sz = f.s0 + 18, sx = cxAt(sz) + RHW + POCKET_W + 2.5f, sy = hAt(sz), sy2 = headAt(sz); V3 Nn = v3(-sinf(sy2), 0, -cosf(sy2));
+      drawBox(v3(sx, sy + 4.0f, sz), v3(1.0f, 4.0f, 0.35f), sy2, navy, true); drawBox(v3(sx, sy + 7.2f, sz), v3(1.02f, 0.8f, 0.37f), sy2, cyan, true);
+      drawBox(v3(sx, sy + 0.3f, sz), v3(1.15f, 0.3f, 0.45f), sy2, RGB(120, 120, 124), true);
+      V3 em = v3(sx, sy + 7.25f, sz) + Nn * 0.38f; vdisc(em, 0.5f, sy2, white); vdisc(em + Nn * 0.01f + v3(0, -0.08f, 0), 0.24f, sy2, cyan);
+      { V3 X = v3(cosf(sy2), 0, -sinf(sy2)); V3 tri[3] = {em + Nn * 0.012f + v3(0, 0.35f, 0), em + Nn * 0.012f + X * 0.2f + v3(0, -0.02f, 0), em + Nn * 0.012f - X * 0.2f + v3(0, -0.02f, 0)}; faceN(tri, 3, Nn, cyan, false); }
+      char b[64]; float pr = CITIES[R.from].fuelPrice + 2; snprintf(b, sizeof b, "ДТ %.1f. АИ-95 %.1f. АИ-92 %.1f", pr + 0.0f, pr - 2.6f, pr - 7.9f);
+      addLabel(v3(sx, sy + 4.6f, sz) + Nn * 0.37f, b, RGB(10, 20, 50), RGB(255, 255, 255), 5); }
     // разметка въезда: стрелки на асфальте кармана
     for (int k = 0; k < 2; k++) { float az = k ? f.s1 - 35 : f.s0 + 22, ax = cxAt(az) + RHW + 2.4f, ay = hAt(az) + 0.04f;
       quad4(v3(ax - 0.15f, ay, az - 3), v3(ax + 0.15f, ay, az - 3), v3(ax + 0.15f, ay, az), v3(ax - 0.15f, ay, az), RGB(235, 235, 230));
@@ -15467,6 +15951,73 @@ static void trafficHead(V3 c, float face, int st) {
     drawBox(lp + F * 0.09f + v3(0, 0.13f, 0), v3(0.14f, 0.015f, 0.09f), face, RGB(30, 32, 34), true);
     if (on) glowAt(lp + F * 0.05f, 0.28f, lc, 130); }
 }
+// ---------- мосты, переезды, развязки ----------
+static void drawBridge(const Feat &f) {
+  float cz = camEye.z; bool big = f.flag; float dep = big ? 9.0f : 6.0f;
+  // ограждения и балки по краям
+  for (float z = gridFrom(f.s0 - 6, cz - 40, 6); z < fminv(f.s1 + 6, cz + 260); z += 6) { float z1 = z + 6, c0 = cxAt(z), c1 = cxAt(z1), y0 = hAt(z), y1 = hAt(z1);
+    for (int sd = -1; sd <= 1; sd += 2) { float x = sd > 0 ? RHW + 0.35f : -LHW - 0.35f; V3 a = v3(c0 + x, y0, z), b = v3(c1 + x, y1, z1); if (!seen((a + b) * 0.5f, 5)) continue;
+      drawBox((a + b) * 0.5f + v3(0, 0.75f, 0), v3(0.06f, 0.06f, 3.05f), headAt(z), RGB(200, 202, 206), true); drawBox((a + b) * 0.5f + v3(0, 0.45f, 0), v3(0.05f, 0.05f, 3.05f), headAt(z), RGB(180, 182, 186), true);
+      drawBox(a + v3(0, 0.4f, 0), v3(0.06f, 0.42f, 0.06f), 0, RGB(150, 152, 156), true);
+      drawBox((a + b) * 0.5f + v3(-sd * 0.2f, -0.6f, 0), v3(0.35f, 0.6f, 3.0f), headAt(z), RGB(150, 148, 142), true); } }   // край балки
+  // опоры из воды
+  float span = big ? 36.0f : 24.0f;
+  for (float z = f.s0 + span; z < f.s1 - span * 0.5f; z += span) { if (z < cz - 60 || z > cz + 300) continue; float c = cxAt(z), y = hAt(z); V3 p = v3(c + (RHW - LHW) * 0.5f, y, z); if (!seen(p - v3(0, dep * 0.5f, 0), 8)) continue;
+    drawBox(p + v3(0, -dep * 0.5f - 0.6f, 0), v3((RHW + LHW) * 0.5f - 0.5f, dep * 0.5f, 1.0f), headAt(z), RGB(170, 168, 160), true);
+    drawBox(p + v3(0, -1.0f, 0), v3((RHW + LHW) * 0.5f + 0.4f, 0.5f, 1.4f), headAt(z), RGB(185, 183, 176), true); }
+  if (big) for (float z = gridFrom(f.s0, cz - 40, 40); z < fminv(f.s1, cz + 260); z += 40) { float c = cxAt(z), y = hAt(z);                                      // фонари на большом мосту
+    for (int sd = -1; sd <= 1; sd += 2) { V3 p = v3(c + (sd > 0 ? RHW + 0.5f : -LHW - 0.5f), y, z); drawBox(p + v3(0, 4.5f, 0), v3(0.07f, 4.5f, 0.07f), 0, RGB(120, 122, 128), true); if (gNK > 0.2f) glowAt(p + v3(-sd * 0.8f, 9, 0), 0.5f, RGB(255, 220, 150), (int)(110 * gNK)); } }
+}
+static void drawRail(const Feat &f) {
+  float c = cxAt(f.s), y = hAt(f.s), cz = camEye.z; if (fabsf(f.s - cz) > 420) return; int rs = railState(f); float t = railT(f);
+  // насыпь, шпалы, рельсы (поперёк дороги)
+  for (int sd = -1; sd <= 1; sd += 2) { float x0 = sd > 0 ? RHW + 0.3f : -LHW - 0.3f, x1 = sd * 220.0f;
+    quad4(v3(c + fminv(x0, x1), y + 0.03f, f.s - 2.4f), v3(c + fmaxv(x0, x1), y + 0.03f, f.s - 2.4f), v3(c + fmaxv(x0, x1), y + 0.03f, f.s + 2.4f), v3(c + fminv(x0, x1), y + 0.03f, f.s + 2.4f), RGB(120, 112, 104)); }
+  if (fabsf(f.s - cz) < 120) for (float x = -60; x <= 60; x += 0.9f) { if (x > -LHW && x < RHW) continue; drawBox(v3(c + x, y + 0.08f, f.s), v3(0.12f, 0.05f, 1.35f), 0, RGB(80, 66, 54), true); }
+  for (int k = -1; k <= 1; k += 2) drawBox(v3(c, y + 0.16f, f.s + k * 0.76f), v3(220, 0.06f, 0.05f), 0, RGB(150, 150, 156), true);
+  quad4(v3(c - LHW, y + 0.035f, f.s - 2.0f), v3(c + RHW, y + 0.035f, f.s - 2.0f), v3(c + RHW, y + 0.035f, f.s + 2.0f), v3(c - LHW, y + 0.035f, f.s + 2.0f), RGB(48, 48, 50));   // настил переезда
+  // шлагбаумы и светофоры (для обеих сторон)
+  float down = rs == 2 ? 1.0f : (rs == 1 ? clampf((t - 52) / 4, 0, 1) : (rs == 3 ? 1 - clampf((t - 86) / 3, 0, 1) : 0.0f));
+  for (int sd = -1; sd <= 1; sd += 2) { float bz = f.s - sd * 8.0f, px = sd > 0 ? c + RHW + 1.0f : c - LHW - 1.0f; V3 P = v3(px, y, bz);
+    drawBox(P + v3(0, 0.6f, 0), v3(0.25f, 0.6f, 0.25f), 0, RGB(230, 230, 230), true);
+    float len = sd > 0 ? RHW + 0.6f : LHW + 0.6f, ang = (1 - down) * 1.45f;                     // стрела: 0 - лежит над дорогой, 1.45 - поднята
+    for (int k = 0; k < 6; k++) { float r0 = len * (k + 0.5f) / 6; V3 q = P + v3(-sd * cosf(ang) * r0, 1.05f + sinf(ang) * r0, 0); drawBox(q, v3(0.09f + fabsf(cosf(ang)) * len / 12, 0.09f + sinf(ang) * len / 12, 0.06f), 0, (k & 1) ? RGB(240, 240, 240) : RGB(210, 30, 30), true); }
+    V3 S = P + v3(sd * 0.9f, 0, -sd * 1.5f); drawBox(S + v3(0, 1.5f, 0), v3(0.07f, 1.5f, 0.07f), 0, RGB(60, 60, 60), true); drawBox(S + v3(0, 2.7f, 0), v3(0.55f, 0.22f, 0.06f), 0, RGB(20, 20, 20), true);
+    bool fl = fmodf(gTime, 1.0f) < 0.5f; float fz = -sd * 0.08f;
+    for (int k = -1; k <= 1; k += 2) { bool on = rs != 0 && (k < 0 ? fl : !fl); V3 lp = S + v3(k * 0.3f, 2.7f, fz); drawBox(lp, v3(0.13f, 0.13f, 0.02f), 0, on ? SHINE(RGB(255, 40, 30), 255) : RGB(70, 20, 20), !on); if (on) glowAt(lp, 0.35f, RGB(255, 50, 30), 150); }
+    { bool on = rs == 0 && fl; V3 lp = S + v3(0, 3.2f, fz); drawBox(lp, v3(0.1f, 0.1f, 0.02f), 0, on ? SHINE(RGB(240, 240, 255), 255) : RGB(80, 80, 90), !on); }   // бело-лунный
+    { u32 X2 = RGB(245, 245, 245); drawBox(S + v3(0, 3.7f, fz), v3(0.6f, 0.08f, 0.02f), 0.6f, X2, false); drawBox(S + v3(0, 3.7f, fz), v3(0.6f, 0.08f, 0.02f), -0.6f, X2, false); } }
+  // поезд
+  float hx = trainX(f); if (hx < 1e8f) { static const u32 WC[] = {RGB(110, 60, 40), RGB(40, 70, 120), RGB(90, 90, 96), RGB(130, 110, 40)};
+    for (int k = 0; k < 18; k++) { float len = k == 0 ? 18.0f : 13.5f, xa = hx - (k == 0 ? 0 : 18.0f + 0.8f + (k - 1) * 14.3f), xm = xa - len * 0.5f; if (xm < -250 || xm > 250) continue; V3 p = v3(c + xm, y + 0.3f, f.s);
+      if (!seen(p + v3(0, 2, 0), 10)) continue;
+      if (k == 0) { drawBox(p + v3(0, 2.2f, 0), v3(len * 0.5f, 1.9f, 1.55f), 0, RGB(40, 120, 70), true); drawBox(p + v3(len * 0.5f - 1.5f, 2.6f, 0), v3(1.5f, 1.4f, 1.6f), 0, RGB(200, 60, 40), true);
+        glowAt(p + v3(len * 0.5f + 0.1f, 1.6f, 0), 0.5f, RGB(255, 245, 210), 200); }
+      else drawBox(p + v3(0, 2.0f, 0), v3(len * 0.5f, 1.8f, 1.5f), 0, WC[(k * 7 + (int)f.s) % 4], true);
+      drawBox(p + v3(0, 0.25f, 0), v3(len * 0.5f - 0.4f, 0.25f, 1.2f), 0, RGB(30, 30, 30), true); } }
+}
+static void drawInter(const Feat &f) {
+  float c = cxAt(f.s), y = hAt(f.s), cz = camEye.z; if (f.s - cz > drawR || f.s < cz - 80) return; float H = 6.8f;
+  // путепровод над дорогой
+  drawBox(v3(c, y + H, f.s), v3(48, 0.45f, 6.0f), 0, RGB(176, 174, 168), true);
+  quad4(v3(c - 48, y + H + 0.46f, f.s - 5.6f), v3(c + 48, y + H + 0.46f, f.s - 5.6f), v3(c + 48, y + H + 0.46f, f.s + 5.6f), v3(c - 48, y + H + 0.46f, f.s + 5.6f), RGB(70, 72, 76));
+  for (int k = -1; k <= 1; k += 2) drawBox(v3(c, y + H + 1.0f, f.s + k * 5.9f), v3(48, 0.5f, 0.1f), 0, RGB(205, 205, 200), true);
+  for (int sd = -1; sd <= 1; sd += 2) { float px = sd > 0 ? c + RHW + 2.2f : c - LHW - 2.2f; for (int k = -1; k <= 1; k += 2) drawBox(v3(px, y + H * 0.5f, f.s + k * 3.5f), v3(0.6f, H * 0.5f, 0.6f), 0, RGB(186, 184, 178), true);
+    drawBox(v3(c + sd * 58, y + H * 0.5f, f.s), v3(10, H * 0.5f, 7), 0, groundCol(f.s, 2 * sd), true); }      // насыпи
+  // машины на путепроводе
+  for (int k = 0; k < 3; k++) { float ph = fmodf(gTime * 14 + k * 37 + f.s, 120.0f) - 60; int dir = k & 1 ? 1 : -1; float x = c + ph * dir, z = f.s + (dir > 0 ? -2.2f : 2.2f); const ObjModel *m = gCarS[(k + (int)f.s) % 7]; if (!m) m = gCarM[(k + (int)f.s) % 7];
+    if (m && fabsf(ph) < 46) drawCarObjR(*m, v3(x, y + H + 0.46f, z), dir > 0 ? 1.5708f : -1.5708f, PAINTS[(k * 3 + (int)f.s) % NPAINT], false, 0); }
+  // съезд направо: полоса торможения и подъём к путепроводу
+  for (float z = gridFrom(f.s - 170, cz - 40, 6); z < fminv(f.s - 12, cz + drawR); z += 6) { float z1 = z + 6;
+    float t0 = smooth01(f.s - 170, f.s - 90, z), t1 = smooth01(f.s - 170, f.s - 90, z1), u0 = smooth01(f.s - 90, f.s - 12, z), u1 = smooth01(f.s - 90, f.s - 12, z1);
+    float o0 = RHW + 0.3f + t0 * 3.4f + u0 * 22, o1 = RHW + 0.3f + t1 * 3.4f + u1 * 22, e0 = u0 * H, e1 = u1 * H, a0 = cxAt(z), a1 = cxAt(z1), h0 = hAt(z) + 0.02f + e0, h1 = hAt(z1) + 0.02f + e1;
+    quad4(v3(a0 + o0 - 1.8f - (1 - u0) * 1.6f, h0, z), v3(a0 + o0 + 1.8f, h0, z), v3(a1 + o1 + 1.8f, h1, z1), v3(a1 + o1 - 1.8f - (1 - u1) * 1.6f, h1, z1), RGB(72, 74, 78));
+    if (e0 > 0.3f) drawBox(v3((a0 + a1) * 0.5f + (o0 + o1) * 0.5f, (hAt(z) + h0) * 0.5f - 0.1f, z + 3), v3(2.4f, (e0 + e1) * 0.25f, 3.0f), headAt(z), groundCol(z, 2), true); }
+  // указатель над дорогой
+  { float gz = f.s - 260, gc = cxAt(gz), gy = hAt(gz); for (int sd = -1; sd <= 1; sd += 2) drawBox(v3(gc + (sd > 0 ? RHW + 1.2f : -LHW - 1.2f), gy + 3.4f, gz), v3(0.15f, 3.4f, 0.15f), 0, RGB(150, 152, 158), true);
+    drawBox(v3(gc + (RHW - LHW) * 0.5f, gy + 6.8f, gz), v3((RHW + LHW) * 0.5f + 1.3f, 0.12f, 0.12f), 0, RGB(150, 152, 158), true);
+    char b[96]; snprintf(b, sizeof b, "%s ПРЯМО. %s >", CITIES[R.to].shortName, f.name); addLabel(v3(gc + LANE + R.ex * 0.5f, gy + 7.9f, gz - 0.2f), b, RGB(30, 80, 170), RGB(255, 255, 255), 6); }
+}
 static void drawFeatureSigns(const Feat &f) {
   switch (f.type) {
     case F_WORKS:
@@ -15482,10 +16033,88 @@ static void drawFeatureSigns(const Feat &f) {
       break;
     case F_DPS: addLabel(v3(cxAt(f.s - 250) + RHW + 2, hAt(f.s - 250) + 1.4f, f.s - 250), "50", 0, 0, 1); break;
     case F_CAM: addLabel(v3(cxAt(f.s - 150) + RHW + 2, hAt(f.s - 150) + 2.6f, f.s - 150), "ФОТОВИДЕОФИКСАЦИЯ", RGB(250, 250, 250), RGB(20, 20, 20), 2); break;
+    case F_RAIL: roadSign(f.s - 300, SG_RAIL); addLabel(v3(cxAt(f.s - 160) + RHW + 2, hAt(f.s - 160) + 1.4f, f.s - 160), "60", 0, 0, 1); break;
+    case F_BRIDGE: { char b[48]; snprintf(b, sizeof b, "%s", f.name); addLabel(v3(cxAt(f.s0 - 30) + RHW + 2, hAt(f.s0 - 30) + 2.6f, f.s0 - 30), b, RGB(30, 80, 170), RGB(255, 255, 255), 2); } break;
     case F_ICE:
         addLabel(v3(cxAt(f.s0 - 120) + RHW + 2, hAt(f.s0 - 120) + 2.6f, f.s0 - 120), "ЛЕДОВАЯ ПЕРЕПРАВА. НЕ БОЛЕЕ 30 Т", RGB(30, 70, 160), RGB(255, 255, 255), 2);
         addLabel(v3(cxAt(f.s0 - 60) + RHW + 2, hAt(f.s0 - 60) + 1.4f, f.s0 - 60), "20", 0, 0, 1); break;
   }
+}
+// ---- платный участок: навес, кассы, шлагбаумы ----
+static void drawToll(const Feat &f) {
+  float c = cxAt(f.s), y = hAt(f.s), yaw = headAt(f.s); if (!seen(v3(c, y + 3, f.s), 16)) return;
+  float ix[4] = {ROAD_HW, RHW + 1.0f, -LHW + (R.four ? LANE_W : 0.0f), -LHW - 1.0f};
+  drawBox(v3(c + (RHW - LHW) * 0.5f, y + 6.2f, f.s), v3((RHW + LHW) * 0.5f + 2.2f, 0.45f, 7.5f), yaw, RGB(230, 230, 236), true);
+  drawBox(v3(c + (RHW - LHW) * 0.5f, y + 6.75f, f.s - 7.5f), v3((RHW + LHW) * 0.5f + 2.2f, 0.25f, 0.06f), yaw, RGB(30, 90, 170), true);
+  for (int k = 0; k < 4; k++) { float x = c + ix[k]; drawBox(v3(x, y + 0.15f, f.s), v3(0.6f, 0.15f, 7.0f), yaw, RGB(240, 200, 40), true);   // островок
+    drawBox(v3(x, y + 1.4f, f.s), v3(0.55f, 1.1f, 1.2f), yaw, RGB(200, 210, 220), true); drawBox(v3(x, y + 1.7f, f.s - 1.21f), v3(0.4f, 0.4f, 0.01f), yaw, RGB(90, 140, 200), false);   // будка кассы
+    drawBox(v3(x, y + 3.6f, f.s), v3(0.2f, 2.4f, 0.2f), 0, RGB(200, 200, 205), true); }
+  bool open = f.done || fabsf(rig.z - f.s) > 40;
+  for (int k = 0; k < 2; k++) { float x0 = c + (k == 0 ? 0.3f : ROAD_HW + 0.6f), len = k == 0 ? ROAD_HW - 0.9f : RHW - ROAD_HW - 0.6f, ang = open ? 1.3f : 0.0f;   // стрелы шлагбаумов в наших полосах
+    for (int q = 0; q < 6; q++) { float t = (q + 0.5f) / 6; drawBox(v3(x0 + cosf(ang) * len * t, y + 1.0f + sinf(ang) * len * t, f.s + 2.0f), v3(len / 12 * cosf(ang) + 0.04f, len / 12 * sinf(ang) + 0.04f, 0.04f), 0, q & 1 ? RGB(220, 40, 40) : RGB(245, 245, 245), false); }
+    glowAt(v3(x0, y + 2.6f, f.s + 2.2f), 0.25f, open ? RGB(60, 230, 90) : RGB(255, 40, 40), 220); }
+  if (fabsf(f.s - camEye.z) < 200) addLabel(v3(c + ROAD_HW * 0.5f, y + 6.2f, f.s - 7.7f), f.done ? "ОПЛАЧЕНО · СЧАСТЛИВОГО ПУТИ" : "ОСТАНОВИТЕСЬ ДЛЯ ОПЛАТЫ", RGB(30, 90, 170), RGB(255, 255, 255), 0);
+}
+// ---- трасса закрыта из-за метели ----
+static void drawClosed(const Feat &f) {
+  float c = cxAt(f.s), y = hAt(f.s), yaw = headAt(f.s); if (!seen(v3(c, y + 2, f.s), 14)) return;
+  if (!f.done) for (int sd = -1; sd <= 1; sd += 2) { float bz = f.s - sd * 6.0f, x0 = sd > 0 ? 0.0f : -LHW - 1, x1 = sd > 0 ? RHW + 1 : 0.0f;
+    for (float x = x0; x < x1; x += 1.0f) drawBox(v3(c + x + 0.5f, y + 1.0f, bz), v3(0.5f, 0.1f, 0.05f), yaw, ((int)(x + 20)) & 1 ? RGB(220, 40, 40) : RGB(245, 245, 245), false);
+    for (int k = 0; k < 2; k++) drawBox(v3(c + (k ? x1 : x0), y + 0.5f, bz), v3(0.08f, 0.5f, 0.08f), 0, RGB(80, 80, 80), true); }
+  V3 pc = v3(c + RHW + 3.0f, y, f.s - 10); if (gCarL[0]) drawCarObjR(*gCarL[0], pc, yaw + 0.4f, RGB(235, 238, 240), false, 0);
+  bool ph = fmodf(gTime, 0.6f) < 0.3f; glowAt(pc + v3(-0.4f, 1.7f, 0), 0.35f, ph ? RGB(255, 40, 40) : RGB(40, 80, 255), 230); glowAt(pc + v3(0.4f, 1.7f, 0), 0.35f, ph ? RGB(40, 80, 255) : RGB(255, 40, 40), 230);
+  if (!f.done && fabsf(f.s - camEye.z) < 400) addLabel(v3(c + RHW * 0.5f, y + 3.0f, f.s - 7), "ПРОЕЗД ЗАКРЫТ: МЕТЕЛЬ", RGB(200, 30, 30), RGB(255, 255, 255), 0);
+}
+// ---- сломанная машина на обочине ----
+static void drawBroken(const Feat &f) {
+  float c = cxAt(f.s), y = hAt(f.s), yaw = headAt(f.s); V3 p = v3(c + RHW + 2.2f, y, f.s); if (!seen(p + v3(0, 1, 0), 4)) return;
+  int m = (int)(hsh((unsigned)f.s) % 7); if (gCarL[m]) drawCarObjR(*gCarL[m], p, yaw, RGB(150, 40, 40), false, f.done ? 0 : 3);
+  if (!f.done) { drawBox(p + rotOff(yaw, 0, 1.45f, 1.6f), v3(0.8f, 0.04f, 0.5f), yaw - 0.0f, RGB(150, 40, 40), true);   // открытый капот
+    bool bl = fmodf(gTime, 0.8f) < 0.4f; for (int sd = -1; sd <= 1; sd += 2) glowAt(p + rotOff(yaw, sd * 0.75f, 0.7f, -2.2f), 0.25f, RGB(255, 170, 30), bl ? 220 : 40);
+    V3 tr = v3(cxAt(f.s - 22) + RHW + 1.2f, hAt(f.s - 22), f.s - 22); drawBox(tr + v3(0, 0.3f, 0), v3(0.3f, 0.03f, 0.03f), 0, RGB(230, 30, 30), false);   // знак аварийной остановки
+    drawBox(tr + v3(-0.15f, 0.15f, 0), v3(0.03f, 0.17f, 0.03f), 0.5f, RGB(230, 30, 30), false); drawBox(tr + v3(0.15f, 0.15f, 0), v3(0.03f, 0.17f, 0.03f), -0.5f, RGB(230, 30, 30), false);
+    V3 w = p + rotOff(yaw, -1.4f, 0, -3.0f); float wave = sinf(gTime * 6) * 0.3f;   // водитель машет рукой
+    drawBox(w + v3(0, 0.42f, 0), v3(0.14f, 0.42f, 0.08f), yaw, RGB(40, 40, 50), true); drawBox(w + v3(0, 1.15f, 0), v3(0.2f, 0.32f, 0.13f), yaw, RGB(60, 90, 160), true);
+    drawBox(w + v3(0, 1.6f, 0), v3(0.11f, 0.12f, 0.11f), 0, RGB(225, 185, 150), true); drawBox(w + v3(-0.3f, 1.7f + wave * 0.3f, 0), v3(0.06f, 0.35f, 0.06f), wave, RGB(60, 90, 160), true); }
+}
+// ---- комбайны в полях летом и осенью ----
+static void drawCombines() {
+  int se = seasonNow(); if (!(se == SE_SUMMER || se == SE_AUTUMN) || !(R.rg == RG_CENTER || R.rg == RG_SOUTH || R.rg == RG_URAL) || R.weather >= 2) return;
+  float cz = camEye.z;
+  for (int k = (int)floorf((cz - 100) / 600); k <= (int)floorf((cz + fminv(drawR, 500)) / 600); k++) { unsigned h = hsh((unsigned)k * 131u + R.seed); if ((h & 3) != 0 || k < 1) continue;
+    int side = (h >> 3) & 1 ? 1 : -1; float zz = k * 600.0f + 300 + sinf(gTime * 0.04f + k) * 160, xx = cxAt(zz) + side * (RHW + 70 + ((h >> 5) & 63)), y = hAt(zz) - 0.05f, yaw = cosf(gTime * 0.04f + k) > 0 ? 0.0f : 3.14159f;
+    bool skip = false; for (size_t i = 0; i < R.feats.size(); i++) if (R.feats[i].type == F_VILLAGE && fabsf(R.feats[i].s - zz) < 300) skip = true; if (skip) continue;
+    V3 p = v3(xx, y, zz); if (!seen(p + v3(0, 2, 0), 8)) continue; u32 body = (h >> 9) & 1 ? RGB(200, 40, 30) : RGB(60, 140, 60);
+    drawBox(p + v3(0, 2.0f, 0), v3(1.6f, 1.3f, 3.2f), yaw, body, true); drawBox(p + rotOff(yaw, 0, 3.6f, 1.6f), v3(1.0f, 0.8f, 0.9f), yaw, RGB(150, 190, 210), true);
+    drawBox(p + rotOff(yaw, 0, 1.0f, 4.6f), v3(3.2f, 0.45f, 0.8f), yaw, RGB(220, 200, 60), true);                 // жатка
+    drawBox(p + rotOff(yaw, 2.0f, 3.4f, -0.5f), v3(1.6f, 0.15f, 0.15f), yaw, body, true);                       // выгрузной шнек
+    for (int a = -1; a <= 1; a += 2) for (int b = -1; b <= 1; b += 2) drawBox(p + rotOff(yaw, a * 1.7f, b > 0 ? 0.8f : 0.6f, b * 2.0f), v3(0.35f, b > 0 ? 0.8f : 0.6f, b > 0 ? 0.8f : 0.6f), yaw, RGB(30, 30, 32), true);
+    if (gNK < 0.6f) glowAt(p + rotOff(yaw, 0, 1.5f, -4.5f), 3.5f, RGB(200, 180, 130), 60); }   // пыль
+}
+// ---- особые машины в потоке ----
+static void drawSpecial(const TCar &c, float x, float y, float yaw, float d2) {
+  V3 p = v3(x, y, c.s); V3 ax = v3(cosf(yaw), 0, -sinf(yaw)), az = fwd(yaw), ay = v3(0, 1, 0); bool bl = fmodf(gTime, 0.7f) < 0.35f;
+  #define SB(ox, oy, oz, hx, hy, hz, col) drawBox(p + rotOff(yaw, ox, oy, oz), v3(hx, hy, hz), yaw, col, true)
+  #define SW(ox, oz, r) drawWheel(p + rotOff(yaw, ox, r, oz), ax, ay, az, r, 0.22f, RGB(28, 28, 30))
+  switch (c.special) {
+    case 1: SB(0, 1.6f, 3.2f, 1.2f, 1.0f, 1.0f, c.col); SB(0, 1.1f, 4.4f, 1.1f, 0.5f, 0.4f, c.col); SB(0, 2.1f, 4.15f, 1.0f, 0.35f, 0.02f, RGB(60, 70, 80));
+      SB(0, 2.1f, -1.0f, 1.3f, 1.2f, 3.0f, RGB(84, 98, 66)); SB(0, 0.75f, 0, 0.7f, 0.15f, 4.2f, RGB(30, 30, 30));
+      for (int a = -1; a <= 1; a += 2) { SW(a * 1.05f, 3.3f, 0.55f); SW(a * 1.05f, -1.0f, 0.55f); SW(a * 1.05f, -2.4f, 0.55f); } break;
+    case 2: { const ObjModel *m = gCarL[c.model] ? gCarL[c.model] : gCarM[c.model]; if (m) drawCarObjR(*m, p, yaw, c.col, c.brake, 0);
+      SB(0, 1.55f, 0, 0.55f, 0.08f, 0.15f, RGB(40, 40, 40)); glowAt(p + rotOff(yaw, -0.35f, 1.65f, 0), 0.3f, bl ? RGB(255, 40, 40) : RGB(40, 80, 255), 230); glowAt(p + rotOff(yaw, 0.35f, 1.65f, 0), 0.3f, bl ? RGB(40, 80, 255) : RGB(255, 40, 40), 230); } break;
+    case 3: SB(0, 1.3f, 0.6f, 0.6f, 0.5f, 1.4f, c.col); SB(0, 2.3f, -0.6f, 0.75f, 0.75f, 0.7f, RGB(160, 200, 220)); SB(0, 3.1f, -0.6f, 0.8f, 0.06f, 0.75f, c.col);
+      for (int a = -1; a <= 1; a += 2) { SW(a * 0.95f, -0.8f, 0.8f); SW(a * 0.75f, 1.6f, 0.45f); }
+      glowAt(p + rotOff(yaw, 0, 3.3f, -0.6f), 0.25f, RGB(255, 170, 30), bl ? 200 : 40); break;
+    case 4: SB(0, 1.6f, 3.2f, 1.25f, 1.0f, 1.0f, c.col); SB(0, 1.7f, -1.2f, 1.25f, 1.1f, 2.8f, RGB(90, 90, 96)); SB(0, 0.8f, 5.0f, 1.6f, 0.55f, 0.15f, RGB(240, 200, 40));   // кабина, кузов с реагентом, отвал
+      SB(-0.7f, 0.8f, 5.3f, 1.0f, 0.5f, 0.12f, RGB(240, 200, 40)); SB(0, 0.75f, 0, 0.7f, 0.15f, 4.2f, RGB(30, 30, 30));
+      for (int a = -1; a <= 1; a += 2) { SW(a * 1.05f, 3.3f, 0.55f); SW(a * 1.05f, -1.2f, 0.55f); SW(a * 1.05f, -2.6f, 0.55f); }
+      glowAt(p + rotOff(yaw, -0.6f, 2.75f, 3.2f), 0.4f, RGB(255, 160, 20), bl ? 255 : 30); glowAt(p + rotOff(yaw, 0.6f, 2.75f, 3.2f), 0.4f, RGB(255, 160, 20), bl ? 30 : 255); break;
+    case 5: SB(0, 1.85f, 0, 1.25f, 1.35f, 6.0f, RGB(235, 235, 238)); SB(0, 2.2f, 0, 1.26f, 0.45f, 5.6f, RGB(40, 50, 64)); SB(0, 1.2f, 0, 1.27f, 0.15f, 5.9f, RGB(30, 90, 170));
+      SB(0, 2.0f, 6.0f, 1.15f, 0.7f, 0.02f, RGB(60, 75, 90)); for (int a = -1; a <= 1; a += 2) { SW(a * 1.1f, 3.8f, 0.5f); SW(a * 1.1f, -3.4f, 0.5f); } break;
+  }
+  #undef SB
+  #undef SW
+  (void)d2;
 }
 static void drawFeatures() {
   float cz = camEye.z;
@@ -15495,17 +16124,17 @@ static void drawFeatures() {
     switch (f.type) {
       case F_VILLAGE: { HouseP h[80]; int n = housesNear(f, cz - 60, cz + fminv(drawR, 420.0f), h, 80); for (int k = 0; k < n; k++) drawHouse(h[k], hAt(h[k].z));
         // перекрёсток и светофоры
-        float zc = f.s; for (int s = -1; s <= 1; s += 2) { float x0 = c + (s > 0 ? RHW : -ROAD_HW), x1 = c + s * 70; quad4(v3(fminv(x0, x1), y + 0.015f, zc - 3.5f), v3(fmaxv(x0, x1), y + 0.015f, zc - 3.5f), v3(fmaxv(x0, x1), y + 0.015f, zc + 3.5f), v3(fminv(x0, x1), y + 0.015f, zc + 3.5f), RGB(76, 78, 82)); }
+        float zc = f.s; for (int s = -1; s <= 1; s += 2) { float x0 = c + (s > 0 ? RHW : -LHW), x1 = c + s * 70; quad4(v3(fminv(x0, x1), y + 0.015f, zc - 3.5f), v3(fmaxv(x0, x1), y + 0.015f, zc - 3.5f), v3(fmaxv(x0, x1), y + 0.015f, zc + 3.5f), v3(fminv(x0, x1), y + 0.015f, zc + 3.5f), RGB(76, 78, 82)); }
         int ls = lightState(f), cs = crossState(f);
         // стоп-линии и зебра
         quad4(v3(c, y + 0.032f, f.s - 14.2f), v3(c + RHW, y + 0.032f, f.s - 14.2f), v3(c + RHW, y + 0.032f, f.s - 13.8f), v3(c, y + 0.032f, f.s - 13.8f), RGB(230, 230, 225));
-        quad4(v3(c - ROAD_HW, y + 0.032f, f.s + 13.8f), v3(c, y + 0.032f, f.s + 13.8f), v3(c, y + 0.032f, f.s + 14.2f), v3(c - ROAD_HW, y + 0.032f, f.s + 14.2f), RGB(230, 230, 225));
-        for (float xx = -ROAD_HW + 0.25f; xx < RHW - 0.4f; xx += 1.0f) quad4(v3(c + xx, y + 0.033f, f.s - 11.5f), v3(c + xx + 0.5f, y + 0.033f, f.s - 11.5f), v3(c + xx + 0.5f, y + 0.033f, f.s - 8.5f), v3(c + xx, y + 0.033f, f.s - 8.5f), RGB(236, 236, 230));
-        for (int s = -1; s <= 1; s += 2) { float xs = s > 0 ? RHW + 3.5f : -ROAD_HW - 3.5f, za = s > 0 ? f.s : f.s - 3.5f, zb2 = s > 0 ? f.s + 3.5f : f.s;
+        quad4(v3(c - LHW, y + 0.032f, f.s + 13.8f), v3(c, y + 0.032f, f.s + 13.8f), v3(c, y + 0.032f, f.s + 14.2f), v3(c - LHW, y + 0.032f, f.s + 14.2f), RGB(230, 230, 225));
+        for (float xx = -LHW + 0.25f; xx < RHW - 0.4f; xx += 1.0f) quad4(v3(c + xx, y + 0.033f, f.s - 11.5f), v3(c + xx + 0.5f, y + 0.033f, f.s - 11.5f), v3(c + xx + 0.5f, y + 0.033f, f.s - 8.5f), v3(c + xx, y + 0.033f, f.s - 8.5f), RGB(236, 236, 230));
+        for (int s = -1; s <= 1; s += 2) { float xs = s > 0 ? RHW + 3.5f : -LHW - 3.5f, za = s > 0 ? f.s : f.s - 3.5f, zb2 = s > 0 ? f.s + 3.5f : f.s;
           quad4(v3(c + xs - 0.2f, y + 0.02f, za), v3(c + xs + 0.2f, y + 0.02f, za), v3(c + xs + 0.2f, y + 0.02f, zb2), v3(c + xs - 0.2f, y + 0.02f, zb2), RGB(230, 230, 225)); }
         // светофоры: столб с рамой над нашей полосой + головка на столбе; для поперечной улицы - свои головки
         for (int side = -1; side <= 1; side += 2) {
-          float px = side > 0 ? c + RHW + 1.3f : c - ROAD_HW - 1.3f, pz = f.s - side * 6.5f, hx = side > 0 ? c + (R.wide ? ROAD_HW : LANE) : c - LANE;
+          float px = side > 0 ? c + RHW + 1.3f : c - LHW - 1.3f, pz = f.s - side * 6.5f, hx = side > 0 ? c + (R.wide ? ROAD_HW : LANE) : c - (R.four ? ROAD_HW : LANE);
           V3 P = v3(px, y, pz); if (!seen(P + v3(0, 3, 0), 9)) continue;
           float face = side > 0 ? 3.14159f : 0.0f;                           // куда смотрят линзы (на подъезжающих)
           drawBox(P + v3(0, 3.05f, 0), v3(0.09f, 3.05f, 0.09f), 0, RGB(110, 112, 118), true);
@@ -15515,7 +16144,7 @@ static void drawFeatures() {
         }
         roadSign(f.s - 22, SG_ZEBRA);
         // пешеходы
-        if ((int)i == walkVillage) for (int k = 0; k < 3; k++) { const Walker &w = walkers[k]; if (w.done && (w.x > -ROAD_HW - 2.5f && w.x < RHW + 2.5f)) {} 
+        if ((int)i == walkVillage) for (int k = 0; k < 3; k++) { const Walker &w = walkers[k]; if (w.done && (w.x > -LHW - 2.5f && w.x < RHW + 2.5f)) {} 
           float wx = c + w.x, wz = f.s - 10.0f + (k - 1) * 0.6f, wy = hAt(wz); if (!seen(v3(wx, wy + 1, wz), 2)) continue; float sw = sinf(w.ph) * 0.18f;
           drawBox(v3(wx, wy + 0.42f, wz + sw), v3(0.07f, 0.42f, 0.07f), 0, RGB(40, 40, 50), true); drawBox(v3(wx, wy + 0.42f, wz - sw), v3(0.07f, 0.42f, 0.07f), 0, RGB(40, 40, 50), true);
           drawBox(v3(wx, wy + 1.15f, wz), v3(0.2f, 0.32f, 0.13f), 0, w.col, true); drawBox(v3(wx, wy + 1.6f, wz), v3(0.11f, 0.12f, 0.11f), 0, RGB(225, 185, 150), true); }
@@ -15525,7 +16154,7 @@ static void drawFeatures() {
           const ObjModel *m = d2 < 25 * 25 ? gCarL[x.model] : gCarS[x.model]; if (!m) m = gCarM[x.model]; if (m) drawCarObjR(*m, p, yaw, x.col, x.brake, 0);
           if (x.crashed) glowAt(p + v3(0, 1.2f, 0), 0.3f, RGB(255, 170, 30), fmodf(gTime, 0.8f) < 0.4f ? 200 : 40); }
         // фонари
-        if (gNK > 0.1f) for (float s = fmaxv(f.s0, cz - 40); s < fminv(f.s1, cz + 300); s += 40) { float x = cxAt(s) + RHW + 1.5f, yy = hAt(s); drawBox(v3(x, yy + 3.5f, s), v3(0.06f, 3.5f, 0.06f), 0, RGB(70, 70, 76), true); glowAt(v3(x - 0.8f, yy + 7, s), 0.5f, RGB(255, 220, 150), (int)(110 * gNK)); }
+        if (gNK > 0.1f) for (float s = gridFrom(f.s0, cz - 40, 40); s < fminv(f.s1, cz + 300); s += 40) { float x = cxAt(s) + RHW + 1.5f, yy = hAt(s); drawBox(v3(x, yy + 3.5f, s), v3(0.06f, 3.5f, 0.06f), 0, RGB(70, 70, 76), true); glowAt(v3(x - 0.8f, yy + 7, s), 0.5f, RGB(255, 220, 150), (int)(110 * gNK)); }
         addLabel(v3(cxAt(f.s0 - 8) + RHW + 2, hAt(f.s0 - 8) + 2.6f, f.s0 - 8), f.name, RGB(250, 250, 250), RGB(10, 10, 10), 2);
         addLabel(v3(cxAt(f.s0) + RHW + 2, hAt(f.s0) + 1.4f, f.s0 + 2), "60", 0, 0, 1);
         addLabel(v3(cxAt(f.s1) + RHW + 2, hAt(f.s1) + 1.4f, f.s1 + 2), R.zimnik ? "50" : "90", 0, 0, 1);
@@ -15542,10 +16171,10 @@ static void drawFeatures() {
       case F_WORKS: {
         float x0, x1; worksBand(f, x0, x1);
         // снятый асфальт (фрезеровка) на закрытой полосе
-        for (float z = fmaxv(f.s0, cz - 40); z < fminv(f.s1, cz + 260); z += 8) { float z1 = fminv(z + 8, f.s1), a = cxAt(z), b = cxAt(z1), ya = hAt(z) + 0.035f, yb = hAt(z1) + 0.035f;
+        for (float z = gridFrom(f.s0, cz - 40, 8); z < fminv(f.s1, cz + 260); z += 8) { float z1 = fminv(z + 8, f.s1), a = cxAt(z), b = cxAt(z1), ya = hAt(z) + 0.035f, yb = hAt(z1) + 0.035f;
           quad4(v3(a + x0 + 0.35f, ya, z), v3(a + x1 - 0.15f, ya, z), v3(b + x1 - 0.15f, yb, z1), v3(b + x0 + 0.35f, yb, z1), RGB(92, 84, 76)); }
         // конусы по границе: клин в начале и в конце
-        for (float z = fmaxv(f.s0 - 25, cz - 40); z <= fminv(f.s1 + 15, cz + 220); z += (z < f.s0 || z > f.s1 ? 3.0f : 7.0f)) { float cf = worksClosedFrom(f, z); if (cf > 1e8f) continue;
+        for (float z = gridFrom(f.s0 - 25, cz - 40, 3); z <= fminv(f.s1 + 15, cz + 220); z += 3) { if (z > f.s0 + 1 && z < f.s1 - 1 && fmodf(z - (f.s0 - 25), 9) > 1) continue; float cf = worksClosedFrom(f, z); if (cf > 1e8f) continue;
           V3 p = v3(cxAt(z) + cf + 0.2f, hAt(z), z); if (!seen(p, 2)) continue;
           drawBox(p + v3(0, 0.36f, 0), v3(0.17f, 0.36f, 0.17f), 0.78f, RGB(240, 110, 20), true); drawBox(p + v3(0, 0.45f, 0), v3(0.18f, 0.07f, 0.18f), 0.78f, RGB(245, 245, 245), true); drawBox(p + v3(0, 0.02f, 0), v3(0.3f, 0.02f, 0.3f), 0, RGB(30, 30, 30), true); }
         // техника и рабочие
@@ -15561,17 +16190,23 @@ static void drawFeatures() {
           drawBox(man + v3(0, 0.45f, 0), v3(0.14f, 0.45f, 0.12f), 0, RGB(40, 50, 80), true); drawBox(man + v3(0, 1.15f, 0), v3(0.22f, 0.3f, 0.15f), 0, RGB(250, 120, 20), true); drawBox(man + v3(0, 1.6f, 0), v3(0.12f, 0.13f, 0.12f), 0, RGB(230, 190, 150), true); drawBox(man + v3(0, 1.76f, 0), v3(0.15f, 0.05f, 0.15f), 0, RGB(250, 250, 250), true); }
         // знаки
         // временные светофоры реверса
-        if (f.flag) for (int dir = -1; dir <= 1; dir += 2) { float zs = worksStop(f, dir); V3 p = v3(cxAt(zs) + (dir > 0 ? RHW + 0.8f : -ROAD_HW - 0.8f), hAt(zs), zs + (dir > 0 ? 2.0f : -2.0f)); if (!seen(p + v3(0, 2, 0), 4)) continue;
+        if (f.flag) for (int dir = -1; dir <= 1; dir += 2) { float zs = worksStop(f, dir); V3 p = v3(cxAt(zs) + (dir > 0 ? RHW + 0.8f : -LHW - 0.8f), hAt(zs), zs + (dir > 0 ? 2.0f : -2.0f)); if (!seen(p + v3(0, 2, 0), 4)) continue;
           int ls = worksLight(f, dir); drawBox(p + v3(0, 1.1f, 0), v3(0.06f, 1.1f, 0.06f), 0, RGB(220, 220, 220), true); drawBox(p + v3(0, 0.15f, 0), v3(0.4f, 0.15f, 0.4f), 0, RGB(230, 200, 30), true);
           drawBox(p + v3(0, 2.75f, 0), v3(0.25f, 0.6f, 0.15f), 0, RGB(30, 30, 30), true);
           for (int k = 0; k < 3; k++) { bool lit = (k == 0 && ls == 2) || (k == 1 && ls == 1) || (k == 2 && ls == 0); u32 col = k == 0 ? RGB(255, 40, 30) : (k == 1 ? RGB(255, 200, 30) : RGB(40, 230, 70));
             drawBox(p + v3(0, 3.15f - k * 0.38f, dir > 0 ? -0.17f : 0.17f), v3(0.15f, 0.15f, 0.02f), 0, lit ? SHINE(col, 255) : shadec(col, 0.25f), !lit); }
           // стоп-линия
-          float c2 = cxAt(zs), y2 = hAt(zs) + 0.032f, a = dir > 0 ? 0.0f : -ROAD_HW, b = dir > 0 ? ROAD_HW : 0.0f; quad4(v3(c2 + a, y2, zs - 0.2f), v3(c2 + b, y2, zs - 0.2f), v3(c2 + b, y2, zs + 0.2f), v3(c2 + a, y2, zs + 0.2f), RGB(230, 230, 225)); }
+          float c2 = cxAt(zs), y2 = hAt(zs) + 0.032f, a = dir > 0 ? 0.0f : -LHW, b = dir > 0 ? ROAD_HW : 0.0f; quad4(v3(c2 + a, y2, zs - 0.2f), v3(c2 + b, y2, zs - 0.2f), v3(c2 + b, y2, zs + 0.2f), v3(c2 + a, y2, zs + 0.2f), RGB(230, 230, 225)); }
       } break;
+      case F_BRIDGE: drawBridge(f); break;
+      case F_RAIL: drawRail(f); break;
+      case F_INTER: drawInter(f); break;
+      case F_TOLL: drawToll(f); break;
+      case F_CLOSE: drawClosed(f); break;
+      case F_BROKEN: drawBroken(f); break;
       case F_CAM: { float x = c + RHW + 1.5f; drawBox(v3(x, y + 3, f.s), v3(0.1f, 3, 0.1f), 0, RGB(120, 120, 126), true); drawBox(v3(x - 0.6f, y + 5.8f, f.s), v3(0.6f, 0.2f, 0.25f), 0, RGB(220, 220, 220), true);
  } break;
-      case F_ICE: { for (float s = fmaxv(f.s0, cz - 40); s < fminv(f.s1, cz + 300); s += 15) for (int k = -1; k <= 1; k += 2) { float x = cxAt(s) + k * (ROAD_HW + 1.5f); drawBox(v3(x, y + 0.6f, s), v3(0.04f, 0.6f, 0.04f), 0, RGB(60, 60, 60), true); drawBox(v3(x, y + 1.15f, s + 0.2f), v3(0.02f, 0.12f, 0.2f), 0, RGB(220, 40, 30), false); }
+      case F_ICE: { for (float s = gridFrom(f.s0, cz - 40, 15); s < fminv(f.s1, cz + 300); s += 15) for (int k = -1; k <= 1; k += 2) { float x = cxAt(s) + k * (ROAD_HW + 1.5f); drawBox(v3(x, y + 0.6f, s), v3(0.04f, 0.6f, 0.04f), 0, RGB(60, 60, 60), true); drawBox(v3(x, y + 1.15f, s + 0.2f), v3(0.02f, 0.12f, 0.2f), 0, RGB(220, 40, 30), false); }
  } break;
     }
   }
@@ -15584,6 +16219,7 @@ static void drawTraffic() {
   for (size_t i = 0; i < traffic.size(); i++) { const TCar &c = traffic[i]; float x = tcarX(c), y = hAt(c.s), yaw = tcarYaw(c);
     float dx = x - camEye.x, dz = c.s - camEye.z, d2 = dx * dx + dz * dz; if (d2 > drawR * drawR) continue;
     if (!seen(v3(x, y + 1.5f, c.s), c.truckType ? 9.0f : 3.0f)) continue;
+    if (c.special) { drawSpecial(c, x, y, yaw, d2); continue; }
     if (c.truckType) { V3 f0 = v3(x, y, c.s) - fwd(yaw) * 1.0f; Frame fr = frameFrom(f0, f0 + fwd(yaw) * WB); drawTractor(fr, (c.truckType - 1) % NTRUCK, c.col, 0, c.s, gNK > 0.2f, c.brake, d2 > 50 * 50, 0);
       Frame tf = fr; tf.o = at(fr, 0, 0, FW_OFF); drawTrailer(tf, (int)(hsh((unsigned)c.vPref * 100) % 6), -1, trailerColor(c.model), c.s, c.brake, d2 > 50 * 50); }
     else { const ObjModel *m = d2 < 25 * 25 ? gCarL[c.model] : gCarS[c.model]; if (!m) m = gCarM[c.model]; if (m) drawCarObjR(*m, v3(x, y, c.s), yaw, c.col, c.brake, 0); }
@@ -15592,9 +16228,68 @@ static void drawTraffic() {
     if (c.crashed) glowAt(v3(x, y + 1.2f, c.s), 0.3f, RGB(255, 170, 30), fmodf(gTime, 0.8f) < 0.4f ? 200 : 40);
   }
 }
+// ---------- съезды-петли в деревни ----------
+static void drawBypass() {
+  if (!R.bypass) return; float cz = camEye.z; bool snowRoad = R.zimnik || R.rg == RG_ARCTIC || R.weather >= 2;
+  u32 asph = snowRoad ? RGB(120, 124, 130) : RGB(70, 72, 76);
+  for (float z = fmaxv(R.bypS, floorf((cz - 60) / 8) * 8); z < fminv(R.L, cz + drawR); z += 8) { float z1 = z + 8, o0 = bypassOff(z), o1 = bypassOff(z1); if (o0 < 0 || o1 < 0) continue;
+    float c0 = cxAt(z) + o0, c1 = cxAt(z1) + o1, h0 = hAt(z) + 0.025f, h1 = hAt(z1) + 0.025f; if (!seen(v3((c0 + c1) * 0.5f, h0, z + 4), 12)) continue;
+    quad4(v3(c0 - 4.2f, h0, z), v3(c0 + 4.2f, h0, z), v3(c1 + 4.2f, h1, z1), v3(c1 - 4.2f, h1, z1), asph);
+    if (z - cz < 160) for (int sd = -1; sd <= 1; sd += 2) { float x = sd * 3.9f; quad4(v3(c0 + x - 0.07f, h0 + 0.01f, z), v3(c0 + x + 0.07f, h0 + 0.01f, z), v3(c1 + x + 0.07f, h1 + 0.01f, z1), v3(c1 + x - 0.07f, h1 + 0.01f, z1), RGB(225, 225, 215)); } }
+  // указатели
+  int nxt = G.pathI + 2 < G.pathN ? G.path[G.pathI + 2] : R.to; char b[120];
+  { float z = R.bypS - 450; if (fabsf(z - cz) < 400) { snprintf(b, sizeof b, "ЦЕНТР %s - ПРЯМО. %s - ОБЪЕЗД >", CITIES[R.to].shortName, CITIES[nxt].shortName); addLabel(v3(cxAt(z) + RHW + 3, hAt(z) + 2.6f, z), b, RGB(30, 80, 170), RGB(255, 255, 255), 2); } }
+  { float z = R.bypS - 40; if (fabsf(z - cz) < 400) { snprintf(b, sizeof b, "ОБЪЕЗДНАЯ. %s >", CITIES[nxt].shortName); addLabel(v3(cxAt(z) + RHW + 3, hAt(z) + 2.6f, z), b, RGB(30, 110, 60), RGB(255, 255, 255), 2); } }
+  { float z = R.bypS + R.bypD + 20; if (fabsf(z - cz) < 400) { snprintf(b, sizeof b, "ЦЕНТР. %s", CITIES[R.to].name); addLabel(v3(cxAt(z) + RHW + 2, hAt(z) + 2.6f, z), b, RGB(30, 80, 170), RGB(255, 255, 255), 2); } }
+}
+static void drawVBys() {                                       // объездные вокруг посёлков
+  float cz = camEye.z; bool snowRoad = R.zimnik || R.rg == RG_ARCTIC || R.weather >= 2; u32 asph = snowRoad ? RGB(120, 124, 130) : RGB(70, 72, 76);
+  for (size_t i = 0; i < R.vbys.size(); i++) { const VBy &v = R.vbys[i]; if (v.b < cz - 60 || v.a - 450 > cz + drawR) continue; const char *vn = R.feats[v.village].name;
+    { char b[96]; float z = v.a - 220; if (fabsf(z - cz) < 450) { snprintf(b, sizeof b, "%s - ПРЯМО. ОБЪЕЗД %s >", vn, CITIES[R.to].shortName); addLabel(v3(cxAt(z) + RHW + 3, hAt(z) + 2.6f, z), b, RGB(30, 80, 170), RGB(255, 255, 255), 2); }
+      z = v.a - 30; if (fabsf(z - cz) < 450) { snprintf(b, sizeof b, "ОБЪЕЗД >"); addLabel(v3(cxAt(z) + RHW + 3, hAt(z) + 2.6f, z), b, RGB(30, 110, 60), RGB(255, 255, 255), 2); } }
+    for (float z = fmaxv(v.a, floorf((cz - 60) / 8) * 8); z < fminv(v.b, cz + drawR); z += 8) { float z1 = fminv(z + 8, v.b), o0 = vbyOff(v, z), o1 = vbyOff(v, z1); if (o0 < 0 || o1 < 0) continue;
+      float c0 = cxAt(z) + o0, c1 = cxAt(z1) + o1, h0 = hAt(z) + 0.025f, h1 = hAt(z1) + 0.025f; if (!seen(v3((c0 + c1) * 0.5f, h0, z + 4), 12)) continue;
+      quad4(v3(c0 - 4.2f, h0, z), v3(c0 + 4.2f, h0, z), v3(c1 + 4.2f, h1, z1), v3(c1 - 4.2f, h1, z1), asph);
+      if (z - cz < 160) { for (int sd = -1; sd <= 1; sd += 2) { float x = sd * 3.9f; quad4(v3(c0 + x - 0.07f, h0 + 0.01f, z), v3(c0 + x + 0.07f, h0 + 0.01f, z), v3(c1 + x + 0.07f, h1 + 0.01f, z1), v3(c1 + x - 0.07f, h1 + 0.01f, z1), RGB(225, 225, 215)); }
+        if (fmodf(z, 16) < 8) quad4(v3(c0 - 0.07f, h0 + 0.01f, z), v3(c0 + 0.07f, h0 + 0.01f, z), v3(c1 + 0.07f, h1 + 0.01f, z1), v3(c1 - 0.07f, h1 + 0.01f, z1), RGB(225, 225, 215)); } }
+    { float z = (v.a + v.b) * 0.5f; if (fabsf(z - cz) < 300) addLabel(v3(cxAt(z) + vbyOff(v, z) + 6, hAt(z) + 2.6f, z), "90", RGB(250, 250, 250), RGB(200, 30, 30), 0); }
+  }
+}
+static void drawLoops() {
+  float cz = camEye.z; bool snowy = R.weather >= 2 || R.rg == RG_ARCTIC || R.rg == RG_TAIGA;
+  for (size_t li = 0; li < R.loops.size(); li++) { const Loop &l = R.loops[li]; if (l.b < cz - 60 || l.a - 400 > cz + drawR) continue;
+    // указатели на трассе
+    { char b[96]; snprintf(b, sizeof b, "%s 1 КМ. АЗС%s", VILLN[l.name], l.inn ? " · НОЧЛЕГ" : ""); addLabel(v3(cxAt(l.a - 260) + RHW + 2, hAt(l.a - 260) + 2.6f, l.a - 260), b, RGB(30, 80, 170), RGB(255, 255, 255), 2);
+      snprintf(b, sizeof b, "> %s", VILLN[l.name]); addLabel(v3(cxAt(l.a - 25) + RHW + 2, hAt(l.a - 25) + 2.6f, l.a - 25), b, RGB(250, 250, 250), RGB(20, 20, 20), 2); }
+    // грунтовка
+    u32 g0 = snowy ? RGB(206, 204, 198) : RGB(122, 108, 90), g1 = snowy ? RGB(186, 184, 178) : RGB(104, 92, 78);
+    for (float z = gridFrom(l.a, cz - 60, 4); z < fminv(l.b, cz + drawR); ) { float d = z - cz, st = d < 80 ? 4.0f : (d < 200 ? 8.0f : 16.0f); float z1 = fminv(z + st, l.b);
+      float o0 = loopOff(l, z), o1 = loopOff(l, z1), c0 = cxAt(z) + o0, c1 = cxAt(z1) + o1, h0 = hAt(z) + 0.025f, h1 = hAt(z1) + 0.025f;
+      if (seen(v3((c0 + c1) * 0.5f, h0, (z + z1) * 0.5f), 12)) { u32 col = mixc(g0, g1, hf((unsigned)(z * 0.5f) + 7) * 0.8f);
+        quad4(v3(c0 - 3.2f, h0, z), v3(c0 + 3.2f, h0, z), v3(c1 + 3.2f, h1, z1), v3(c1 - 3.2f, h1, z1), col);
+        if (d < 120 && !snowy) for (int k = -1; k <= 1; k += 2) quad4(v3(c0 + k * 1.1f - 0.35f, h0 + 0.005f, z), v3(c0 + k * 1.1f + 0.35f, h0 + 0.005f, z), v3(c1 + k * 1.1f + 0.35f, h1 + 0.005f, z1), v3(c1 + k * 1.1f - 0.35f, h1 + 0.005f, z1), shadec(col, 0.85f)); }   // колеи
+      z = z1; if (z1 >= l.b) break; }
+    if (l.a + 175 > cz + drawR || l.b - 175 < cz - 60) continue;
+    // дома
+    HouseP h[64]; int n = loopHouses(l, cz - 60, cz + fminv(drawR, 380.0f), h, 64); for (int k = 0; k < n; k++) drawHouse(h[k], hAt(h[k].z));
+    float in0 = l.a + 165; addLabel(v3(cxAt(in0) + loopOff(l, in0) + 4.2f, hAt(in0) + 2.6f, in0), VILLN[l.name], RGB(250, 250, 250), RGB(10, 10, 10), 2);
+    // деревенская заправка: одна колонка, будка, вывеска
+    { float fz = loopFuelZ(l), fx = cxAt(fz) + loopOff(l, fz) + 5.2f, fy = hAt(fz); V3 p = v3(fx, fy, fz);
+      if (seen(p + v3(0, 2, 0), 8)) { drawBox(p + v3(0, 0.1f, 0), v3(0.9f, 0.1f, 2.0f), 0, RGB(180, 180, 176), true); drawBox(p + v3(0, 1.0f, 0), v3(0.4f, 0.9f, 0.32f), 0, RGB(230, 230, 232), true); drawBox(p + v3(0, 2.0f, 0), v3(0.43f, 0.12f, 0.35f), 0, RGB(200, 60, 40), true);
+        drawBox(p + v3(4.5f, 1.4f, 0), v3(2.0f, 1.4f, 2.5f), 0, RGB(200, 190, 160), true); drawBox(p + v3(4.5f, 2.95f, 0), v3(2.3f, 0.15f, 2.8f), 0, RGB(90, 70, 60), true);
+        addLabel(p + v3(2.5f, 3.6f, -2.6f), "ТОПЛИВО ДЕШЕВЛЕ", RGB(200, 60, 40), RGB(255, 255, 255), 0); } }
+    // гостевой дом (двухэтажный)
+    if (l.inn) { float iz = loopInnZ(l), ix = cxAt(iz) + loopOff(l, iz) + 3.4f + 4.5f + 5.0f, iy = hAt(iz); V3 p = v3(ix, iy, iz);
+      if (seen(p + v3(0, 3, 0), 10)) { drawBox(p + v3(0, 3.0f, 0), v3(5.0f, 3.0f, 6.0f), headAt(iz), RGB(160, 120, 80), true); drawBox(p + v3(0, 6.3f, 0), v3(5.4f, 0.3f, 6.4f), headAt(iz), RGB(100, 50, 40), true);
+        for (int fl = 0; fl < 2; fl++) for (int k = -1; k <= 1; k++) drawBox(p + v3(-5.02f, 1.5f + fl * 2.8f, k * 3.0f), v3(0.02f, 0.55f, 0.6f), headAt(iz), gNK > 0.3f ? SHINE(RGB(250, 210, 120), 230) : SHINE(RGB(50, 70, 90), 200), false);
+        addLabel(p + v3(-5.3f, 6.9f, 0), "ГОСТЕВОЙ ДОМ · НОЧЛЕГ", RGB(110, 70, 40), RGB(255, 255, 255), 0); } }
+    // выезд обратно на трассу
+    { float ez = l.b - 170; addLabel(v3(cxAt(ez) + loopOff(l, ez) + 4.2f, hAt(ez) + 2.6f, ez), CITIES[R.to].shortName, RGB(30, 110, 60), RGB(255, 255, 255), 2); }
+  }
+}
 static void drawRoadWorld() {
   labels.clear();
-  drawRoadSurface();
+  drawRoadSurface(); drawLoops(); drawVBys(); drawBypass(); drawCombines();
   float cz = camEye.z;
   int c0 = (int)floorf((cz - 40) / 12.0f), c1 = (int)floorf((cz + fminv(drawR, 320.0f)) / 12.0f);
   for (int c = c0; c <= c1; c++) for (int side = -1; side <= 1; side += 2) { TreeP t[4]; int n = treesInCell(c, side, t); for (int k = 0; k < n; k++) drawTreeP(t[k]); }
@@ -15605,8 +16300,8 @@ static void drawRoadWorld() {
 static void drawYard() {
   labels.clear();
   for (int ix = -6; ix < 6; ix++) for (int iz = -1; iz < 12; iz++) groundQuad(ix * 12.0f, iz * 12.0f, ix * 12.0f + 12, iz * 12.0f + 12, 0, (ix + iz) & 1 ? RGB(92, 94, 98) : RGB(98, 100, 104));
-  for (int ix = -8; ix < 8; ix++) for (int iz = -4; iz < 16; iz++) { float x0 = ix * 30.0f, z0 = iz * 30.0f; if (x0 >= -60 && x0 < 60 && z0 >= -30 && z0 < 130) continue; groundQuad(x0, z0, x0 + 30, z0 + 30, -0.05f, CITIES[G.city].rg >= RG_TAIGA ? RGB(226, 230, 236) : RGB(100, 126, 70)); }
-  for (size_t i = 0; i < ybox.size(); i++) { const YBox &b = ybox[i]; drawBox(v3((b.x0 + b.x1) * 0.5f, b.h * 0.5f, (b.z0 + b.z1) * 0.5f), v3((b.x1 - b.x0) * 0.5f, b.h * 0.5f, (b.z1 - b.z0) * 0.5f), 0, b.col, true); }
+  for (int ix = -8; ix < 8; ix++) for (int iz = -4; iz < 16; iz++) { float x0 = ix * 30.0f, z0 = iz * 30.0f; if (x0 >= -60 && x0 < 60 && z0 >= -30 && z0 < 130) continue; if (z0 >= 120 && z0 < 700 && x0 >= -300 && x0 < 300) continue; groundQuad(x0, z0, x0 + 30, z0 + 30, -0.05f, CITIES[G.city].rg >= RG_TAIGA ? RGB(226, 230, 236) : RGB(100, 126, 70)); }
+  for (size_t i = 0; i < ybox.size(); i++) { const YBox &b = ybox[i]; if (b.kind) continue; drawBox(v3((b.x0 + b.x1) * 0.5f, b.h * 0.5f, (b.z0 + b.z1) * 0.5f), v3((b.x1 - b.x0) * 0.5f, b.h * 0.5f, (b.z1 - b.z0) * 0.5f), 0, b.col, true); }
   for (int d = 0; d < 6; d++) drawBox(v3(-37.5f + d * 15, 2.4f, 30.05f), v3(2.0f, 2.2f, 0.05f), 0, RGB(70, 80, 90), true);   // ворота склада
   addLabel(v3(0, 10.5f, 30), CITIES[G.city].name, RGB(30, 70, 140), RGB(255, 255, 255), 0);
   // разметка мест и стоящие прицепы
@@ -15621,7 +16316,7 @@ static void drawYard() {
     for (int k = -1; k <= 1; k += 2) drawBox(v3(sx + k * 1.0f, 0.55f, KING_Z - 2.3f), v3(0.06f, 0.55f, 0.06f), 0, RGB(60, 60, 60), true);   // опоры
     if (target) addLabel(v3(sx, 5.3f, KING_Z - 6), "ВАШ ПРИЦЕП", RGB(230, 170, 20), RGB(20, 20, 20), 0); }
   if (yArrive) addLabel(v3(SLOT_X[ySlot], 2.5f, KING_Z - 6), "ПОСТАВЬ ПРИЦЕП СЮДА", RGB(230, 170, 20), RGB(20, 20, 20), 0);
-  addLabel(v3(0, 4.2f, 124), yArrive ? "ВЪЕЗД" : "ВЫЕЗД НА ТРАССУ", RGB(30, 110, 60), RGB(255, 255, 255), 0);
+  addLabel(v3(0, 4.2f, 124), yArrive ? "ВЪЕЗД" : "ВЫЕЗД В ГОРОД", RGB(30, 110, 60), RGB(255, 255, 255), 0);
   for (int k = -1; k <= 1; k += 2) drawBox(v3(k * 6.5f, 2.5f, 124), v3(0.2f, 2.5f, 0.2f), 0, RGB(200, 60, 40), true);
   drawRigAll(false);
 }
@@ -15638,6 +16333,380 @@ static void drawWeather(float dt) {
     if (w == 1) drawLine(x, y, x - 1, y + fs * 5, RGB(170, 180, 200), 1); else fillRect(x, y, imax(1, fs / 2 + 1), imax(1, fs / 2 + 1), RGB(240, 244, 250)); }
   if (w == 3) fillRectA(0, 0, IW, IH, RGB(220, 226, 236), 50);
 }
+static void drawSkyFx() {                                   // вспышки молний и дымка тумана поверх кадра
+  if (gs != GS_ROAD || camMode == 2) return;
+  if (flashA > 0.01f) fillRectA(0, 0, IW, IH, RGB(235, 240, 255), (int)(flashA * 170));
+  if (R.fog > 0.05f) fillRectA(0, 0, IW, IH, RGB(205, 208, 212), (int)(R.fog * 45));
+}
+
+// ================= ГОРОД: машины, пешеходы, светофоры, рисование, мини-карта =================
+// type: 0 машина, 1 автобус, 2 трамвай; turning - поворачивает на перекрёстке по дуге
+struct TCarT { int axis, st, dir, model, type; float p, v, vPref, crashT, stopT, lastStop; u32 col; bool brake, turning; float tt; V3 ta, tb, tc; float ya, yb; int nAxis, nSt, nDir; float nP; int route; };
+struct TPed { int axis, st, side, dir; float p, v, ph, wait; u32 col; bool cross; float fineT; };
+static std::vector<TCarT> tcars; static std::vector<TPed> tpeds;
+static int townPanel = -1; static float tRedT[25]; static V3 tPrevF; static bool tPrevOk = false;
+static float tStreetLen0(int axis, int st) { return axis == 0 ? (st == 2 ? T_Z0 + 6 : TZS[0] - ST_HW) : TXS[0] - ST_HW; }
+static float tStreetLen1(int axis, int st) { (void)st; return axis == 0 ? TZS[4] + ST_HW : TXS[4] + ST_HW; }
+static bool townHasTram(int city) { switch (city) { case C_MSK: case C_NN: case C_KZN: case C_PRM: case C_EKB: case C_CHL: case C_UFA: case C_SMR: case C_SRT: case C_VLG: case C_VRN: case C_RST: case C_KRD: case C_TUL: case C_ULN: case C_IZH: case C_MGN: case C_NTG: case C_NCH: case C_ORB: case C_PNZ: case C_TLT: return true; } return false; }
+static float tcarLen(const TCarT &c) { return c.type == 2 ? 26.0f : (c.type == 1 ? 12.0f : 4.6f); }
+static V3 tcarPos(const TCarT &c) { float lo = 1.9f;
+  if (c.turning) { float t = c.tt, u = 1 - t; return c.ta * (u * u) + c.tc * (2 * u * t) + c.tb * (t * t); }
+  return c.axis == 0 ? v3(TXS[c.st] + c.dir * lo, 0, c.p) : v3(c.p, 0, TZS[c.st] - c.dir * lo); }
+static float tcarYaw(const TCarT &c) { if (c.turning) return c.ya + wrapA(c.yb - c.ya) * c.tt; return c.axis == 0 ? (c.dir > 0 ? 0.0f : 3.14159f) : (c.dir > 0 ? 1.5708f : -1.5708f); }
+static void townInit() {
+  tcars.clear(); tpeds.clear(); townPanel = -1; memset(tRedT, 0, sizeof tRedT); tPrevOk = false;
+  unsigned h = hsh((unsigned)G.city * 31u + 7u);
+  static const u32 CC[] = {RGB(170, 172, 176), RGB(130, 24, 28), RGB(24, 64, 130), RGB(220, 222, 224), RGB(40, 90, 70), RGB(30, 34, 46), RGB(200, 160, 40), RGB(110, 70, 40)};
+  bool small = CITIES[G.city].rg == RG_ARCTIC || CITIES[G.city].rg == RG_TAIGA;
+  float hr = hourNow(); bool rush = (hr > 7.5f && hr < 9.5f) || (hr > 17 && hr < 19.5f); bool night = hr < 6 || hr > 23;
+  int nc = (small ? 22 : 34) * (rush ? 16 : 10) / (night ? 25 : 10), np = (small ? 26 : 40) / (night ? 3 : 1);
+  for (int i = 0; i < nc; i++) { TCarT c; memset(&c, 0, sizeof c); h = hsh(h + i);
+    c.axis = h & 1; c.st = (h >> 1) % 5; c.dir = (h >> 4) & 1 ? 1 : -1; float a = tStreetLen0(c.axis, c.st) + 10, b = tStreetLen1(c.axis, c.st) - 10;
+    c.p = a + (b - a) * ((h >> 8) & 1023) / 1023.0f; c.vPref = (9.0f + ((h >> 18) & 7)) * (rush ? 0.6f : 1.0f); c.v = c.vPref * 0.5f; c.model = (h >> 21) % 7; c.col = CC[(h >> 24) & 7];
+    if (i % 7 == 3) { c.type = 1; c.vPref *= 0.8f; c.col = (h >> 7) & 1 ? RGB(240, 200, 40) : RGB(230, 232, 236); c.route = 1 + (int)((h >> 9) % 60); }   // городской автобус
+    bool clash = false; for (size_t k = 0; k < tcars.size(); k++) { const TCarT &o = tcars[k]; if (o.axis == c.axis && o.st == c.st && o.dir == c.dir && fabsf(o.p - c.p) < 14) clash = true; }
+    if (!clash) tcars.push_back(c); }
+  if (townHasTram(G.city)) for (int k = 0; k < 4; k++) { TCarT c; memset(&c, 0, sizeof c); c.type = 2; c.axis = 1; c.st = 2; c.dir = k & 1 ? 1 : -1; c.p = TXS[0] + 20 + k * 120; c.vPref = 8; c.v = 4;
+    c.col = k & 2 ? RGB(200, 40, 40) : RGB(230, 120, 40); c.route = 1 + k * 3; tcars.push_back(c); }
+  static const u32 PC[] = {RGB(200, 60, 60), RGB(60, 90, 170), RGB(230, 200, 70), RGB(70, 140, 80), RGB(40, 40, 46), RGB(220, 220, 225), RGB(150, 90, 160), RGB(190, 120, 70)};
+  for (int i = 0; i < np; i++) { TPed p; memset(&p, 0, sizeof p); h = hsh(h + 977u + i);
+    p.axis = h & 1; p.st = (h >> 1) % 5; p.side = (h >> 4) & 1 ? 1 : -1; p.dir = (h >> 5) & 1 ? 1 : -1; float a = tStreetLen0(p.axis, p.st) + 4, b = tStreetLen1(p.axis, p.st) - 4;
+    p.p = a + (b - a) * ((h >> 8) & 1023) / 1023.0f; p.v = 1.1f + ((h >> 19) & 7) * 0.08f; p.col = PC[(h >> 23) & 7]; p.ph = (float)((h >> 12) & 63);
+    tpeds.push_back(p); }
+}
+static V3 tpedPos(const TPed &p) { float o = p.side * (ST_HW + 1.6f); return p.axis == 0 ? v3(TXS[p.st] + o, 0, p.p) : v3(p.p, 0, TZS[p.st] + o); }
+// точки фуры для столкновений (кабина и прицеп)
+static int rigPts(V3 *pts) { int n = 0; pts[n++] = v3(rig.x, 0, rig.z) + fwd(rig.yaw) * (WB + 0.9f); pts[n++] = v3(rig.x, 0, rig.z) + fwd(rig.yaw) * (WB * 0.55f); pts[n++] = v3(rig.x, 0, rig.z) + fwd(rig.yaw) * 0.2f;
+  if (rig.hitched) for (int k = 0; k < 4; k++) pts[n++] = kingpin() - fwd(rig.tyaw) * (1.0f + k * 3.8f); return n; }
+static float townFineCd = 0;
+static void updateTown(float dt) {
+  townFineCd -= dt;
+  V3 pts[7]; int np = rigPts(pts);
+  for (size_t i = 0; i < tcars.size(); i++) { TCarT &c = tcars[i];
+    if (c.crashT > 0) { c.crashT -= dt; c.v = 0; }
+    V3 cp = tcarPos(c); float cy = tcarYaw(c); V3 f = fwd(cy), rt = v3(cosf(cy), 0, -sinf(cy));
+    float target = c.crashT > 0 ? 0 : c.vPref, L = tcarLen(c);
+    if (c.turning) { target = fminv(target, 5.5f); }
+    else {
+      float lo0 = tStreetLen0(c.axis, c.st), lo1 = tStreetLen1(c.axis, c.st), front = c.p + c.dir * L * 0.5f;
+      // светофоры на перекрёстках
+      const float *cross = c.axis == 0 ? TZS : TXS;
+      for (int k = 0; k < 5; k++) { float stop = cross[k] - c.dir * (ST_HW + 2.5f), ds = (stop - front) * c.dir;
+        int ix = c.axis == 0 ? c.st : k, iz = c.axis == 0 ? k : c.st; int Lt = townLight(ix, iz, c.axis);
+        if (ds > -0.5f && ds < 35 && (Lt == 2 || (Lt == 1 && ds > 6))) target = fminv(target, fmaxv(0.0f, ds * 0.5f)); }
+      // машина впереди в той же полосе
+      for (size_t k = 0; k < tcars.size(); k++) { if (k == i) continue; const TCarT &o = tcars[k]; if (o.turning || o.axis != c.axis || o.st != c.st || o.dir != c.dir) continue;
+        float ds = (o.p - c.p) * c.dir, need = (L + tcarLen(o)) * 0.5f + 3; if (ds > 0 && ds < need + 25) target = fminv(target, fmaxv(0.0f, (ds - need) * 0.6f)); }
+      // остановки: автобус - каждые 120 м, трамвай - каждые 150 м
+      if (c.type) { float step = c.type == 2 ? 150.0f : 120.0f, ph = fmodf(c.p - lo0 + 1000 * step, step);
+        if (c.stopT > 0) { c.stopT -= dt; target = 0; } else if (fabsf(ph - step * 0.5f) < 1.0f && fabsf(c.p - c.lastStop) > 30) { c.stopT = 7; c.lastStop = c.p; } }
+      // поворот на перекрёстке: решаем при въезде на него
+      if (c.type != 2) for (int k = 0; k < 5; k++) { float ent = cross[k] - c.dir * ST_HW, prevF = front - c.v * c.dir * dt * 1.01f;
+        if ((prevF - ent) * c.dir < 0 && (front - ent) * c.dir >= 0) { unsigned h = hsh((unsigned)(i * 131 + k * 17) + (unsigned)(gTime * 3)); int r = (int)(h % 100), turn = r < 22 ? 1 : (r < 38 ? -1 : 0);
+          if (c.type == 1 && r > 8) turn = 0;
+          if (turn) { V3 O = c.axis == 0 ? v3(TXS[c.st], 0, TZS[k]) : v3(TXS[k], 0, TZS[c.st]); V3 F = fwd(cy), Rt = v3(cosf(cy), 0, -sinf(cy)); float lo = 1.9f;
+            V3 f2 = turn > 0 ? Rt : Rt * -1.0f, r2 = turn > 0 ? F * -1.0f : F;
+            int nAxis = c.axis == 0 ? 1 : 0, nDir = nAxis == 0 ? (f2.z > 0 ? 1 : -1) : (f2.x > 0 ? 1 : -1), nSt = k;
+            if ((nDir > 0 && nSt == 4) || (nDir < 0 && nSt == 0)) continue;                         // там конец города - не поворачиваем
+            c.turning = true; c.tt = 0; c.ta = O - F * ST_HW + Rt * lo; c.tb = O + f2 * ST_HW + r2 * lo; c.tc = O + Rt * lo + (turn > 0 ? F * -lo : F * lo);
+            c.ya = cy; c.yb = atan2f(f2.x, f2.z); c.nAxis = nAxis; c.nSt = nSt; c.nDir = nDir; c.nP = nAxis == 0 ? c.tb.z : c.tb.x; break; } } }
+      if (c.p > lo1 - 3 && c.dir > 0) { c.dir = -1; } else if (c.p < lo0 + 3 && c.dir < 0) { c.dir = 1; }      // в конце улицы разворот
+    }
+    // фура игрока или пешеход на пути
+    for (int k = 0; k < np; k++) { V3 d = pts[k] - cp; float al = d.x * f.x + d.z * f.z, la = d.x * rt.x + d.z * rt.z; if (al > 0 && al < 12 + L * 0.5f && fabsf(la) < 2.6f) target = fminv(target, fmaxv(0.0f, (al - 2.5f - L * 0.5f) * 0.6f)); }
+    for (size_t k = 0; k < tpeds.size(); k++) { V3 d = tpedPos(tpeds[k]) - cp; float al = d.x * f.x + d.z * f.z, la = d.x * rt.x + d.z * rt.z; if (al > 0 && al < 9 + L * 0.5f && fabsf(la) < 1.8f) target = fminv(target, fmaxv(0.0f, (al - 1.5f - L * 0.5f) * 0.6f)); }
+    if (c.turning) for (size_t k = 0; k < tcars.size(); k++) { if (k == i) continue; V3 d = tcarPos(tcars[k]) - cp; float al = d.x * f.x + d.z * f.z, la = d.x * rt.x + d.z * rt.z; if (al > 0 && al < 8 && fabsf(la) < 1.8f) target = 0; }
+    c.brake = target < c.v - 0.3f; c.v += clampf(target - c.v, -7.0f * dt, 2.5f * dt);
+    if (c.turning) { c.tt += c.v * dt / 10.0f; if (c.tt >= 1) { c.turning = false; c.axis = c.nAxis; c.st = c.nSt; c.dir = c.nDir; c.p = c.nP; } }
+    else c.p += c.v * c.dir * dt;
+    // столкновение с фурой
+    cp = tcarPos(c); cy = tcarYaw(c); f = fwd(cy); int nq = c.type == 2 ? 5 : (c.type == 1 ? 3 : 2);
+    for (int q = 0; q < nq; q++) { V3 pp = cp + f * (nq == 2 ? (q ? 1.3f : -1.3f) : (q - (nq - 1) * 0.5f) * (L / nq));
+      for (int k = 0; k < np; k++) { float dx = pp.x - pts[k].x, dz = pp.z - pts[k].z, rr = 2.25f, d2 = dx * dx + dz * dz; if (d2 > rr * rr) continue;
+        float dd = sqrtf(fmaxv(d2, 1e-6f)), pen = rr - dd; if (d2 < 1e-6f) { dx = 0; dz = 1; dd = 1; }
+        float rel = fabsf(rig.v) + c.v;
+        if (rel > 4.0f && c.crashT <= 0) { c.crashT = 12; sThud = 1; float dmg = rel * 1.2f; G.tr[G.truck].body = fmaxv(0.0f, G.tr[G.truck].body - dmg); rig.v *= 0.3f;
+          if (G.job.on && G.job.hitched) G.job.damage = fminv(100.0f, G.job.damage + dmg * (CARGO[G.job.cargo].fragile ? 1.0f : 0.4f));
+          if (fabsf(rig.v) > c.v) addFine(c.type == 2 ? "СТОЛКНОВЕНИЕ С ТРАМВАЕМ" : "ДТП В ГОРОДЕ", 5000); else say("В ВАС ВРЕЗАЛАСЬ МАШИНА. ВИНОВАТ ДРУГОЙ ВОДИТЕЛЬ"); }
+        rig.x -= dx / dd * pen; rig.z -= dz / dd * pen; if (fabsf(rig.v) > 0.5f) rig.v *= 0.85f; c.v = 0; } }
+  }
+  // пешеходы
+  for (size_t i = 0; i < tpeds.size(); i++) { TPed &p = tpeds[i]; p.fineT -= dt;
+    float lo0 = tStreetLen0(p.axis, p.st), lo1 = tStreetLen1(p.axis, p.st);
+    const float *cross = p.axis == 0 ? TZS : TXS; bool go = true; p.cross = false;
+    for (int k = 0; k < 5; k++) { float d = (cross[k] - p.p) * p.dir;               // впереди поперечная улица: переходим на зелёный для нашего направления
+      int ix = p.axis == 0 ? p.st : k, iz = p.axis == 0 ? k : p.st;
+      if (fabsf(cross[k] - p.p) < ST_HW + 0.3f) p.cross = true;
+      if (d > ST_HW && d < ST_HW + 1.2f && townLight(ix, iz, p.axis) != 0) go = false; }
+    V3 pp = tpedPos(p);
+    for (int k = 0; k < np && go; k++) { float dx = pts[k].x - pp.x, dz = pts[k].z - pp.z; if (dx * dx + dz * dz < 4.5f * 4.5f) { float al = (p.axis == 0 ? dz : dx) * p.dir; if (al > 0) go = false; } }   // фура перед носом - ждём
+    if (go) { p.p += p.v * p.dir * dt; p.ph += dt * 7; }
+    if (p.p > lo1 - 1 && p.dir > 0) p.dir = -1; else if (p.p < lo0 + 1 && p.dir < 0) p.dir = 1;
+    pp = tpedPos(p);
+    for (int k = 0; k < np; k++) { float dx = pp.x - pts[k].x, dz = pp.z - pts[k].z; if (dx * dx + dz * dz < 1.6f * 1.6f) {
+        if (fabsf(rig.v) > 1.0f && p.fineT <= 0) { p.fineT = 8; addFine(p.cross ? "НЕ ПРОПУСТИЛ ПЕШЕХОДА" : "ЕЗДА ПО ТРОТУАРУ", 1500); sThud = 0.3f; }
+        p.p -= p.dir * 2.5f; break; } }
+  }
+  // проезд на красный: пересекли стоп-линию вдоль улицы
+  V3 F = pts[0]; if (!tPrevOk) { tPrevF = F; tPrevOk = true; } V3 prevF = tPrevF;
+  if (fabsf(rig.v) > 1.5f) {
+    for (int ix = 0; ix < 5; ix++) for (int iz = 0; iz < 5; iz++) { float cx = TXS[ix], cz = TZS[iz]; int id = ix * 5 + iz; tRedT[id] -= dt;
+      if (fabsf(F.x - cx) < ST_HW && fabsf(F.z - cz) < 25) { for (int d = -1; d <= 1; d += 2) { float sl = cz - d * (ST_HW + 1.5f); if ((prevF.z - sl) * d < 0 && (F.z - sl) * d >= 0 && (F.x - cx) * d > -0.5f && townLight(ix, iz, 0) == 2 && tRedT[id] <= 0) { tRedT[id] = 20; addFine("ПРОЕЗД НА КРАСНЫЙ", 1000); } } }
+      if (fabsf(F.z - cz) < ST_HW && fabsf(F.x - cx) < 25) { for (int d = -1; d <= 1; d += 2) { float sl = cx - d * (ST_HW + 1.5f); if ((prevF.x - sl) * d < 0 && (F.x - sl) * d >= 0 && (cz - F.z) * d > -0.5f && townLight(ix, iz, 1) == 2 && tRedT[id] <= 0) { tRedT[id] = 20; addFine("ПРОЕЗД НА КРАСНЫЙ", 1000); } } } } }
+  tPrevF = F;
+}
+// ---------- рисование ----------
+static float tDist2(float x, float z) { float dx = x - camEye.x, dz = z - camEye.z; return dx * dx + dz * dz; }
+static void tQuad(float x0, float z0, float x1, float z1, float y, u32 col) { quad4(v3(x0, y, z0), v3(x1, y, z0), v3(x1, y, z1), v3(x0, y, z1), col); }
+static void faceQuad(V3 c, V3 u, V3 v, u32 col) { quad4(c - u - v, c + u - v, c + u + v, c - u + v, col); }
+static void drawTBld(const TBld &b) {
+  float cx = (b.x0 + b.x1) * 0.5f, cz = (b.z0 + b.z1) * 0.5f, hx = (b.x1 - b.x0) * 0.5f, hz = (b.z1 - b.z0) * 0.5f, d2 = tDist2(cx, cz);
+  if (!seen(v3(cx, b.h * 0.5f, cz), fmaxv(fmaxv(hx, hz), b.h * 0.5f) * 1.2f)) return;
+  bool glass = b.style == 3, shop = b.style == 4 || b.style == 2;
+  drawBox(v3(cx, b.h * 0.5f, cz), v3(hx, b.h * 0.5f, hz), 0, b.col, true);
+  u32 roof = b.style == 1 ? RGB(110, 108, 104) : RGB(90, 92, 96);
+  drawBox(v3(cx, b.h + 0.25f, cz), v3(hx + 0.15f, 0.25f, hz + 0.15f), 0, glass ? mixc(b.col, RGB(0, 0, 0), 0.3f) : roof, true);
+  if (b.style == 7) { for (float x = b.x0 + 1.5f; x < b.x1 - 1; x += 3.2f) faceQuad(v3(x + 1.3f, 1.2f, b.z0 - 0.04f), v3(1.3f, 0, 0), v3(0, 1.1f, 0), RGB(110, 112, 118)); return; }   // ворота гаражей
+  if (d2 > 230 * 230) return;
+  bool near_ = d2 < 110 * 110; float nk = gNK; unsigned hb = hsh((unsigned)(b.x0 * 13 + b.z0 * 7));
+  int floors = imax(1, (int)((b.h - 0.6f) / 3.0f)); float f0 = b.style == 2 || b.style == 6 ? 1 : 0;
+  for (int side = 0; side < 4; side++) {
+    V3 n = side == 0 ? v3(0, 0, -1) : side == 1 ? v3(0, 0, 1) : side == 2 ? v3(-1, 0, 0) : v3(1, 0, 0);
+    V3 fc = v3(cx + n.x * (hx + 0.06f), 0, cz + n.z * (hz + 0.06f)); V3 tc = v3(camEye.x - fc.x, 0, camEye.z - fc.z); if (tc.x * n.x + tc.z * n.z < 0) continue;   // грань к нам спиной
+    float w = side < 2 ? hx : hz; V3 along = side < 2 ? v3(1, 0, 0) : v3(0, 0, 1);
+    if (glass) { int segs = near_ ? imax(1, (int)(w / 3)) : 1;
+      for (int f = 0; f < floors; f++) { float y = 1.8f + f * 3.0f; if (!near_) { u32 c = mixc(RGB(70, 95, 130), RGB(250, 220, 140), nk * 0.4f); faceQuad(fc + v3(0, y, 0), along * (w - 0.3f), v3(0, 1.25f, 0), c); continue; }
+        for (int s2 = 0; s2 < segs * 2; s2++) { float o = -w + (s2 + 0.5f) * (w / segs); bool lit = nk > 0.3f && (hsh(hb + f * 31 + s2 * 7 + side) & 3) == 0;
+          faceQuad(fc + v3(0, y, 0) + along * o, along * (w / segs * 0.5f - 0.08f), v3(0, 1.35f, 0), lit ? RGB(255, 225, 150) : mixc(RGB(80, 110, 150), RGB(150, 190, 220), (f & 1) * 0.3f)); } }
+      continue; }
+    for (int f = (int)f0; f < floors; f++) { float y = 1.6f + f * 3.0f;
+      if (!near_) { faceQuad(fc + v3(0, y, 0), along * (w - 0.6f), v3(0, 0.7f, 0), mixc(RGB(70, 80, 95), RGB(240, 210, 140), nk * 0.35f)); continue; }
+      int segs = imax(1, (int)(w * 2 / 3.0f)); float sw = w * 2 / segs;
+      for (int s2 = 0; s2 < segs; s2++) { float o = -w + (s2 + 0.5f) * sw; bool lit = nk > 0.25f && (hsh(hb + f * 131 + s2 * 17 + side * 7) % 5) < 2;
+        faceQuad(fc + v3(0, y, 0) + along * o, along * (sw * 0.3f), v3(0, 0.72f, 0), lit ? RGB(255, 220, 140) : RGB(64, 78, 96));
+        if (b.style == 0 && f > 0 && (s2 % 3) == 1) drawBox(fc + n * 0.5f + v3(0, y - 0.9f, 0) + along * o, side < 2 ? v3(sw * 0.45f, 0.45f, 0.5f) : v3(0.5f, 0.45f, sw * 0.45f), 0, mixc(b.col, RGB(255, 255, 255), 0.3f), true); } }   // балконы
+    if (shop || b.style == 6) {                                                                   // витрины первого этажа и вывеска
+      faceQuad(fc + v3(0, 1.5f, 0), along * (w - 0.8f), v3(0, 1.1f, 0), nk > 0.3f ? RGB(255, 230, 170) : RGB(120, 160, 190));
+      if (b.sign >= 0 && b.sign < 100 && near_) { u32 ac = (hb & 1) ? RGB(200, 40, 40) : RGB(30, 110, 60); drawBox(fc + n * 0.6f + v3(0, 3.0f, 0), side < 2 ? v3(w - 0.8f, 0.12f, 0.6f) : v3(0.6f, 0.12f, w - 0.8f), 0, ac, true); } }
+  }
+  if (b.sign >= 0 && b.sign < NSHOPN && d2 < 75 * 75) addLabel(v3(cx, fminv(b.h, 8.0f) + 1.0f, b.z0 - 0.5f), SHOPN[b.sign], RGB(30, 90, 50), RGB(255, 255, 255), 0);
+  if (b.sign >= 100 && d2 < 260 * 260) { static const char *PN[NPOI] = {"АЗС", "СТО · РЕМОНТ И ТЮНИНГ", "АВТОСАЛОН ТЯГАЧЕЙ", "ГОСТИНИЦА", "БИРЖА ГРУЗОВ"}; static const u32 PCOL[NPOI] = {RGB(20, 60, 140), RGB(60, 70, 90), RGB(140, 30, 40), RGB(110, 70, 40), RGB(30, 110, 60)};
+    int t = b.sign - 100; addLabel(v3(cx, b.h + 3.0f, cz), PN[t], PCOL[t], RGB(255, 255, 255), 0); }
+}
+static void drawTTree(const TTree &t) { if (!seen(v3(t.x, t.h * 0.5f, t.z), t.h)) return; bool snow = CITIES[G.city].rg >= RG_TAIGA;
+  drawBox(v3(t.x, t.h * 0.25f, t.z), v3(0.14f, t.h * 0.25f, 0.14f), 0, RGB(100, 80, 60), true);
+  drawBox(v3(t.x, t.h * 0.65f, t.z), v3(t.h * 0.22f, t.h * 0.3f, t.h * 0.22f), 0.5f, snow ? RGB(60, 100, 70) : RGB(80, 128, 62), true); }
+static void drawPed(const TPed &p) { V3 c = tpedPos(p); if (tDist2(c.x, c.z) > 110 * 110 || !seen(c + v3(0, 1, 0), 1.2f)) return;
+  float yaw = p.axis == 0 ? (p.dir > 0 ? 0 : 3.14159f) : (p.dir > 0 ? 1.5708f : -1.5708f), sw = sinf(p.ph) * 0.18f; V3 f = fwd(yaw);
+  drawBox(c + v3(0, 0.42f, 0) + f * sw, v3(0.07f, 0.42f, 0.07f), yaw, RGB(40, 40, 50), true); drawBox(c + v3(0, 0.42f, 0) - f * sw + rotOff(yaw, 0.16f, 0, 0), v3(0.07f, 0.42f, 0.07f), yaw, RGB(40, 40, 50), true);
+  drawBox(c + v3(0, 1.15f, 0), v3(0.2f, 0.32f, 0.13f), yaw, p.col, true); drawBox(c + v3(0, 1.6f, 0), v3(0.11f, 0.12f, 0.11f), 0, RGB(225, 185, 150), true); }
+static void drawTLight(float x, float z, int ix, int iz, int faceAxis, int faceDir) {   // столб со светофором: смотрит навстречу машинам оси faceAxis, едущим в направлении faceDir
+  drawBox(v3(x, 2.2f, z), v3(0.08f, 2.2f, 0.08f), 0, RGB(60, 62, 66), true);
+  float yaw = faceAxis == 0 ? (faceDir > 0 ? 0.0f : 3.14159f) : (faceDir > 0 ? 1.5708f : -1.5708f); V3 b = v3(x, 4.0f, z);
+  drawBox(b, v3(0.22f, 0.65f, 0.15f), yaw, RGB(30, 32, 36), true);
+  int L = townLight(ix, iz, faceAxis); static const u32 LC[3] = {RGB(60, 230, 90), RGB(255, 200, 40), RGB(255, 50, 40)};
+  for (int k = 0; k < 3; k++) { int st = 2 - k; V3 p = b + v3(0, 0.4f - k * 0.4f, 0) - fwd(yaw) * 0.16f; bool on = (st == 2 && L == 2) || (st == 1 && L == 1) || (st == 0 && L == 0);
+    drawBox(p, v3(0.12f, 0.12f, 0.02f), yaw, on ? LC[st] : RGB(40, 40, 40), false); if (on && gNK > 0.2f) glowAt(p, 0.35f, LC[st], 150); }
+}
+static void drawLandmark(const TLand &L) {
+  float x = L.x, z = L.z; if (!seen(v3(x, 30, z), 90)) return; float d2 = tDist2(x, z);
+  u32 white = RGB(236, 234, 228), gold = RGB(230, 180, 60), red = RGB(170, 60, 50);
+  switch (L.type) {
+    case LM_KREMLIN_RED: case LM_KREMLIN_WHITE: { u32 w = L.type == LM_KREMLIN_RED ? red : white, roofC = L.type == LM_KREMLIN_RED ? RGB(60, 110, 80) : RGB(70, 120, 90); float h = 32;
+      for (int s = 0; s < 4; s++) { bool alongX = s < 2; float sg = s & 1 ? 1.0f : -1.0f; V3 c = alongX ? v3(x, 6, z + sg * (h - 1)) : v3(x + sg * (h - 1), 6, z);
+        drawBox(c, alongX ? v3(h, 6, 1.0f) : v3(1.0f, 6, h), 0, w, true);
+        if (d2 < 160 * 160) for (int k = -10; k <= 10; k++) { V3 m = c + (alongX ? v3(k * 3.0f, 6.6f, 0) : v3(0, 6.6f, k * 3.0f)); drawBox(m, v3(0.6f, 0.6f, 0.6f), 0, w, true); } }   // зубцы
+      for (int k = 0; k < 4; k++) { float tx = x + (k & 1 ? h : -h), tz = z + (k & 2 ? h : -h); drawBox(v3(tx, 10, tz), v3(4, 10, 4), 0, w, true);
+        for (int q = 0; q < 4; q++) drawBox(v3(tx, 21 + q * 2.0f, tz), v3(3.6f - q * 0.9f, 1.0f, 3.6f - q * 0.9f), 0, roofC, true); }
+      // главная башня с воротами и шпилем
+      drawBox(v3(x, 14, z - h), v3(5, 14, 5), 0, w, true); drawBox(v3(x, 31, z - h), v3(3.6f, 3, 3.6f), 0, w, true); drawBox(v3(x, 29, z - h - 3.7f), v3(1.8f, 1.8f, 0.1f), 0, white, true);   // часы
+      for (int q = 0; q < 5; q++) drawBox(v3(x, 35 + q * 2.4f, z - h), v3(3.0f - q * 0.6f, 1.2f, 3.0f - q * 0.6f), 0, roofC, true);
+      if (townCity == C_MSK) drawBox(v3(x, 48, z - h), v3(1.2f, 1.2f, 0.25f), 0.785f, RGB(220, 30, 30), false);
+      // внутри: собор с куполами (в Казани - мечеть с минаретами)
+      if (townCity == C_KZN) { drawBox(v3(x, 9, z), v3(10, 9, 10), 0, white, true); drawBox(v3(x, 22, z), v3(6, 4, 6), 0.785f, RGB(60, 140, 200), true); drawBox(v3(x, 27, z), v3(3, 2, 3), 0.785f, RGB(60, 140, 200), true);
+        for (int k = 0; k < 4; k++) { float mx = x + (k & 1 ? 13 : -13), mz = z + (k & 2 ? 13 : -13); drawBox(v3(mx, 22, mz), v3(1.2f, 22, 1.2f), 0.4f, white, true); drawBox(v3(mx, 46, mz), v3(0.9f, 2.5f, 0.9f), 0.4f, RGB(60, 140, 200), true); } }
+      else { drawBox(v3(x, 8, z), v3(9, 8, 7), 0, white, true); for (int k = 0; k < 5; k++) { float dx = k == 0 ? 0 : (k & 1 ? 5.0f : -5.0f), dz = k == 0 ? 0 : (k & 2 ? 4.0f : -4.0f), hh = k == 0 ? 6 : 4;
+          drawBox(v3(x + dx, 16 + hh * 0.5f, z + dz), v3(1.6f, hh * 0.5f, 1.6f), 0, white, true); drawBox(v3(x + dx, 17.5f + hh, z + dz), v3(2.0f, 1.5f, 2.0f), 0.785f, gold, true); drawBox(v3(x + dx, 20 + hh, z + dz), v3(0.15f, 1.2f, 0.15f), 0, gold, true); } }
+    } break;
+    case LM_CATHEDRAL: { drawBox(v3(x, 9, z), v3(12, 9, 9), 0, white, true); drawBox(v3(x, 19.5f, z), v3(7, 1.5f, 7), 0, white, true);
+      for (int k = 0; k < 5; k++) { float dx = k == 0 ? 0 : (k & 1 ? 7.5f : -7.5f), dz = k == 0 ? 0 : (k & 2 ? 5.5f : -5.5f), hh = k == 0 ? 8 : 5;
+        drawBox(v3(x + dx, 18 + hh * 0.5f, z + dz), v3(k ? 1.8f : 3.0f, hh * 0.5f, k ? 1.8f : 3.0f), 0, white, true); drawBox(v3(x + dx, 19.5f + hh, z + dz), v3(k ? 2.3f : 3.8f, k ? 2.0f : 3.2f, k ? 2.3f : 3.8f), 0.785f, gold, true);
+        drawBox(v3(x + dx, 23 + hh + (k ? 0 : 1.5f), z + dz), v3(0.15f, 1.5f, 0.15f), 0, gold, true); drawBox(v3(x + dx, 23.5f + hh + (k ? 0 : 1.5f), z + dz), v3(0.8f, 0.12f, 0.12f), 0, gold, true); }
+      drawBox(v3(x, 14, z - 13), v3(3, 14, 3), 0, white, true); drawBox(v3(x, 30, z - 13), v3(2.2f, 2, 2.2f), 0.785f, gold, true);   // колокольня
+    } break;
+    case LM_SKYSCRAPER: { static const float HS[4] = {150, 120, 95, 70}; for (int k = 0; k < (townCity == C_MSK ? 4 : 1); k++) { float ox = k == 0 ? 0 : (k == 1 ? -9 : (k == 2 ? 9 : 0)), oz = k == 3 ? 9 : (k ? -6 : 0), h = HS[k];
+        drawBox(v3(x + ox, h * 0.5f, z + oz), v3(6.5f, h * 0.5f, 6.5f), 0.3f * k, mixc(RGB(80, 120, 160), RGB(140, 170, 200), k * 0.25f), true);
+        if (d2 < 260 * 260) for (int f = 0; f < (int)(h / 6); f++) drawBox(v3(x + ox, f * 6.0f + 3, z + oz), v3(6.6f, 0.12f, 6.6f), 0.3f * k, RGB(200, 210, 220), false);
+        drawBox(v3(x + ox, h + 6, z + oz), v3(0.3f, 6, 0.3f), 0, RGB(200, 200, 205), true); if (gNK > 0.2f) glowAt(v3(x + ox, h + 12, z + oz), 1.2f, RGB(255, 40, 40), (int)(200 * gNK)); } } break;
+    case LM_MOTHERLAND: { for (int q = 0; q < 5; q++) drawBox(v3(x, q * 2.0f + 1, z), v3(14 - q * 2.2f, 1, 14 - q * 2.2f), 0, RGB(110, 140, 80), true);   // курган
+      drawBox(v3(x, 11, z), v3(3, 1, 3), 0, RGB(150, 150, 150), true); drawBox(v3(x, 22, z), v3(2.5f, 10, 1.8f), 0, RGB(185, 185, 180), true);   // фигура
+      drawBox(v3(x, 34, z), v3(1.6f, 2.5f, 1.4f), 0, RGB(185, 185, 180), true); drawBox(v3(x, 38, z), v3(0.9f, 1.2f, 0.9f), 0, RGB(185, 185, 180), true);
+      drawBox(v3(x - 6, 36, z), v3(5, 0.8f, 0.8f), -0.6f, RGB(185, 185, 180), true); drawBox(v3(x - 11, 44, z + 1), v3(0.35f, 9, 0.35f), 0.2f, RGB(200, 200, 205), true);   // рука и меч
+      drawBox(v3(x + 4, 33, z), v3(3, 0.8f, 0.8f), 0.7f, RGB(185, 185, 180), true); drawBox(v3(x + 1.5f, 15, z + 1.5f), v3(4, 6, 0.5f), 0.3f, RGB(170, 170, 168), true); } break;
+    case LM_STELE: { drawBox(v3(x, 1, z), v3(8, 1, 8), 0, RGB(170, 168, 160), true); drawBox(v3(x, 3, z), v3(4, 1, 4), 0, RGB(150, 148, 142), true);
+      drawBox(v3(x, 22, z), v3(1.4f, 18, 1.4f), 0, RGB(210, 205, 195), true); drawBox(v3(x, 42, z), v3(2.5f, 2, 0.6f), 0, gold, true); drawBox(v3(x + 4, 8, z), v3(1.2f, 4, 1.0f), 0, RGB(120, 110, 90), true); } break;
+    case LM_FERRIS: { float r = 18, cyy = r + 4, rot = gTime * 0.08f; drawBox(v3(x - 3, cyy * 0.5f, z), v3(0.4f, cyy * 0.5f, 0.4f), 0.3f, RGB(220, 220, 225), true); drawBox(v3(x + 3, cyy * 0.5f, z), v3(0.4f, cyy * 0.5f, 0.4f), -0.3f, RGB(220, 220, 225), true);
+      for (int k = 0; k < 16; k++) { float a = rot + k * 0.3927f, ca = cosf(a), sa = sinf(a); drawBox(v3(x + ca * r * 0.5f, cyy + sa * r * 0.5f, z), v3(0.15f, 0.15f, 0.15f) + v3(fabsf(ca) * r * 0.5f, fabsf(sa) * r * 0.5f, 0), 0, RGB(230, 230, 235), false);
+        drawBox(v3(x + ca * r, cyy + sa * r - 1.2f, z), v3(1.0f, 0.9f, 1.0f), 0, k & 1 ? RGB(220, 60, 60) : RGB(60, 120, 220), true); }
+      if (gNK > 0.2f) for (int k = 0; k < 16; k++) { float a = rot + k * 0.3927f; glowAt(v3(x + cosf(a) * r, cyy + sinf(a) * r, z), 0.6f, k & 1 ? RGB(255, 80, 200) : RGB(80, 200, 255), (int)(160 * gNK)); } } break;
+    case LM_STADIUM: { for (int s = 0; s < 4; s++) { bool ax = s < 2; float sg = s & 1 ? 1.0f : -1.0f; drawBox(ax ? v3(x, 9, z + sg * 32) : v3(x + sg * 32, 9, z), ax ? v3(34, 9, 3) : v3(3, 9, 34), 0, s & 1 ? RGB(200, 60, 60) : RGB(230, 230, 235), true);
+        drawBox(ax ? v3(x, 19, z + sg * 30) : v3(x + sg * 30, 19, z), ax ? v3(35, 0.6f, 6) : v3(6, 0.6f, 35), 0, RGB(240, 240, 245), true); }
+      tQuad(x - 29, z - 29, x + 29, z + 29, 0.05f, RGB(70, 150, 70)); } break;
+    case LM_OIL: { drawBox(v3(x, 1, z), v3(7, 1, 7), 0, RGB(150, 150, 150), true);
+      for (int k = 0; k < 4; k++) { float ox = k & 1 ? 2.5f : -2.5f, oz = k & 2 ? 2.5f : -2.5f; drawBox(v3(x + ox * 0.5f, 14, z + oz * 0.5f), v3(0.25f, 13, 0.25f), 0, RGB(200, 60, 40), true); }
+      for (int q = 0; q < 6; q++) drawBox(v3(x, 3 + q * 4.0f, z), v3(1.6f - q * 0.15f, 0.15f, 1.6f - q * 0.15f), 0, RGB(220, 220, 220), true);
+      drawBox(v3(x + 6, 3, z), v3(3, 1.2f, 0.6f), 0.3f, RGB(40, 40, 46), true); drawBox(v3(x + 8, 5, z), v3(0.3f, 3, 0.3f), 0, RGB(40, 40, 46), true); } break;   // вышка и «качалка»
+    case LM_POLAR: { drawBox(v3(x, 0.6f, z), v3(9, 0.6f, 4), 0, RGB(180, 180, 175), true); for (int k = -1; k <= 1; k += 2) drawBox(v3(x + k * 6, 9, z), v3(0.8f, 9, 0.8f), 0, RGB(220, 225, 235), true);
+      drawBox(v3(x, 18, z), v3(7, 0.8f, 0.8f), 0, RGB(220, 225, 235), true); drawBox(v3(x, 19.6f, z), v3(3, 0.8f, 3), 0.785f, RGB(80, 140, 220), true); drawBox(v3(x, 6, z + 3), v3(2.5f, 1.8f, 1.2f), 0, RGB(120, 100, 80), true); } break;
+    case LM_LIGHTHOUSE: { for (int q = 0; q < 6; q++) drawBox(v3(x, q * 4.0f + 2, z), v3(2.6f - q * 0.15f, 2, 2.6f - q * 0.15f), 0, q & 1 ? RGB(200, 40, 40) : RGB(240, 240, 240), true);
+      drawBox(v3(x, 26, z), v3(1.6f, 1.5f, 1.6f), 0, RGB(250, 240, 180), false); drawBox(v3(x, 28.5f, z), v3(1.9f, 0.8f, 1.9f), 0, RGB(200, 40, 40), true);
+      if (gNK > 0.1f) glowAt(v3(x, 26, z), 2.0f, RGB(255, 245, 200), (int)(220 * gNK)); tQuad(x - 40, z - 6, x + 40, z + 40, 0.03f, RGB(60, 110, 150)); } break;   // море рядом
+    case LM_TVTOWER: { for (int q = 0; q < 12; q++) { float w = 4.0f - q * 0.3f; drawBox(v3(x, q * 8.0f + 4, z), v3(w, 0.2f, w), 0, q & 1 ? RGB(200, 60, 40) : RGB(235, 235, 235), true);
+        for (int k = 0; k < 4; k++) drawBox(v3(x + (k & 1 ? w : -w), q * 8.0f + 4, z + (k & 2 ? w : -w)), v3(0.18f, 4, 0.18f), 0, q & 1 ? RGB(200, 60, 40) : RGB(235, 235, 235), true); }
+      drawBox(v3(x, 100, z), v3(0.25f, 6, 0.25f), 0, RGB(220, 220, 220), true); if (gNK > 0.2f) glowAt(v3(x, 106, z), 1.0f, RGB(255, 40, 40), (int)(200 * gNK)); } break;
+  }
+  if (d2 < 300 * 300) { float ty = L.type == LM_TVTOWER ? 30 : (L.type == LM_SKYSCRAPER ? 40 : 30); addLabel(v3(x, ty, z), L.name, RGB(120, 40, 60), RGB(255, 255, 255), 0); }
+}
+static void townGatePos(int g, float &x, float &z) { if (g == 0) { x = 0; z = T_Z1 + 25; } else { x = g == 1 ? T_X0 - 25 : T_X1 + 25; z = TZS[2]; } }
+static int townRouteGate() {                                    // через какой выезд идёт маршрут дальше
+  if (G.pathN >= 2 && G.pathI + 1 < G.pathN && G.path[G.pathI] == G.city) return townGateTo(G.city, G.path[G.pathI + 1]);
+  if (G.job.on && G.job.to != G.city) { int p[32]; int n = routePath(G.city, G.job.to, p, 32); if (n >= 2) return townGateTo(G.city, p[1]); }
+  return -1; }
+static void townGateLabel(int g, char *b, int n) {              // какие города за этим выездом
+  int cnt = 0; char t[96] = ""; int rg = townRouteGate(), nx = rg == g && G.pathI + 1 < G.pathN && G.path[G.pathI] == G.city ? G.path[G.pathI + 1] : -1;
+  if (nx >= 0) snprintf(t, sizeof t, "%s", CITIES[nx].shortName), cnt = 1;
+  for (int e = 0; e < NEDGE && cnt < 2; e++) { int o = EDGES[e].a == G.city ? EDGES[e].b : (EDGES[e].b == G.city ? EDGES[e].a : -1); if (o < 0 || o == nx || townGateTo(G.city, o) != g) continue;
+    size_t L = strlen(t); snprintf(t + L, sizeof t - L, "%s%s", cnt ? ", " : "", CITIES[o].shortName); cnt++; }
+  snprintf(b, n, "НА ТРАССУ: %s", cnt ? t : "ОБЪЕЗДНАЯ"); }
+static const char *townTarget(float &x, float &z) {             // цель на мини-карте
+  if (G.job.on && !rig.hitched) { x = SLOT_X[ySlot]; z = KING_Z - 6; return "ЦЕЛЬ: ПРИЦЕП НА СКЛАДЕ"; }
+  if (G.job.on && rig.hitched && G.job.to == G.city) { x = 0; z = 100; return yArrive ? "ПОСТАВЬ ПРИЦЕП НА ЖЁЛТОЕ МЕСТО" : "ЦЕЛЬ: СКЛАД (СДАТЬ ГРУЗ)"; }
+  int g = townRouteGate(); if (g >= 0) { townGatePos(g, x, z); static char b[64]; int nx = G.pathI + 1 < G.pathN && G.path[G.pathI] == G.city ? G.path[G.pathI + 1] : (G.job.on ? G.job.to : -1);
+    snprintf(b, sizeof b, "ЦЕЛЬ: ВЫЕЗД - %s", nx >= 0 ? CITIES[nx].shortName : "ТРАССА"); return b; }
+  return NULL; }
+// автобус и трамвай (две секции)
+static void drawTownBus(const TCarT &c, V3 p, float yaw, float d2) {
+  #define TB(ox, oy, oz, hx, hy, hz, col) drawBox(p + rotOff(yaw, ox, oy, oz), v3(hx, hy, hz), yaw, col, true)
+  V3 ax = v3(cosf(yaw), 0, -sinf(yaw)), az = fwd(yaw), ay = v3(0, 1, 0); bool near_ = d2 < 90 * 90;
+  if (c.type == 1) { TB(0, 1.7f, 0, 1.25f, 1.3f, 6.0f, c.col); TB(0, 2.15f, 0, 1.26f, 0.5f, 5.7f, RGB(40, 50, 64)); TB(0, 1.15f, 0, 1.27f, 0.12f, 5.9f, RGB(200, 50, 40));
+    TB(0, 3.05f, -2.0f, 0.8f, 0.1f, 2.0f, RGB(180, 180, 186));
+    if (near_) for (int a = -1; a <= 1; a += 2) { drawWheel(p + rotOff(yaw, a * 1.1f, 0.5f, 3.8f), ax, ay, az, 0.5f, 0.2f, RGB(28, 28, 30)); drawWheel(p + rotOff(yaw, a * 1.1f, 0.5f, -3.4f), ax, ay, az, 0.5f, 0.2f, RGB(28, 28, 30)); }
+    if (d2 < 60 * 60) { char b[16]; snprintf(b, sizeof b, "%d", c.route); addLabel(p + v3(0, 3.6f, 0), b, RGB(20, 20, 24), RGB(255, 210, 60), 0); } }
+  else { for (int sct = -1; sct <= 1; sct += 2) { float oz = sct * 6.6f; TB(0, 1.85f, oz, 1.25f, 1.45f, 6.4f, c.col); TB(0, 2.3f, oz, 1.26f, 0.55f, 6.1f, RGB(40, 50, 64)); TB(0, 1.0f, oz, 1.27f, 0.25f, 6.3f, RGB(240, 240, 240));
+      TB(0, 3.5f, oz, 0.08f, 0.2f, 0.6f, RGB(50, 50, 54)); }
+    TB(0, 1.9f, 0, 1.1f, 1.3f, 0.3f, RGB(60, 60, 64));                                     // гармошка
+    drawBox(p + v3(0, 4.3f, 0) + az * 3.0f, v3(0.04f, 0.6f, 0.04f), yaw + 0.5f, RGB(50, 50, 54), true);   // токоприёмник
+    if (d2 < 60 * 60) { char b[16]; snprintf(b, sizeof b, "%d", c.route); addLabel(p + az * 12.5f + v3(0, 3.5f, 0), b, RGB(20, 20, 24), RGB(255, 210, 60), 0); } }
+  #undef TB
+}
+// остановки, трамвайные пути и провода
+static void drawTownTransit() {
+  float R2 = 170 * 170; u32 rail = RGB(150, 150, 156);
+  for (int a = 0; a < 2; a++) for (int st = 0; st < 5; st++) { float l0 = tStreetLen0(a, st), l1 = tStreetLen1(a, st);
+    for (int side = -1; side <= 1; side += 2) { float p = l0 + 60 + (side > 0 ? 0 : 30); for (; p < l1 - 20; p += 120) {   // автобусные остановки (по ходу движения справа)
+        float x = a == 0 ? TXS[st] + side * (ST_HW + 1.6f) : p, z = a == 0 ? p : TZS[st] - side * (ST_HW + 1.6f); if (tDist2(x, z) > R2 || !seen(v3(x, 1.5f, z), 3)) continue;
+        bool inX = false; const float *cr = a == 0 ? TZS : TXS; for (int k = 0; k < 5; k++) if (fabsf(p - cr[k]) < ST_HW + 6) inX = true; if (inX) continue;
+        float yaw = a == 0 ? 0.0f : 1.5708f; drawBox(v3(x, 2.4f, z), a == 0 ? v3(0.9f, 0.08f, 2.4f) : v3(2.4f, 0.08f, 0.9f), 0, RGB(40, 110, 170), true);
+        drawBox(v3(x + (a == 0 ? side * 0.8f : 0), 1.2f, z + (a == 0 ? 0 : -side * 0.8f)), a == 0 ? v3(0.04f, 1.1f, 2.3f) : v3(2.3f, 1.1f, 0.04f), 0, RGB(170, 200, 220), false);
+        drawBox(v3(x, 0.5f, z), a == 0 ? v3(0.25f, 0.05f, 1.8f) : v3(1.8f, 0.05f, 0.25f), 0, RGB(120, 90, 60), true);
+        if (tDist2(x, z) < 70 * 70) addLabel(v3(x, 3.0f, z), "ОСТАНОВКА", RGB(40, 110, 170), RGB(255, 255, 255), 0); (void)yaw; } } }
+  if (!townHasTram(townCity)) return;
+  float z0 = TZS[2];                                                                       // трамвай по центральной улице
+  for (float x = TXS[0] - ST_HW; x < TXS[4] + ST_HW; x += 8) { if (tDist2(x, z0) > R2 || !seen(v3(x + 4, 0, z0), 8)) continue;
+    for (int lane = -1; lane <= 1; lane += 2) for (int r = -1; r <= 1; r += 2) { float zz = z0 + lane * 1.9f + r * 0.76f; quad4(v3(x, 0.03f, zz - 0.05f), v3(x + 8, 0.03f, zz - 0.05f), v3(x + 8, 0.03f, zz + 0.05f), v3(x, 0.03f, zz + 0.05f), rail); }
+    for (int lane = -1; lane <= 1; lane += 2) drawBox(v3(x + 4, 6.2f, z0 + lane * 1.9f), v3(4, 0.015f, 0.015f), 0, RGB(40, 40, 44), false);   // контактный провод
+    if (((int)(x / 8)) % 4 == 0) for (int sd = -1; sd <= 1; sd += 2) { drawBox(v3(x, 3.5f, z0 + sd * (ST_HW + 0.5f)), v3(0.1f, 3.5f, 0.1f), 0, RGB(90, 92, 96), true); drawBox(v3(x, 6.5f, z0 + sd * (ST_HW * 0.5f)), v3(0.04f, 0.04f, ST_HW * 0.5f + 0.4f), 0, RGB(60, 60, 64), true); } }
+}
+// морской порт Новороссийска: контейнеры, краны, корабль
+static void drawPort() {
+  if (townCity != C_NVR) return; float x0 = townBX(4, 0), x1 = townBX(4, 1), z0 = townBZ(3, 0), z1 = townBZ(4, 1);
+  if (tDist2((x0 + x1) * 0.5f, (z0 + z1) * 0.5f) > 300 * 300) return;
+  static const u32 CC[6] = {RGB(190, 60, 40), RGB(40, 90, 160), RGB(60, 130, 70), RGB(200, 160, 40), RGB(150, 150, 155), RGB(120, 60, 120)};
+  for (int j = 3; j <= 4; j++) { float bz0 = townBZ(j, 0), bz1 = townBZ(j, 1); int r = 0; tQuad(x0 + 3, bz0 + 3, x1 - 3, bz1 - 3, 0.1f, RGB(120, 120, 118));
+    for (float cz = bz0 + 14; cz < bz1 - 10; cz += 26, r++) for (int q = 0; q < 6; q++) { unsigned h = hsh((unsigned)(j * 97 + r * 13 + q * 7 + 3)); int hgt = 1 + (int)(h % 3); float cx = x0 + 18 + q * 16; if (!seen(v3(cx, 4, cz), 10)) continue;
+      for (int k = 0; k < hgt; k++) { drawBox(v3(cx, 1.3f + k * 2.6f, cz), v3(6.0f, 1.3f, 1.25f), 0, CC[(h >> (k * 3)) % 6], true); drawBox(v3(cx, 1.3f + k * 2.6f, cz - 1.27f), v3(5.9f, 1.2f, 0.01f), 0, mixc(CC[(h >> (k * 3)) % 6], RGB(0, 0, 0), 0.2f), false); } } }
+  static const float CZ[4] = {450, 505, 575, 630}; for (int k = 0; k < 4; k++) { float cx = x1 + 30, cz = CZ[k]; if (!seen(v3(cx, 20, cz), 30)) continue;   // портальные краны у причала
+    for (int a = -1; a <= 1; a += 2) for (int b = -1; b <= 1; b += 2) drawBox(v3(cx + a * 5, 12, cz + b * 5), v3(0.5f, 12, 0.5f), 0, RGB(220, 70, 40), true);
+    drawBox(v3(cx + 10, 25, cz), v3(32, 1.0f, 1.2f), 0, RGB(220, 70, 40), true); drawBox(v3(cx, 27.5f, cz), v3(3, 2, 2.5f), 0, RGB(240, 240, 240), true); }
+  tQuad(T_X1 + 20, z0 - 30, T_X1 + 420, z1 + 260, -0.3f, RGB(50, 100, 150));                       // море
+  { float sx = T_X1 + 80, sz = (z0 + z1) * 0.5f; drawBox(v3(sx, 3, sz), v3(9, 4, 70), 0, RGB(40, 50, 70), true); drawBox(v3(sx, 7.5f, sz - 58), v3(8, 4, 8), 0, RGB(240, 240, 240), true);   // контейнеровоз
+    for (int k = 0; k < 8; k++) drawBox(v3(sx, 8.4f, sz - 40 + k * 13), v3(7.5f, 1.4f, 6), 0, CC[k % 6], true); }
+  if (tDist2((x0 + x1) * 0.5f, (z0 + z1) * 0.5f) < 250 * 250) addLabel(v3((x0 + x1) * 0.5f, 14, (z0 + z1) * 0.5f), "МОРСКОЙ ПОРТ", RGB(20, 70, 140), RGB(255, 255, 255), 0);
+}
+static void drawTown() {
+  float cx = camEye.x, cz = camEye.z, R2 = drawR * drawR; bool snow = CITIES[G.city].rg >= RG_TAIGA;
+  u32 asph = snow ? RGB(150, 152, 158) : RGB(72, 74, 78), walk = snow ? RGB(200, 204, 210) : RGB(150, 148, 142), grass = snow ? RGB(226, 230, 236) : RGB(96, 128, 66);
+  // асфальт по всему городу плитками рядом с камерой
+  for (float x = T_X0; x < T_X1; x += 40) for (float z = T_Z0; z < T_EXIT + 10; z += 40) { if (z >= T_Z1 && (x < -20 || x > 20)) continue; if (tDist2(x + 20, z + 20) > R2 + 3000) continue;
+      if (!seen(v3(x + 20, 0, z + 20), 30)) continue; float x1 = fminv(x + 40, T_X1), z1 = z >= T_Z1 ? T_EXIT + 10 : fminv(z + 40, T_Z1); float xa = z >= T_Z1 ? fmaxv(x, -9.0f) : x, xb = z >= T_Z1 ? fminv(x1, 9.0f) : x1; tQuad(xa, z, xb, z1, 0.0f, asph); }
+  // кварталы: тротуар и газон
+  for (int i = 0; i < 6; i++) for (int j = 0; j < 6; j++) { float x0 = townBX(i, 0), x1 = townBX(i, 1), z0 = townBZ(j, 0), z1 = townBZ(j, 1);
+    if (j == 0 && (i == 2 || i == 3)) { if (i == 2) x1 = -ST_HW; else x0 = ST_HW; }
+    if (j == 5 && (i == 2 || i == 3)) { if (i == 2) x1 = -9; else x0 = 9; }
+    float mx = (x0 + x1) * 0.5f, mz = (z0 + z1) * 0.5f; if (tDist2(mx, mz) > R2 + 8000 || !seen(v3(mx, 0, mz), fmaxv(x1 - x0, z1 - z0) * 0.75f)) continue;
+    tQuad(x0, z0, x1, z1, 0.08f, walk);
+    bool plaza = (i == 3 && j == 2) || (i == 2 && j == 3); bool lot = (i == 2 && j == 1) || (i == 3 && j == 1) || (i == 4 && j == 2) || (i == 1 && j == 2);
+    tQuad(x0 + 3, z0 + 3, x1 - 3, z1 - 3, 0.09f, plaza ? RGB(170, 160, 150) : (lot ? asph : grass));
+    if (lot && tDist2(mx, mz) < 150 * 150) for (float x = x0 + 8; x < x1 - 6; x += 4) tQuad(x, z0 + 4, x + 0.12f, z0 + 9, 0.1f, RGB(230, 230, 225)); }
+  // разметка, переходы, светофоры, фонари рядом
+  for (int ix = 0; ix < 5; ix++) for (int iz = 0; iz < 5; iz++) { float x = TXS[ix], z = TZS[iz]; if (tDist2(x, z) > 170 * 170 || !seen(v3(x, 2, z), 14)) continue;
+    for (int s = -1; s <= 1; s += 2) { for (float k = -ST_HW + 0.5f; k < ST_HW; k += 1.0f) { tQuad(x + k, z + s * (ST_HW + 0.5f), x + k + 0.5f, z + s * (ST_HW + 3.0f), 0.02f, RGB(232, 232, 226)); tQuad(x + s * (ST_HW + 0.5f), z + k, x + s * (ST_HW + 3.0f), z + k + 0.5f, 0.02f, RGB(232, 232, 226)); } }
+    drawTLight(x + ST_HW + 1.0f, z - ST_HW - 1.0f, ix, iz, 0, 1); drawTLight(x - ST_HW - 1.0f, z + ST_HW + 1.0f, ix, iz, 0, -1);
+    drawTLight(x - ST_HW - 1.0f, z - ST_HW - 1.0f, ix, iz, 1, 1); drawTLight(x + ST_HW + 1.0f, z + ST_HW + 1.0f, ix, iz, 1, -1); }
+  for (int a = 0; a < 2; a++) for (int st = 0; st < 5; st++) { float l0 = tStreetLen0(a, st), l1 = tStreetLen1(a, st);
+    for (float p = l0; p < l1; p += 8) { float x = a == 0 ? TXS[st] : p, z = a == 0 ? p : TZS[st]; if (tDist2(x, z) > 120 * 120) continue;
+      bool inX = false; const float *cr = a == 0 ? TZS : TXS; for (int k = 0; k < 5; k++) if (fabsf(p - cr[k]) < ST_HW + 3) inX = true; if (inX) continue;
+      if (a == 0) { tQuad(x - 0.08f, z, x + 0.08f, z + 4, 0.02f, RGB(230, 230, 225)); } else { tQuad(x, z - 0.08f, x + 4, z + 0.08f, 0.02f, RGB(230, 230, 225)); }
+      if (((int)(p / 8)) % 4 == 0) for (int s = -1; s <= 1; s += 2) { V3 lp = a == 0 ? v3(x + s * (ST_HW + 0.8f), 0, z) : v3(x, 0, z + s * (ST_HW + 0.8f)); if (!seen(lp + v3(0, 4, 0), 5)) continue;
+        drawBox(lp + v3(0, 3.5f, 0), v3(0.07f, 3.5f, 0.07f), 0, RGB(110, 112, 118), true); V3 hd = lp + (a == 0 ? v3(-s * 1.2f, 6.9f, 0) : v3(0, 6.9f, -s * 1.2f)); drawBox(hd, v3(0.35f, 0.08f, 0.35f), 0, RGB(90, 92, 96), true);
+        if (gNK > 0.2f) glowAt(hd - v3(0, 0.2f, 0), 0.6f, RGB(255, 220, 150), (int)(130 * gNK)); } } }
+  // выезды на трассу: север, запад, восток - асфальт и указатели с городами
+  for (int g = 0; g < 3; g++) { float gx, gz; townGatePos(g, gx, gz); if (tDist2(gx, gz) > R2 + 20000) continue;
+    if (g > 0) { float xa = g == 1 ? T_X0 - 95 : T_X1, xb = g == 1 ? T_X0 : T_X1 + 95; tQuad(xa, TZS[2] - 9, xb, TZS[2] + 9, 0.0f, asph); for (float x = xa; x < xb; x += 8) tQuad(x, TZS[2] - 0.08f, x + 4, TZS[2] + 0.08f, 0.02f, RGB(230, 230, 225)); }
+    char b[96]; townGateLabel(g, b, sizeof b); bool route = townRouteGate() == g;
+    for (int k = -1; k <= 1; k += 2) drawBox(g == 0 ? v3(k * 8.0f, 3.2f, gz) : v3(gx, 3.2f, gz + k * 8.0f), v3(0.15f, 3.2f, 0.15f), 0, RGB(150, 152, 158), true);
+    addLabel(v3(gx, 6.6f, gz), b, route ? RGB(30, 110, 60) : RGB(30, 80, 170), RGB(255, 255, 255), 0); }
+  for (size_t i = 0; i < tbld.size(); i++) { const TBld &b = tbld[i]; float mx = (b.x0 + b.x1) * 0.5f, mz = (b.z0 + b.z1) * 0.5f; if (tDist2(mx, mz) > R2 + 4000) continue; drawTBld(b); }
+  for (size_t i = 0; i < ttree.size(); i++) { const TTree &t = ttree[i]; if (tDist2(t.x, t.z) > 170 * 170) continue; drawTTree(t); }
+  for (int k = 0; k < 2; k++) if (tDist2(tland[k].x, tland[k].z) < R2 + 40000) drawLandmark(tland[k]);
+  // фонтан в парке
+  { float x = (townBX(2, 0) + townBX(2, 1)) * 0.5f, z = (townBZ(2, 0) + townBZ(2, 1)) * 0.5f; if (tDist2(x, z) < 150 * 150) { drawBox(v3(x, 0.4f, z), v3(4, 0.4f, 4), 0, RGB(180, 178, 172), true); tQuad(x - 3.5f, z - 3.5f, x + 3.5f, z + 3.5f, 0.82f, RGB(90, 150, 200));
+      drawBox(v3(x, 1.5f, z), v3(0.4f, 1.5f, 0.4f), 0, RGB(200, 200, 205), true); } }
+  // АЗС: навес и колонки; автосалон: тягачи на площадке
+  { float x0 = townBX(2, 0), z0 = townBZ(1, 0); if (tDist2(x0 + 64, z0 + 30) < 200 * 200) {
+      for (int k = 0; k < 2; k++) for (int q = 0; q < 4; q++) { float px = x0 + 48 + q * 10, pz = z0 + 22 + k * 18; drawBox(v3(px, 0.6f, pz), v3(1.2f, 0.6f, 0.6f), 0, RGB(200, 200, 205), true); drawBox(v3(px, 1.6f, pz), v3(0.45f, 1.0f, 0.35f), 0, RGB(240, 240, 245), true); drawBox(v3(px, 2.1f, pz - 0.36f), v3(0.35f, 0.3f, 0.01f), 0, RGB(40, 120, 200), false); }
+      for (int k = 0; k < 4; k++) drawBox(v3(x0 + 46 + (k & 1) * 36, 3.2f, z0 + 20 + (k >> 1) * 22), v3(0.25f, 3.2f, 0.25f), 0, RGB(230, 230, 235), true);
+      drawBox(v3(x0 + 64, 6.8f, z0 + 31), v3(22, 0.45f, 16), 0, RGB(30, 80, 170), true); drawBox(v3(x0 + 64, 6.3f, z0 + 31), v3(22.1f, 0.12f, 16.1f), 0, RGB(80, 200, 230), false);
+      if (gNK > 0.2f) glowAt(v3(x0 + 64, 6.0f, z0 + 31), 6.0f, RGB(230, 240, 255), (int)(90 * gNK)); } }
+  { float x0 = townBX(4, 0), z1 = townBZ(2, 1); if (tDist2(x0 + 60, z1 - 26) < 160 * 160) for (int k = 0; k < 3; k++) { V3 b0 = v3(x0 + 40 + k * 22, 0, z1 - 50); Frame fr = frameFrom(b0, b0 + v3(0, 0, -WB)); drawTractor(fr, (k + 2) % NTRUCK, TRUCKS[(k + 2) % NTRUCK].col, 0, 0, false, false, false, 0); } }
+  // машины и пешеходы
+  for (size_t i = 0; i < tcars.size(); i++) { const TCarT &c = tcars[i]; V3 p = tcarPos(c); float d2 = tDist2(p.x, p.z); if (d2 > 200 * 200 || !seen(p + v3(0, 1, 0), 3)) continue;
+    if (c.type) { drawTownBus(c, p, tcarYaw(c), d2); continue; }
+    const ObjModel *m = d2 < 25 * 25 ? gCarL[c.model] : gCarS[c.model]; if (!m) m = gCarM[c.model]; if (m) drawCarObjR(*m, p, tcarYaw(c), c.col, c.brake, c.crashT > 0 ? 1 : 0); }
+  for (size_t i = 0; i < tpeds.size(); i++) drawPed(tpeds[i]);
+  drawTownTransit(); drawPort();
+}
+// мини-карта города в углу
+static void townMiniMap() {
+  int w = imin(IW * 26 / 100, fs * 110), h = w, x0 = IW - w - fs * 4, y0 = fs * 24; float sc = (float)w / (T_X1 - T_X0 + 190), sz = (float)h / (T_EXIT - (-10.0f));
+  auto MX = [&](float x) { return x0 + (int)((x - T_X0 + 95) * sc); }; auto MY = [&](float z) { return y0 + h - (int)((z + 10) * sz); };
+  fillRectA(x0 - fs, y0 - fs, w + fs * 2, h + fs * 2, RGB(20, 26, 34), 210);
+  int th = imax(2, (int)(ST_HW * 2 * sc));
+  for (int k = 0; k < 5; k++) { fillRect(MX(TXS[k]) - th / 2, MY(tStreetLen1(0, k)), th, MY(tStreetLen0(0, k)) - MY(tStreetLen1(0, k)), RGB(120, 124, 132)); fillRect(MX(TXS[0] - ST_HW), MY(TZS[k]) - th / 2, MX(TXS[4] + ST_HW) - MX(TXS[0] - ST_HW), th, RGB(120, 124, 132)); }
+  fillRect(MX(-ST_HW), MY(T_EXIT), th, MY(T_Z1) - MY(T_EXIT), RGB(80, 170, 90));
+  fillRect(MX(T_X0 - 95), MY(TZS[2]) - th / 2, MX(T_X0) - MX(T_X0 - 95), th, RGB(80, 170, 90)); fillRect(MX(T_X1), MY(TZS[2]) - th / 2, MX(T_X1 + 95) - MX(T_X1), th, RGB(80, 170, 90));
+  fillRect(MX(-50), MY(125), MX(50) - MX(-50), MY(-2) - MY(125), RGB(90, 90, 100));                                         // склад
+  static const char *PL[NPOI] = {"А", "С", "Т", "Г", "Б"}; static const u32 PC[NPOI] = {RGB(60, 140, 255), RGB(200, 200, 210), RGB(240, 80, 80), RGB(230, 170, 80), RGB(90, 220, 120)};
+  for (size_t i = 0; i < tpoi.size(); i++) { const TPoi &p = tpoi[i]; int px = MX((p.x0 + p.x1) * 0.5f), py = MY((p.z0 + p.z1) * 0.5f); fillCircle(px, py, fs * 3, PC[p.type], 255); drawText(px - fs * 2, py - fs * 3, PL[p.type], imax(1, fs - 1), RGB(10, 10, 10), 0); }
+  for (int k = 0; k < 2; k++) { int px = MX(tland[k].x), py = MY(tland[k].z); fillCircle(px, py, fs * 3, RGB(255, 210, 60), 255); }
+  { float tx, tz; const char *tn = townTarget(tx, tz); if (tn) { int px = MX(tx), py = MY(tz), r = fs * 4 + (int)(fmodf(gTime * 3, 1.0f) * fs * 3); fillCircle(px, py, r, RGB(255, 60, 200), 120); fillCircle(px, py, fs * 2, RGB(255, 60, 200), 255);
+      drawTextSh(x0, y0 - fs * 10, tn, imax(1, fs - 1), RGB(255, 140, 230), 0); } }
+  { int px = MX(rig.x), py = MY(rig.z); V3 f = fwd(rig.yaw); fillCircle(px, py, fs * 2 + 1, RGB(255, 80, 60), 255); drawLine(px, py, px + (int)(f.x * fs * 6), py - (int)(f.z * fs * 6), RGB(255, 255, 255), imax(1, fs / 2)); }
+  drawText(x0, y0 + h + fs * 2, "А АЗС  С СТО  Т САЛОН  Г ОТЕЛЬ  Б БИРЖА", imax(1, fs - 1), RGB(200, 210, 225), 0);
+}
+// какое здание рядом: фура стоит в зоне заезда
+static int townPoiHere() { if (fabsf(rig.v) > 1.0f) return -1; V3 c = v3(rig.x, 0, rig.z) + fwd(rig.yaw) * (WB * 0.5f);
+  for (size_t i = 0; i < tpoi.size(); i++) { const TPoi &p = tpoi[i]; if (c.x > p.x0 && c.x < p.x1 && c.z > p.z0 && c.z < p.z1) return p.type; } return -1; }
 
 // =====================================================================
 //  ДАЛЬНОБОЙЩИК: управление, интерфейс, город, карта, переходы
@@ -15809,8 +16878,8 @@ static void nText(int x, int y, const char *s, int maxw, u32 c, int align) { int
 static void fmtDist(char *o, int n, float m) { if (m < 1000) snprintf(o, n, "%d М", imax(0, (int)(m / 10) * 10)); else snprintf(o, n, "%.1f КМ", m / 1000); }
 static void fmtClock(char *o, int n, float clk) { float h = fmodf(clk / 60.0f, 24.0f); int hh = (int)h, mm = (int)((h - hh) * 60), dd = (int)floorf(clk / 1440.0f) - (int)floorf(G.clock / 1440.0f);
   if (dd > 0) snprintf(o, n, "%02d:%02d +%dД", hh, mm, dd); else snprintf(o, n, "%02d:%02d", hh, mm); }
-static const char *featLetter(int t) { return t == F_WORKS ? "Р" : t == F_FUEL ? "А" : (t == F_CAFE ? "К" : (t == F_WEIGH ? "В" : (t == F_DPS ? "Д" : (t == F_ICE ? "Л" : "")))); }
-static u32 featColor(int t) { return t == F_WORKS ? RGB(235, 130, 20) : t == F_FUEL ? RGB(220, 60, 50) : (t == F_CAFE ? RGB(40, 160, 80) : (t == F_WEIGH ? RGB(50, 100, 220) : (t == F_DPS ? RGB(30, 60, 150) : (t == F_ICE ? RGB(80, 170, 230) : RGB(230, 140, 30))))); }
+static const char *featLetter(int t) { if (t == F_TOLL) return "П"; if (t == F_CLOSE) return "Х"; if (t == F_BROKEN) return "!"; return t == F_WORKS ? "Р" : t == F_FUEL ? "А" : (t == F_CAFE ? "К" : (t == F_WEIGH ? "В" : (t == F_DPS ? "Д" : (t == F_ICE ? "Л" : "")))); }
+static u32 featColor(int t) { if (t == F_TOLL) return RGB(30, 90, 170); if (t == F_CLOSE) return RGB(200, 30, 30); if (t == F_BROKEN) return RGB(230, 150, 30); return t == F_WORKS ? RGB(235, 130, 20) : t == F_FUEL ? RGB(220, 60, 50) : (t == F_CAFE ? RGB(40, 160, 80) : (t == F_WEIGH ? RGB(50, 100, 220) : (t == F_DPS ? RGB(30, 60, 150) : (t == F_ICE ? RGB(80, 170, 230) : RGB(230, 140, 30))))); }
 // ближайшее событие впереди для плашки
 static bool navEvent(char *txt, int n, u32 &col, bool &urgent) {
   float z = rig.z, best = 1e9f; char d[24]; urgent = false;
@@ -15828,12 +16897,27 @@ static bool navEvent(char *txt, int n, u32 &col, bool &urgent) {
             else if (dd < 400 && rig.x - cxAt(rig.z) > ROAD_HW) { snprintf(t, sizeof t, "ПЕРЕСТРОЙТЕСЬ ВЛЕВО · %s", d); u = true; } } else dd = 1e9f; }
         else if (z < f.s1) { dd = 0; snprintf(t, sizeof t, f.flag ? "ДОРОЖНЫЕ РАБОТЫ: ПО ВСТРЕЧНОЙ, 40" : "ДОРОЖНЫЕ РАБОТЫ: 50"); c = RGB(235, 130, 20); }
         break;
+      case F_RAIL: dd = f.s - z; if (dd > -10 && dd < 700) { int rs = railState(f); fmtDist(d, sizeof d, fmaxv(0.0f, dd));
+          if (rs != 0) { snprintf(t, sizeof t, "ПЕРЕЕЗД ЗАКРЫТ! СТОП · %s", d); c = RGB(200, 30, 30); u = true; } else { snprintf(t, sizeof t, "Ж/Д ПЕРЕЕЗД · %s", d); c = RGB(90, 90, 100); } } else dd = 1e9f; break;
+      case F_BRIDGE: dd = f.s0 - z; if (dd > -(f.s1 - f.s0) && dd < 500) { fmtDist(d, sizeof d, fmaxv(0.0f, dd)); snprintf(t, sizeof t, dd > 0 ? "МОСТ ЧЕРЕЗ %s · %s" : "МОСТ ЧЕРЕЗ %s", f.name, d); c = RGB(40, 90, 160); } else dd = 1e9f; break;
+      case F_TOLL: dd = f.s - z; if (dd > -10 && dd < 1500) { fmtDist(d, sizeof d, fmaxv(0.0f, dd));
+          if (f.done) snprintf(t, sizeof t, "ОПЛАЧЕНО · %s", d); else snprintf(t, sizeof t, "ПУНКТ ОПЛАТЫ %d Р · %s", rig.hitched ? 2400 : 1200, d); c = RGB(30, 90, 170); u = !f.done && dd < 200 && speedKmh() > 25; } else dd = 1e9f; break;
+      case F_CLOSE: dd = f.s - z; if (!f.done && dd > -10 && dd < 3000) { fmtDist(d, sizeof d, fmaxv(0.0f, dd)); snprintf(t, sizeof t, "ТРАССА ЗАКРЫТА: МЕТЕЛЬ · %s", d); c = RGB(200, 30, 30); u = dd < 400; } else dd = 1e9f; break;
+      case F_BROKEN: dd = f.s - z; if (!f.done && dd > -10 && dd < 600) { fmtDist(d, sizeof d, fmaxv(0.0f, dd)); snprintf(t, sizeof t, "НА ОБОЧИНЕ СЛОМАННАЯ МАШИНА · %s", d); c = RGB(230, 150, 30); } else dd = 1e9f; break;
       case F_FUEL: case F_CAFE: case F_WEIGH:
         dd = f.s0 - z; if (dd > -20 && dd < 900 && !(f.type == F_WEIGH && f.done)) { fmtDist(d, sizeof d, fmaxv(0.0f, dd)); snprintf(t, sizeof t, "%s СПРАВА · %s", f.type == F_FUEL ? "АЗС" : (f.type == F_CAFE ? "КАФЕ, СТОЯНКА" : (G.job.on && G.job.hitched ? "ВЕСЫ, ЗАЕЗД ОБЯЗАТЕЛЕН" : "ВЕСОВОЙ КОНТРОЛЬ")), d); c = featColor(f.type); } else dd = 1e9f; break;
     }
     if (dd < best) { best = dd; snprintf(txt, n, "%s", t); col = c; urgent = u; } }
+  // съезды в деревни
+  { int vi = vbyAt(rig.x, z); if (vi >= 0) { snprintf(txt, n, "ОБЪЕЗД %s · 90", R.feats[R.vbys[vi].village].name); col = RGB(30, 110, 60); urgent = speedKmh() > 95; return true; } }
+  for (size_t i = 0; i < R.vbys.size(); i++) { const VBy &v = R.vbys[i]; float dd = v.a - z; if (dd > 0 && dd < 900 && dd < best) { char d2[24]; fmtDist(d2, sizeof d2, dd); snprintf(txt, n, "ОБЪЕЗД %s СПРАВА · %s", R.feats[v.village].name, d2); col = RGB(30, 110, 60); urgent = false; best = dd; } }
+  int li = loopAt(rig.x, z);
+  if (li >= 0) { snprintf(txt, n, "%s: ГРУНТОВКА 40%s", VILLN[R.loops[li].name], R.loops[li].inn ? " · АЗС, НОЧЛЕГ" : " · АЗС"); col = RGB(130, 100, 60); urgent = speedKmh() > 45; return true; }
+  for (size_t i = 0; i < R.loops.size(); i++) { const Loop &l = R.loops[i]; float dd = l.a - z; if (dd > 0 && dd < 700 && dd < best) { bool byp = false; for (size_t k = 0; k < R.feats.size(); k++) if ((R.feats[k].type == F_DPS || R.feats[k].type == F_WEIGH) && R.feats[k].s > l.a && R.feats[k].s < l.b) byp = true;
+      char d[24]; fmtDist(d, sizeof d, dd); snprintf(txt, n, "СЪЕЗД НАПРАВО: %s%s · %s", VILLN[l.name], byp ? " (ОБЪЕЗД)" : "", d); col = RGB(130, 100, 60); urgent = false; best = dd; } }
   return best < 1e8f;
 }
+static float riverBend(const Feat &f, float t) { float ph = (float)(hsh((unsigned)f.s) % 100) * 0.06f; return sinf(t * 0.011f) * 70 * cosf(ph) + sinf(t * 0.027f + ph) * 22 - sinf(ph) * 22; }   // изгибы реки на карте (под мостом - 0)
 static void drawNav(float dt) {
   bool night = gNK > 0.5f; char b[120], d1[24];
   int nh = IH * 48 / 100, nw = navSize == 1 ? IW * 40 / 100 : nh * 21 / 20, nx = IW - nw - fs * 4, ny = fs * 21;
@@ -15876,10 +16960,32 @@ static void drawNav(float dt) {
   for (size_t i = 0; i < R.feats.size(); i++) { const Feat &f = R.feats[i]; if ((f.type != F_FUEL && f.type != F_CAFE && f.type != F_WEIGH) || f.s1 < s0 || f.s0 > s1) continue;
     float pX = 0, pY = 0; for (float s = f.s0 + 10; s <= f.s1 - 10; s += st) { float X, Y; NP(cxAt(s) + RHW + 5, s, X, Y); if (s > f.s0 + 10) { nLine(pX, pY, X, Y, imax(2, fs * 3), casing); } pX = X; pY = Y; }
     pX = 0; for (float s = f.s0 + 10; s <= f.s1 - 10; s += st) { float X, Y; NP(cxAt(s) + RHW + 5, s, X, Y); if (s > f.s0 + 10) nLine(pX, pY, X, Y, imax(1, fs * 2), roadC); pX = X; pY = Y; } }
+  // реки: извилистая лента поперёк дороги, ширина - как вода под мостом (рисуем до дороги, чтобы мост был сверху)
+  for (size_t i = 0; i < R.feats.size(); i++) { const Feat &f = R.feats[i]; if (f.type != F_BRIDGE || f.s1 < s0 - 300 || f.s0 > s1 + 300) continue;
+    u32 wcol = night ? RGB(40, 70, 110) : RGB(150, 190, 230); float span = f.s1 - f.s0 - 80, w = fmaxv(10.0f, span * 0.55f); int th = imax(2, (int)(w * sc));
+    float pX = 0, pY = 0; for (float t = -520; t <= 520; t += 16) { float X, Y; NP(cxAt(f.s) + t, f.s + riverBend(f, t), X, Y); if (t > -520) nLine(pX, pY, X, Y, th, wcol); pX = X; pY = Y; } }
   // трасса: обводка, затем пройденная часть серым и маршрут синим
   int thC = imax(4, fs * 6), thR = imax(2, fs * 4);
   { float pX = 0, pY = 0; bool first = true; for (float s = s0; s <= s1 + st * 0.5f; s += st) { float ss = fminv(s, s1), X, Y; NP(cxAt(ss), ss, X, Y); if (!first) nLine(pX, pY, X, Y, thC, casing); pX = X; pY = Y; first = false; } }
   { float pX = 0, pY = 0; bool first = true; for (float s = s0; s <= s1 + st * 0.5f; s += st) { float ss = fminv(s, s1), X, Y; NP(cxAt(ss), ss, X, Y); if (!first) nLine(pX, pY, X, Y, thR, ss < rig.z ? passC : routeC); pX = X; pY = Y; first = false; } }
+  // реки, ж/д и путепроводы
+  for (size_t i = 0; i < R.feats.size(); i++) { const Feat &f = R.feats[i];
+    if (f.type == F_BRIDGE && f.s1 > s0 && f.s0 < s1) { float X, Y; NP(cxAt(f.s) - 60, f.s + riverBend(f, -60), X, Y); if (nIn(X, Y, 2)) drawTextSh((int)X, (int)Y, f.name, imax(1, fs - 1), night ? RGB(150, 190, 240) : RGB(40, 80, 140), 2); }
+    if (f.type == F_RAIL && f.s > s0 && f.s < s1) { float X0, Y0, X1, Y1; NP(cxAt(f.s) - 400, f.s, X0, Y0); NP(cxAt(f.s) + 400, f.s, X1, Y1); nLine(X0, Y0, X1, Y1, imax(2, fs * 2), night ? RGB(150, 150, 160) : RGB(70, 70, 76));
+      float dx = X1 - X0, dy = Y1 - Y0, ln = sqrtf(dx * dx + dy * dy) + 0.01f; for (float t = 0; t < ln; t += fs * 6) nRect((int)(X0 + dx * t / ln) - fs / 2, (int)(Y0 + dy * t / ln) - fs / 2, fs + 1, fs + 1, night ? RGB(30, 36, 46) : RGB(236, 230, 214)); }
+    if (f.type == F_INTER && f.s > s0 && f.s < s1) { float X0, Y0, X1, Y1; NP(cxAt(f.s) - 300, f.s, X0, Y0); NP(cxAt(f.s) + 300, f.s, X1, Y1); nLine(X0, Y0, X1, Y1, imax(4, fs * 5), casing); nLine(X0, Y0, X1, Y1, imax(2, fs * 3), night ? RGB(110, 110, 120) : RGB(245, 215, 120)); } }
+  // объездные вокруг посёлков
+  for (size_t vi = 0; vi < R.vbys.size(); vi++) { const VBy &v = R.vbys[vi]; if (v.b < s0 || v.a > s1) continue;
+    for (int pass = 0; pass < 2; pass++) { float pX = 0, pY = 0; bool first = true; for (float s = fmaxv(v.a, s0); s <= fminv(v.b, s1) + st * 0.5f; s += st) { float ss = fminv(s, fminv(v.b, s1)), X, Y; NP(cxAt(ss) + vbyOff(v, ss), ss, X, Y);
+        if (!first) nLine(pX, pY, X, Y, pass ? imax(2, fs * 3) : imax(4, fs * 5), pass ? roadC : casing); pX = X; pY = Y; first = false; } } }
+  // съезды в деревни: грунтовка, дома, заправка
+  for (size_t li = 0; li < R.loops.size(); li++) { const Loop &l = R.loops[li]; if (l.b < s0 || l.a > s1) continue;
+    float pX = 0, pY = 0; bool first = true; for (float s = fmaxv(l.a, s0); s <= fminv(l.b, s1) + st * 0.5f; s += st) { float ss = fminv(s, fminv(l.b, s1)), X, Y; NP(cxAt(ss) + loopOff(l, ss), ss, X, Y); if (!first) { nLine(pX, pY, X, Y, imax(3, fs * 4), casing); } pX = X; pY = Y; first = false; }
+    first = true; for (float s = fmaxv(l.a, s0); s <= fminv(l.b, s1) + st * 0.5f; s += st) { float ss = fminv(s, fminv(l.b, s1)), X, Y; NP(cxAt(ss) + loopOff(l, ss), ss, X, Y); if (!first) nLine(pX, pY, X, Y, imax(2, fs * 2), night ? RGB(120, 110, 95) : RGB(214, 196, 160)); pX = X; pY = Y; first = false; }
+    HouseP hs[48]; int n = loopHouses(l, s0, s1, hs, 48); for (int k = 0; k < n; k++) { float X, Y; NP(hs[k].x, hs[k].z, X, Y); int w = imax(2, (int)(hs[k].w * sc)), h = imax(2, (int)(hs[k].d * sc)); nRect((int)X - w / 2, (int)Y - h / 2, w, h, houseC); }
+    { float fz = loopFuelZ(l), X, Y; NP(cxAt(fz) + loopOff(l, fz) + 9, fz, X, Y); nIcon(X, Y, imax(4, fs * 5), RGB(200, 60, 40), "А"); }
+    if (l.inn) { float iz = loopInnZ(l), X, Y; NP(cxAt(iz) + loopOff(l, iz) + 9, iz, X, Y); nIcon(X, Y, imax(4, fs * 5), RGB(130, 90, 50), "Н"); }
+    { float X, Y; NP(cxAt(l.a + 200) + loopOff(l, l.a + 200) + 6, l.a + 200, X, Y); if (nIn(X, Y, 2)) drawTextSh((int)X, (int)Y, VILLN[l.name], imax(1, fs - 1), night ? RGB(200, 200, 220) : RGB(60, 60, 70), 0); } }
   // дорожные работы: закрытая полоса оранжевым
   for (size_t i = 0; i < R.feats.size(); i++) { const Feat &f = R.feats[i]; if (f.type != F_WORKS || f.s1 + 15 < s0 || f.s0 - 25 > s1) continue;
     float pX = 0, pY = 0; bool first = true; for (float s = f.s0 - 25; s <= f.s1 + 15; s += st) { float cf = worksClosedFrom(f, s), x0, x1; worksBand(f, x0, x1); if (cf > 1e8f) continue; float X, Y; NP(cxAt(s) + (cf + x1) * 0.5f, s, X, Y);
@@ -15892,7 +16998,7 @@ static void drawNav(float dt) {
     if (f.type == F_CAM) { NP(cxAt(f.s) + RHW + 9, f.s, X, Y); if (nIn(X, Y, ir)) { int w = ir * 3 / 2, h = ir; fillRect((int)X - w / 2 - 1, (int)Y - h / 2 - 1, w + 2, h + 2, RGB(20, 20, 24)); fillRect((int)X - w / 2, (int)Y - h / 2, w, h, featColor(F_CAM)); fillCircle((int)X, (int)Y, imax(1, h / 3), RGB(30, 30, 30), 255); } }
     else if (f.type == F_VILLAGE) { NP(cxAt(f.s) + RHW + 8, f.s, X, Y); if (nIn(X, Y, ir * 2)) { int ls = lightState(f), w = imax(3, ir), h = ir * 2 + ir / 2; fillRect((int)X - w / 2 - 1, (int)Y - h / 2 - 1, w + 2, h + 2, RGB(20, 20, 24));
         for (int k = 0; k < 3; k++) fillCircle((int)X, (int)Y - h / 3 + k * h / 3, imax(1, w / 2 - 1), k == 0 && ls == 2 ? RGB(255, 50, 40) : (k == 1 && ls == 1 ? RGB(255, 200, 40) : (k == 2 && ls == 0 ? RGB(60, 230, 80) : RGB(60, 60, 64))), 255); }
-      NP(cxAt(f.s0 + 40) - ROAD_HW - 30, f.s0 + 40, X, Y); if (nIn(X, Y, 2)) { int sc2 = imax(1, fs - 1); drawTextSh((int)X, (int)Y, f.name, sc2, night ? RGB(200, 200, 220) : RGB(60, 60, 70), 2); } }
+      NP(cxAt(f.s0 + 40) - LHW - 30, f.s0 + 40, X, Y); if (nIn(X, Y, 2)) { int sc2 = imax(1, fs - 1); drawTextSh((int)X, (int)Y, f.name, sc2, night ? RGB(200, 200, 220) : RGB(60, 60, 70), 2); } }
     else if (f.type == F_WORKS) { NP(cxAt(f.s) + RHW + 12, f.s, X, Y); nIcon(X, Y, ir, featColor(F_WORKS), "Р"); }
     else if (f.type == F_DPS) { NP(cxAt(f.s) + RHW + 6, f.s, X, Y); nIcon(X, Y, ir, featColor(F_DPS), "Д"); }
     else { NP(cxAt(f.s) + RHW + 16, f.s, X, Y); nIcon(X, Y, ir, featColor(f.type), featLetter(f.type)); } }
@@ -15904,7 +17010,7 @@ static void drawNav(float dt) {
   { float k = (float)imax(4, fs * 5); nTri(ax, ay - k * 1.7f, ax - k * 1.2f, ay + k * 1.1f, ax + k * 1.2f, ay + k * 1.1f, RGB(20, 20, 24));
     nTri(ax, ay - k * 1.3f, ax - k * 0.9f, ay + k * 0.8f, ax, ay + k * 0.2f, RGB(255, 140, 30)); nTri(ax, ay - k * 1.3f, ax, ay + k * 0.2f, ax + k * 0.9f, ay + k * 0.8f, RGB(230, 100, 20)); }
   // ограничение скорости в углу карты
-  { int lim = limitAt(rig.z), r = imax(5, fs * 7), cx = nx + r + fs * 2, cy = my1 - r - fs * 2; fillCircle(cx, cy, r, RGB(220, 30, 30), 255); fillCircle(cx, cy, r * 3 / 4, RGB(250, 250, 250), 255); snprintf(b, sizeof b, "%d", lim); int sc2 = imax(1, (r * 3 / 2) / (6 * (int)strlen(b))); drawText(cx - textW(b, sc2) / 2 + sc2 / 2, cy - sc2 * 7 / 2, b, sc2, RGB(10, 10, 10), 0); }
+  { int lim = playerLimit(), r = imax(5, fs * 7), cx = nx + r + fs * 2, cy = my1 - r - fs * 2; fillCircle(cx, cy, r, RGB(220, 30, 30), 255); fillCircle(cx, cy, r * 3 / 4, RGB(250, 250, 250), 255); snprintf(b, sizeof b, "%d", lim); int sc2 = imax(1, (r * 3 / 2) / (6 * (int)strlen(b))); drawText(cx - textW(b, sc2) / 2 + sc2 / 2, cy - sc2 * 7 / 2, b, sc2, RGB(10, 10, 10), 0); }
   // плашка с предупреждением
   ncx0 = 0; ncy0 = 0; ncx1 = IW; ncy1 = IH;
   if (hasEv) { fillRect(nx, ny, nw, bannerH, urgent && fmodf(gTime, 0.6f) < 0.3f ? RGB(220, 30, 30) : evCol); nText(nx + fs * 3, ny + fs * 3, ev, nw - fs * 6, RGB(255, 255, 255), 0); }
@@ -15931,6 +17037,8 @@ static void drawHud(float dt) {
   char b[160], m[40];
   // верх: время, деньги, кнопки
   int hh = (int)hoursNow(), mm = (int)((hoursNow() - hh) * 60); snprintf(b, sizeof b, "%02d:%02d", hh, mm); drawTextSh(fs * 4, fs * 4, b, fs * 2, gNK > 0.5f ? RGB(150, 170, 255) : RGB(255, 230, 150), 0);
+  { char w2[64]; const char *wn = ""; if (gs == GS_ROAD) wn = R.ice ? "ГОЛОЛЁД" : (R.storm ? "ГРОЗА" : (R.weather == 1 ? "ДОЖДЬ" : (R.weather == 2 ? "СНЕГ" : (R.weather == 3 ? "МЕТЕЛЬ" : (R.fog > 0.4f ? "ТУМАН" : "ЯСНО")))));
+    snprintf(w2, sizeof w2, "%s%s%s", SEASONN[seasonNow()], wn[0] ? " · " : "", wn); drawTextSh(fs * 4 + textW("00:00", fs * 2) + fs * 4, fs * 9, w2, imax(1, fs - 1), R.ice && gs == GS_ROAD ? RGB(140, 200, 255) : RGB(210, 220, 235), 0); }
   fmtMoney(m, sizeof m, G.money); snprintf(b, sizeof b, "%s Р", m); drawTextSh(fs * 4, fs * 21, b, fs, G.money >= 0 ? RGB(150, 240, 150) : RGB(255, 120, 100), 0);
   int bw2 = fs * 26, bh2 = fs * 14, bx2 = IW - bw2 - fs * 4;
   if (ub(bx2, fs * 3, bw2, bh2, "II", true, RGB(60, 64, 80))) { gs = GS_PAUSE; }
@@ -15942,11 +17050,11 @@ static void drawHud(float dt) {
   snprintf(b, sizeof b, "%s", rig.gear < 0 ? "R" : (rig.gear == 0 ? "N" : "")); if (rig.gear > 0) snprintf(b, sizeof b, "%s%d", G.manual ? "" : "A", rig.gear);
   drawTextSh(sx + fs * 44, sy + fs * 6, b, fs * 3, rig.shiftT > 0 ? RGB(255, 200, 80) : RGB(140, 220, 255), 0);
   bar(sx - fs * 30, sy - fs * 10, fs * 60, fs * 5, rig.rpm / 2300, rig.rpm > 1900 ? RGB(230, 70, 50) : (rig.rpm > 1000 ? RGB(90, 200, 90) : RGB(200, 180, 60)), NULL);
-  if (gs == GS_ROAD) { int lim = limitAt(rig.z), r = fs * 11, lx = camMode == 1 ? IW / 2 : sx - fs * 48, ly = camMode == 1 ? fs * 36 : sy + fs * 12; fillCircle(lx, ly, r, RGB(220, 30, 30), 255); fillCircle(lx, ly, r * 4 / 5, RGB(250, 250, 250), 255); snprintf(b, sizeof b, "%d", lim); drawText(lx, ly - fs * 3 - fs / 2, b, fs, RGB(10, 10, 10), 1);
+  if (gs == GS_ROAD) { int lim = playerLimit(), r = fs * 11, lx = camMode == 1 ? IW / 2 : sx - fs * 48, ly = camMode == 1 ? fs * 36 : sy + fs * 12; fillCircle(lx, ly, r, RGB(220, 30, 30), 255); fillCircle(lx, ly, r * 4 / 5, RGB(250, 250, 250), 255); snprintf(b, sizeof b, "%d", lim); drawText(lx, ly - fs * 3 - fs / 2, b, fs, RGB(10, 10, 10), 1);
     if (speedKmh() > lim + 5) fillCircle(lx, ly, r + fs * 2, RGB(255, 60, 40), (int)(80 + 60 * sinf(gTime * 10))); }
   // топливо, машина, груз, бодрость (слева под деньгами)
   int x = fs * 4, y = fs * 32, w = fs * 92, bh = fs * 10, st = fs * 12;
-  if (tripKm > 3) snprintf(b, sizeof b, "ТОПЛИВО %d Л · %d Л/100", (int)G.fuel, (int)(tripFuel / tripKm * 100 + 0.5f)); else snprintf(b, sizeof b, "ТОПЛИВО %d Л", (int)G.fuel); bar(x, y, w, bh, G.fuel / tankSize(), G.fuel / tankSize() > 0.15f ? RGB(200, 160, 40) : RGB(230, 60, 40), b); y += st;
+  if (tripKm > 10) snprintf(b, sizeof b, "ТОПЛИВО %d Л · %d Л/100", (int)G.fuel, (int)(tripFuel / tripKm * 100 + 0.5f)); else snprintf(b, sizeof b, "ТОПЛИВО %d Л", (int)G.fuel); bar(x, y, w, bh, G.fuel / tankSize(), G.fuel / tankSize() > 0.15f ? RGB(200, 160, 40) : RGB(230, 60, 40), b); y += st;
   snprintf(b, sizeof b, "ФУРА %d%%", (int)G.tr[G.truck].body); bar(x, y, w, bh, G.tr[G.truck].body / 100, RGB(90, 150, 200), b); y += st;
   if (G.job.on) { snprintf(b, sizeof b, "ГРУЗ %d%% %.1fТ", (int)(100 - G.job.damage), G.job.tons); bar(x, y, w, bh, 1 - G.job.damage / 100, CARGO[G.job.cargo].fragile ? RGB(200, 120, 200) : RGB(120, 180, 120), b); y += st; }
   float alert = clampf(1 - (G.awake - 8) / 10, 0, 1); snprintf(b, sizeof b, "БОДРОСТЬ %d%%", (int)(alert * 100)); bar(x, y, w, bh, alert, alert > 0.3f ? RGB(150, 120, 220) : RGB(230, 60, 40), b); y += st;
@@ -15960,7 +17068,7 @@ static void drawHud(float dt) {
 // ---------- действия на трассе (АЗС, кафе) ----------
 static bool fuelPanel = false;
 static void buyFuel(float liters) {
-  float price = CITIES[R.rg == RG_ARCTIC ? C_NUR : (gs == GS_ROAD ? R.from : G.city)].fuelPrice + (gs == GS_ROAD ? 2.0f : 0.0f);
+  float price = CITIES[R.rg == RG_ARCTIC ? C_NUR : (gs == GS_ROAD ? R.from : G.city)].fuelPrice + (gs == GS_ROAD ? (nearRural ? -5.0f : 2.0f) : 0.0f);   // в деревне дешевле
   float can = fminv(liters, tankSize() - G.fuel); int cost = (int)(can * price); if (cost > G.money) { can = floorf(G.money / price); cost = (int)(can * price); }
   if (can < 1) { say(G.fuel >= tankSize() - 1 ? "БАК ПОЛНЫЙ" : "НЕ ХВАТАЕТ ДЕНЕГ"); return; }
   G.fuel += can; G.money -= cost; char b[80]; snprintf(b, sizeof b, "ЗАПРАВЛЕНО %d Л ЗА %d Р", (int)can, cost); say(b); sPick = 1;
@@ -15972,13 +17080,18 @@ static void restHours(float hrs, int cost, const char *what) {
 }
 static void roadActions() {
   int aw = fs * 62, ah = fs * 17, ax = IW / 2 - aw / 2, ay = IH * 44 / 100;
+  if (nearClose && closeF) { if (ub(ax, ay, aw, ah, "ПЕРЕЖДАТЬ МЕТЕЛЬ\nВ КАБИНЕ ~3 Ч", true, RGB(70, 90, 140))) { closeF->done = true; restHours(3, 0, "ОЖИДАНИЕ"); R.wSeg = -2; say("МЕТЕЛЬ СТИХЛА, ТРАССУ ОТКРЫЛИ. МОЖНО ЕХАТЬ", 4); } }
+  if (nearBroken && brokenF) { if (ub(ax, ay - ah - fs * 3, aw, ah, "ПОМОЧЬ ВОДИТЕЛЮ\n~20 МИНУТ", true, RGB(200, 130, 30))) {
+      static const char *WHAT[4] = {"ДАЛИ ПРИКУРИТЬ", "ПОМОГЛИ ПОМЕНЯТЬ КОЛЕСО", "ДОТАЩИЛИ НА ТРОСЕ ДО ДЕРЕВНИ", "ПОДЕЛИЛИСЬ СОЛЯРКОЙ"}; int k = (int)(hsh((unsigned)brokenF->s) % 4), pay = 800 + (int)(hsh((unsigned)brokenF->s * 3) % 12) * 200;
+      brokenF->done = true; G.clock += 20; G.money += pay; char b[120]; snprintf(b, sizeof b, "%s. ВОДИТЕЛЬ ОТБЛАГОДАРИЛ: +%d Р", WHAT[k], pay); say(b, 5); sPick = 1; } }
   if (nearFuel) { if (!fuelPanel) { if (ub(ax, ay, aw, ah, "ЗАПРАВИТЬСЯ", true, RGB(200, 60, 50))) fuelPanel = true; }
-    else { char b[64]; float price = CITIES[R.from].fuelPrice + 2;
+    else { char b[64]; float price = CITIES[R.rg == RG_ARCTIC ? C_NUR : R.from].fuelPrice + (nearRural ? -5.0f : 2.0f);
       snprintf(b, sizeof b, "+100 Л\n%d Р", (int)(100 * price)); if (ub(ax - aw / 2 - fs * 2, ay, aw, ah, b, true, RGB(200, 120, 40))) buyFuel(100);
       snprintf(b, sizeof b, "ПОЛНЫЙ БАК\n%d Р", (int)((tankSize() - G.fuel) * price)); if (ub(ax + aw / 2 + fs * 2, ay, aw, ah, b, true, RGB(200, 60, 50))) buyFuel(9999);
       if (ub(ax, ay + ah + fs * 3, aw, fs * 12, "ГОТОВО", true, RGB(80, 80, 96))) fuelPanel = false; } }
   else fuelPanel = false;
-  if (nearCafe) { if (ub(ax, ay, aw, ah, "ОТДЫХ В КАФЕ 8 Ч\n600 Р", true, RGB(60, 130, 90))) restHours(8, 600, "КАФЕ");
+  if (nearCafe) { if (nearInn) { if (ub(ax, ay, aw, ah, "НОЧЛЕГ В ДЕРЕВНЕ 8 Ч\n350 Р", true, RGB(120, 90, 50))) restHours(8, 350, "ГОСТЕВОЙ ДОМ"); }
+    else if (ub(ax, ay, aw, ah, "ОТДЫХ В КАФЕ 8 Ч\n600 Р", true, RGB(60, 130, 90))) restHours(8, 600, "КАФЕ");
     if (ub(ax, ay + ah + fs * 3, aw, ah, "ПОСПАТЬ В КАБИНЕ\n6 Ч, БЕСПЛАТНО", true, RGB(70, 90, 120))) restHours(G.tr[G.truck].up[UP_SLEEP] ? 6.0f : 7.5f, 0, "КАБИНА"); }
 }
 
@@ -15990,14 +17103,24 @@ static void placeRigYardStart() {
   else { rig.x = SLOT_X[ySlot] + (ySlot < 2 ? 14.0f : -14.0f); rig.z = 78; rig.yaw = ySlot < 2 ? -1.5708f : 1.5708f; rig.hitched = false; }
   rig.rpm = 650;
 }
-static void enterYard(bool arrive) { buildYard(G.city, arrive, pickSlot()); placeRigYardStart(); gs = GS_YARD; camMode = 0; camSmYaw = rig.yaw; G.onRoad = false;
+static void enterYard(bool arrive) { buildYard(G.city, arrive, pickSlot()); townInit(); placeRigYardStart(); gs = GS_YARD; camMode = 0; camSmYaw = rig.yaw; G.onRoad = false;
   say(arrive ? "ЗАДНИМ ХОДОМ ПОСТАВЬ ПРИЦЕП НА ЖЁЛТОЕ МЕСТО" : "СДАЙ НАЗАД ПОД СВОЙ ПРИЦЕП (ЖЁЛТЫЙ) И НАЖМИ СЦЕПИТЬ. КАМЕРА СВЕРХУ ПОМОГАЕТ", 5); }
+static void placeAtTownGate(int g) {                     // въезд в город с трассы
+  bool hit = rig.hitched; memset(&rig, 0, sizeof rig); rig.hitched = hit; rig.gear = 1; rig.rpm = 900; rig.v = 5;
+  if (g == 0) { rig.x = -3.5f; rig.z = T_EXIT - 25; rig.yaw = 3.14159f; } else if (g == 1) { rig.x = T_X0 - 55; rig.z = TZS[2] - 3.5f; rig.yaw = 1.5708f; } else { rig.x = T_X1 + 55; rig.z = TZS[2] + 3.5f; rig.yaw = -1.5708f; }
+  rig.tyaw = rig.yaw; camSmYaw = rig.yaw; camMode = camMode == 2 ? 0 : camMode; }
+static void enterTown() {                       // покататься по городу: выезжаем из ворот склада на улицу
+  if (G.job.on && !G.job.hitched) { enterYard(false); return; }
+  buildYard(G.city, false, pickSlot()); townInit(); memset(&rig, 0, sizeof rig); rig.gear = 0; rig.rpm = 650;
+  rig.hitched = G.job.on && G.job.hitched; rig.x = 3.0f; rig.z = rig.hitched ? 150 : 135; rig.yaw = 0; rig.tyaw = 0;
+  gs = GS_YARD; camMode = 0; camSmYaw = 0; G.onRoad = false;
+  char b[220]; snprintf(b, sizeof b, "%s: КАТАЙСЯ ПО ГОРОДУ. АЗС, СТО, САЛОН И ГОСТИНИЦА ОТМЕЧЕНЫ НА КАРТЕ СПРАВА", CITIES[G.city].name); say(b, 5); }
 static void saveGame();
 static void startEdge() {
   if (G.pathI + 1 >= G.pathN) { gs = GS_CITY; return; }
   int a = G.path[G.pathI], b = G.path[G.pathI + 1], e = edgeBetween(a, b); if (e < 0) { gs = GS_CITY; return; }
   bool hit = rig.hitched; float tyaw = rig.tyaw - rig.yaw;
-  buildRoad(e, a); traffic.clear(); xcars.clear(); xVillage = -1; walkVillage = -1; tripFuel = tripKm = 0;
+  buildRoad(e, a); R.bypass = !R.zimnik && G.pathI + 2 < G.pathN && R.L > 3000; if (R.bypass) placeBypass(); traffic.clear(); xcars.clear(); xVillage = -1; walkVillage = -1; tripFuel = tripKm = 0;
   memset(&rig, 0, sizeof rig); rig.hitched = hit && G.job.on; rig.z = 30; rig.x = cxAt(rig.z) + playerLaneX(); rig.yaw = headAt(rig.z); rig.tyaw = rig.yaw + (hit ? tyaw * 0 : 0); rig.gear = 1; rig.rpm = 800; rig.v = 8;
   if (rig.hitched) { V3 K = kingpin(); (void)K; rig.tyaw = rig.yaw; }
   prevZ = rig.z; iceCrack = 0; G.onRoad = true; G.edge = e; G.dirAB = a; G.weighed = false; gs = GS_ROAD; camSmYaw = rig.yaw; lightsOn = gNK > 0.3f;
@@ -16018,11 +17141,18 @@ static void deliver(float penalty) {
   if (penalty > 0) { snprintf(lastReport[nReport++], 64, "ПАРКОВКА У ВОРОТ: -%d%%", (int)(penalty * 100)); pay *= 1 - penalty; }
   lastPay = (int)pay; snprintf(lastReport[nReport++], 64, "ИТОГО: %d Р", lastPay);
   G.money += lastPay; G.earned += lastPay; G.deliveries++; j.on = false; rig.hitched = false; showReport = true; sPick = 1;
-  gs = GS_CITY; offersCity = -1; saveGame();
+  yArrive = false; offersCity = -1; saveGame();   // остаёмся во дворе: дальше - биржа грузов или прогулка по городу
 }
 static void arriveEndOfRoad() {
-  G.city = R.to; G.pathI++; G.onRoad = false; traffic.clear();
-  if (G.job.on && G.city == G.job.to) { enterYard(true); return; }
+  bool byp = R.bypass && rig.x - cxAt(rig.z) > RHW + 20; int from = R.from; float v = rig.v;
+  G.city = R.to; G.pathI++; traffic.clear();
+  if (byp && G.pathI + 1 < G.pathN) { char b[120]; snprintf(b, sizeof b, "ОБЪЕЗД: %s ОСТАЛСЯ В СТОРОНЕ", CITIES[G.city].name); startEdge(); rig.v = v; say(b, 4); return; }
+  // въезжаем в город с трассы: сразу за рулём, без меню
+  G.onRoad = false; buildYard(G.city, false, pickSlot()); townInit(); placeAtTownGate(townGateTo(G.city, from)); gs = GS_YARD; offersCity = -1;
+  { char b[140]; if (G.job.on && G.city == G.job.to) snprintf(b, sizeof b, "%s! ВЕЗИ ГРУЗ НА СКЛАД - ОН ОТМЕЧЕН НА КАРТЕ СПРАВА", CITIES[G.city].name);
+    else if (G.pathI + 1 < G.pathN) snprintf(b, sizeof b, "%s. ВЫЕЗД НА %s ОТМЕЧЕН НА КАРТЕ. АЗС, СТО И ОТЕЛЬ - В ГОРОДЕ", CITIES[G.city].name, CITIES[G.path[G.pathI + 1]].shortName);
+    else snprintf(b, sizeof b, "ВЫ ПРИЕХАЛИ: %s. ЗАКАЗЫ - НА БИРЖЕ ГРУЗОВ У СКЛАДА", CITIES[G.city].name);
+    say(b, 6); saveGame(); return; }
   gs = GS_CITY; offersCity = -1;
   char b[120]; if (G.job.on || G.pathI + 1 < G.pathN) snprintf(b, sizeof b, "ВЫ В ГОРОДЕ %s. МОЖНО ЗАПРАВИТЬСЯ И ОТДОХНУТЬ", CITIES[G.city].name); else snprintf(b, sizeof b, "ВЫ ПРИЕХАЛИ: %s", CITIES[G.city].name);
   say(b, 4); saveGame();
@@ -16060,17 +17190,17 @@ static bool loadGame() {
   int rm = RM_FAST; if (ok && fread(&rm, sizeof rm, 1, f) == 1) gRouteMode = clampi(rm, 0, NRM - 1); else gRouteMode = RM_FAST;
   fclose(f); if (!ok) return false;
   G = g2; G.truck = clampi(G.truck, 0, NTRUCK - 1); G.city = clampi(G.city, 0, NCITY - 1);
-  if (G.onRoad && G.edge >= 0 && G.edge < NEDGE) { buildRoad(G.edge, G.dirAB); rig = r2; rig.v = 0; rig.gear = 1; rig.z = clampf(rig.z, 30, R.L - 40); rig.x = cxAt(rig.z) + playerLaneX(); rig.yaw = headAt(rig.z); rig.tyaw = rig.yaw; prevZ = rig.z; traffic.clear(); gs = GS_ROAD; camSmYaw = rig.yaw; }
-  else { G.onRoad = false; memset(&rig, 0, sizeof rig); rig.hitched = G.job.on && G.job.hitched; gs = GS_CITY; }
+  if (G.onRoad && G.edge >= 0 && G.edge < NEDGE) { buildRoad(G.edge, G.dirAB); R.bypass = !R.zimnik && G.pathI + 2 < G.pathN && R.L > 3000; if (R.bypass) placeBypass(); rig = r2; rig.v = 0; rig.gear = 1; rig.z = clampf(rig.z, 30, R.L - 40); rig.x = cxAt(rig.z) + playerLaneX(); rig.yaw = headAt(rig.z); rig.tyaw = rig.yaw; prevZ = rig.z; traffic.clear(); gs = GS_ROAD; camSmYaw = rig.yaw; }
+  else { G.onRoad = false; memset(&rig, 0, sizeof rig); rig.hitched = G.job.on && G.job.hitched; enterTown(); }
   offersCity = -1; return true;
 }
 static void newGame() {
   memset(&G, 0, sizeof G); finesLog.clear();
-  G.money = 30000; G.truck = 0; G.tr[0].own = true; G.tr[0].col = TRUCKS[0].col; G.tr[0].engineHP = 72; G.tr[0].body = 80; G.tr[0].tires = 70;
+  G.money = 60000; G.truck = 0; G.tr[0].own = true; G.tr[0].col = TRUCKS[0].col; G.tr[0].engineHP = 72; G.tr[0].body = 80; G.tr[0].tires = 70;
   for (int i = 1; i < NTRUCK; i++) { G.tr[i].col = TRUCKS[i].col; G.tr[i].engineHP = 100; G.tr[i].body = 100; G.tr[i].tires = 100; }
-  G.fuel = 160; G.city = C_EKB; G.clock = 7 * 60 + 30; G.awake = 0; G.edge = -1;
-  memset(&rig, 0, sizeof rig); gs = GS_CITY; offersCity = -1;
-  say("ВАША СТАРАЯ ФУРА СТОИТ В ЕКАТЕРИНБУРГЕ. ВОЗЬМИТЕ ЗАКАЗ НА БИРЖЕ ГРУЗОВ", 5); saveGame();
+  G.fuel = 220; G.city = C_EKB; G.clock = 7 * 60 + 30; G.awake = 0; G.edge = -1;
+  memset(&rig, 0, sizeof rig); offersCity = -1; enterTown();
+  say("ВАША СТАРАЯ ФУРА В ЕКАТЕРИНБУРГЕ. ЗАЕЗЖАЙ НА БИРЖУ ГРУЗОВ У СКЛАДА (Б НА КАРТЕ)", 6); saveGame();
 }
 
 // ---------- город ----------
@@ -16118,7 +17248,7 @@ static void cityPanel() {
       fillRectA(lx - fs * 2, y, pw - fs * 8, rh - fs * 2, i & 1 ? RGB(30, 36, 48) : RGB(26, 30, 40), 230);
       snprintf(b, sizeof b, "%s  %.1f Т  >  %s", CARGO[o.cargo].name, o.tons, CITIES[o.to].shortName); drawText(lx, y + fs * 2, b, fs, RGB(240, 240, 245), 0);
       fmtMoney(m, sizeof m, (long long)o.pay);
-      snprintf(b, sizeof b, "%s · %d КМ · %d Ч · %s Р%s%s%s", TRN[CARGO[o.cargo].trailer], (int)km, (int)o.hours, m, CARGO[o.cargo].fragile ? " · ХРУПКИЙ" : "", CARGO[o.cargo].adr ? " · ОПАСНЫЙ" : "", o.permitNeed ? " · ПЕРЕГРУЗ" : "");
+      snprintf(b, sizeof b, "%s · %d КМ · %d Ч · %s Р%s%s%s", TRN[CARGO[o.cargo].trailer], (int)km, (int)o.hours, m, CARGO[o.cargo].fragile ? " · ХРУПКИЙ" : "", CARGO[o.cargo].adr ? " · ОПАСНЫЙ" : "", o.permitNeed ? " · ПЕРЕГРУЗ" : ""); if (o.local) strncat(b, " · МЕСТНЫЙ +15%", sizeof b - strlen(b) - 1);
       drawText(lx, y + fs * 11, b, imax(1, fs - 1), RGB(170, 180, 200), 0);
       int bw = fs * 36, bh = rh - fs * 5;
       if (o.permitNeed) { snprintf(b, sizeof b, "С ПРОПУСКОМ\n%d Р", permitPrice(o)); if (ub(lx + pw - fs * 14 - bw * 2 - fs * 3, y + fs, bw, bh, b, G.money >= permitPrice(o), RGB(60, 120, 170))) { acceptOffer((int)i, true); return; }
@@ -16175,11 +17305,20 @@ static void drawMap(bool interactive, int left, const int *hp, int hn) {
     bool on = false; for (int i = 0; i + 1 < hn; i++) if (edgeBetween(hp[i], hp[i + 1]) == e) on = true;
     u32 c = EDGES[e].zimnik ? RGB(150, 200, 255) : RGB(110, 120, 140); drawLine(ax, ay, bx, by, on ? RGB(255, 200, 60) : c, on ? imax(2, fs + 1) : imax(1, fs / 2 + 1)); }
   int dest = hn >= 2 ? hp[hn - 1] : -1;
+  // подписи: справа, если занято - слева, снизу или сверху (чтобы не налезали)
+  static SDL_Rect placed[64]; int np = 0; int lsc = imax(1, fs - 1);
+  for (int i = 0; i < NCITY; i++) { int x, y; mapXY(i, x0, y0, w, h, x, y); SDL_Rect r = {x - fs * 3, y - fs * 3, fs * 6, fs * 6}; placed[np++] = r; }
   for (int i = 0; i < NCITY; i++) { int x, y; mapXY(i, x0, y0, w, h, x, y); u32 c = i == G.city && !G.onRoad ? RGB(90, 220, 120) : (i == dest ? RGB(255, 200, 60) : RGB(230, 230, 240));
-    fillCircle(x, y, fs * 3, c, 255); drawTextSh(x + fs * 4, y - fs * 3, CITIES[i].shortName, imax(1, fs - 1), c, 0);
+    fillCircle(x, y, fs * 3, c, 255);
+    int tw = textW(CITIES[i].shortName, lsc), th = 7 * lsc; int cand[4][2] = {{x + fs * 4, y - th / 2}, {x - fs * 4 - tw, y - th / 2}, {x - tw / 2, y + fs * 4}, {x - tw / 2, y - fs * 4 - th}}; int best = 0;
+    for (int k = 0; k < 4; k++) { SDL_Rect r = {cand[k][0], cand[k][1], tw, th}; bool hit = r.x + r.w > x0 + w + fs * 3 || r.x < x0 - fs * 3;
+      for (int j = 0; j < np && !hit; j++) { if (j == i) continue; const SDL_Rect &q = placed[j]; if (r.x < q.x + q.w && q.x < r.x + r.w && r.y < q.y + q.h && q.y < r.y + r.h) hit = true; }
+      if (!hit) { best = k; break; } }
+    if (np < 64) { SDL_Rect r = {cand[best][0], cand[best][1], tw, th}; placed[np++] = r; }
+    drawTextSh(cand[best][0], cand[best][1], CITIES[i].shortName, lsc, c, 0);
     if (interactive && !G.job.on && hitR(x - fs * 8, y - fs * 8, fs * 16, fs * 16) && i != G.city) mapTarget = i; }
   if (G.onRoad) { int ax, ay, bx, by; mapXY(R.from, x0, y0, w, h, ax, ay); mapXY(R.to, x0, y0, w, h, bx, by); float t = rig.z / R.L; fillCircle(ax + (int)((bx - ax) * t), ay + (int)((by - ay) * t), fs * 4, RGB(255, 80, 60), 255); }
-  for (int r = 0; r < 5; r++) { static const u32 RC[5] = {RGB(110, 170, 90), RGB(150, 130, 110), RGB(220, 190, 80), RGB(90, 150, 120), RGB(160, 210, 255)}; drawText(x0 + fs * 2, y0 + h - fs * 9 * (5 - r), RGN[r], imax(1, fs - 1), RC[r], 0); }
+  for (int r = 0; r < 5; r++) { static const u32 RC[5] = {RGB(110, 170, 90), RGB(150, 130, 110), RGB(220, 190, 80), RGB(90, 150, 120), RGB(160, 210, 255)}; drawText(x0 + fs * 2, y0 + fs * 2 + fs * 9 * r, RGN[r], imax(1, fs - 1), RC[r], 0); }   // легенда регионов в пустом левом верхнем углу
 }
 // выбор маршрута в навигаторе (правый нижний угол карты - там пусто)
 static int routeHL(int *hp) {                           // путь для подсветки на карте
@@ -16225,6 +17364,7 @@ static void frameCity(float dt) {
   snprintf(b, sizeof b, "%02d:%02d  ·  %s Р  ·  %s  ·  ТОПЛИВО %d Л", hh, mm, m, TRUCKS[G.truck].name, (int)G.fuel); drawTextSh(IW - fs * 6, fs * 15, b, fs, RGB(200, 230, 255), 2);
   int tw = IW * 20 / 100 - fs * 6, th = fs * 17;
   for (int i = 0; i < 7; i++) if (ub(fs * 4, fs * 26 + i * (th + fs * 3), tw, th, TABS[i], true, cityTab == i ? RGB(200, 140, 50) : RGB(50, 56, 72))) { cityTab = i; if (i == 5) { mapTarget = -1; } }
+  if (!showReport && ub(fs * 4, fs * 26 + 7 * (th + fs * 3) + fs * 2, tw, th + fs * 4, "ПОКАТАТЬСЯ\nПО ГОРОДУ", true, RGB(40, 120, 70))) { enterTown(); return; }
   if (cityTab == 5) {
     int hp[32]; int hn = routeHL(hp); drawMap(true, IW * 22 / 100, hp, hn); routePanel();
     if (G.job.on) drawText(IW / 2, IH - fs * 20, "МАРШРУТ ЗАКАЗА ВЫДЕЛЕН ЖЁЛТЫМ", fs, RGB(255, 220, 140), 1);
@@ -16248,12 +17388,22 @@ static void frameMap(float dt) {
 static void frameYard(float dt) {
   uiRects.clear(); readControls(dt);
   if (lookDX) { camYawOff += lookDX * 0.006f; lookDX = 0; } lookDY = 0; if (!fing[0].on && !fing[1].on) camYawOff *= expf(-dt);
-  rigStep(dt); G.clock += dt * 0.25f;
-  setupLight(false); setDriveCamera(); fillSky(); clearDepth(); gNearZ = 0.3f; drawYard(); drawLabels();
+  if (tcars.empty() && tpeds.empty()) townInit();
+  if (townPanel < 0) { rigStep(dt); updateTown(dt); } else { rig.v = 0; pedGas = 0; }
+  G.clock += dt * 0.25f;
+  setupLight(false); setDriveCamera(); fillSky(); clearDepth(); gNearZ = 0.3f; drawYard(); drawTown(); drawLabels();
   if (camMode == 1) drawCabOverlay();
-  drawControls(); drawHud(dt);
+  drawControls(); drawHud(dt); if (rig.z > 118) townMiniMap();
+  if (townPanel >= 0) {                                                       // заехали в здание: то же меню, что в городе
+    static const int TABOF[NPOI] = {3, 1, 2, 4, 0}; cityTab = TABOF[townPanel]; fillRectA(0, 0, IW, IH, RGB(0, 0, 0), 120); cityPanel();
+    if (gs != GS_YARD) { townPanel = -1; return; }
+    if (ub(IW / 2 - fs * 30, IH - fs * 22, fs * 60, fs * 16, "ВЫЙТИ К ФУРЕ", true, RGB(80, 86, 110))) townPanel = -1;
+    return; }
+  { int pz = townPoiHere(); static const char *PB[NPOI] = {"ЗАПРАВИТЬСЯ", "СТО: РЕМОНТ И ТЮНИНГ", "АВТОСАЛОН", "ГОСТИНИЦА", "БИРЖА ГРУЗОВ"};
+    if (pz >= 0 && !(yArrive && rig.hitched) && ub(IW / 2 - fs * 40, IH * 30 / 100, fs * 80, fs * 18, PB[pz], true, RGB(40, 110, 190))) { townPanel = pz; sPick = 1; } }
+  if (!yArrive && ub(fs * 4, IH * 16 / 100 + fs * 34, fs * 52, fs * 13, "МЕНЮ ГОРОДА", true, RGB(70, 76, 96))) { gs = GS_CITY; offersCity = -1; return; }
   char b[96]; int aw = fs * 70, ah = fs * 18, ax = IW / 2 - aw / 2, ay = IH * 42 / 100;
-  if (!yArrive && !rig.hitched) {
+  if (!yArrive && !rig.hitched && G.job.on && rig.z < 125) {
     V3 F = kingpin(); float dx = F.x - SLOT_X[ySlot], dz = F.z - KING_Z, d = sqrtf(dx * dx + dz * dz);
     if (d < 0.8f && fabsf(wrapA(rig.yaw)) < 0.3f && fabsf(rig.v) < 1.0f) { if (ub(ax, ay, aw, ah, "СЦЕПИТЬ", true, RGB(60, 150, 70))) { rig.x -= dx; rig.z -= dz; rig.hitched = true; G.job.hitched = true; rig.tyaw = 0; sShift = 1; sAir = 1; say("ПРИЦЕП ПРИЦЕПЛЕН. ВЫЕЗЖАЙ ЧЕРЕЗ ВОРОТА", 3); } }
     else if (d < 18) { snprintf(b, sizeof b, "ДО ШКВОРНЯ %.1f М%s", d, fabsf(wrapA(rig.yaw)) > 0.3f ? " · ВЫРОВНЯЙ ФУРУ" : ""); drawTextSh(IW / 2, IH * 36 / 100, b, fs, RGB(255, 230, 120), 1); }
@@ -16264,13 +17414,24 @@ static void frameYard(float dt) {
     V3 Rr = K - fwd(rig.tyaw) * 12.3f; float zLo = fminv(fminv(K.z, Rr.z), A.z) - 1.0f, zHi = fmaxv(fmaxv(K.z, Rr.z), A.z) + 1.0f;   // весь прицеп внутри разметки (любым концом)
     bool okZ = zLo > KING_Z - 14.6f && zHi < KING_Z + 2.4f;
     if (okX && okZ && fabsf(rig.v) < 0.4f) { if (ub(ax, ay, aw, ah, "ОТЦЕПИТЬ И СДАТЬ", true, RGB(60, 150, 70))) { deliver(0); return; } }
-    else { float d = sqrtf((K.x - sx) * (K.x - sx) + (K.z - KING_Z) * (K.z - KING_Z)); float d2 = sqrtf((A.x - sx) * (A.x - sx) + (A.z - (KING_Z - 6)) * (A.z - (KING_Z - 6))); if (d2 < 30) { snprintf(b, sizeof b, "ДО МЕСТА %.1f М · ВЕСЬ ПРИЦЕП ДОЛЖЕН БЫТЬ В ЖЁЛТОЙ РАЗМЕТКЕ", d2); drawTextSh(IW / 2, IH * 36 / 100, b, fs, RGB(255, 230, 120), 1); } (void)d; }
+    else { float d = sqrtf((K.x - sx) * (K.x - sx) + (K.z - KING_Z) * (K.z - KING_Z)); float d2 = sqrtf((A.x - sx) * (A.x - sx) + (A.z - (KING_Z - 6)) * (A.z - (KING_Z - 6))); if (d2 < 30) { char bb[200]; snprintf(bb, sizeof bb, "ДО МЕСТА %.1f М · ВЕСЬ ПРИЦЕП ДОЛЖЕН БЫТЬ В ЖЁЛТОЙ РАЗМЕТКЕ", d2); drawTextSh(IW / 2, IH * 36 / 100, bb, fs, RGB(255, 230, 120), 1); } (void)d; }
     if (ub(IW - fs * 70, IH * 16 / 100, fs * 64, fs * 15, "СДАТЬ У ВОРОТ -15%", true, RGB(90, 90, 120))) { deliver(0.15f); return; }
   }
-  if (rig.z > 121.5f && fabsf(rig.x) < 7.5f) {
-    if (yArrive) { rig.z = 121.4f; rig.v = 0; say("ПРИЦЕП НУЖНО СДАТЬ НА СКЛАДЕ"); }
-    else if (rig.hitched || !G.job.on) { departYard(); return; } else { rig.z = 121.4f; rig.v = 0; say("СНАЧАЛА ПРИЦЕПИ ПРИЦЕП"); }
-  }
+  if (yArrive && rig.z > 121.5f && fabsf(rig.x) < 7.5f) { rig.z = 121.4f; rig.v = 0; say("ПРИЦЕП НУЖНО СДАТЬ НА СКЛАДЕ"); }   // ворота склада ведут в город
+  { int g = -1; if (rig.z > T_EXIT - 12 && fabsf(rig.x) < 9) g = 0; else if (rig.x < T_X0 - 75 && fabsf(rig.z - TZS[2]) < 9) g = 1; else if (rig.x > T_X1 + 75 && fabsf(rig.z - TZS[2]) < 9) g = 2;
+    if (g >= 0) {                                                              // выезд из города на трассу
+      const char *stop = NULL;
+      if (G.job.on && !rig.hitched) stop = "СНАЧАЛА ПРИЦЕПИ ПРИЦЕП: ОН ЖДЁТ НА СКЛАДЕ";
+      else if (G.job.on && G.job.to == G.city) stop = "ГРУЗ ДЛЯ ЭТОГО ГОРОДА - СДАЙ ЕГО НА СКЛАДЕ";
+      if (stop) { V3 f = fwd(rig.yaw); rig.x -= f.x * 1.0f; rig.z -= f.z * 1.0f; rig.v = 0; say(stop); }
+      else { if (G.job.on) setRoute(G.job.to);
+        if (G.pathN >= 2 && G.pathI + 1 < G.pathN && G.path[G.pathI] == G.city) { startEdge(); return; }
+        gs = GS_CITY; cityTab = 5; mapTarget = -1; say("КУДА ЕДЕМ? НАЖМИ НА ГОРОД НА КАРТЕ ИЛИ ВОЗЬМИ ЗАКАЗ НА БИРЖЕ", 5); return; } } }
+  // приехали с грузом: заезжаем в ворота склада - ставим прицеп
+  if (!yArrive && G.job.on && rig.hitched && G.job.to == G.city && rig.z < 121 && rig.z > 60 && fabsf(rig.x) < 30) { buildYard(G.city, true, pickSlot()); say("ЗАДНИМ ХОДОМ ПОСТАВЬ ПРИЦЕП НА ЖЁЛТОЕ МЕСТО", 5); }
+  if (showReport) { int w = IW / 2, h = fs * (24 + nReport * 11), x = IW / 2 - w / 2, y = IH / 2 - h / 2; fillRectA(0, 0, IW, IH, RGB(0, 0, 0), 150); fillRect(x, y, w, h, RGB(24, 30, 40));
+    drawText(IW / 2, y + fs * 5, "ГРУЗ СДАН", fs * 2, RGB(140, 240, 140), 1); for (int i = 0; i < nReport; i++) drawText(x + fs * 8, y + fs * 22 + i * fs * 11, lastReport[i], fs, i == nReport - 1 ? RGB(255, 230, 150) : RGB(230, 230, 240), 0);
+    if (ub(IW / 2 - fs * 20, y + h - fs * 2, fs * 40, fs * 16, "ОК", true, RGB(60, 150, 70))) { showReport = false; say("НОВЫЙ ЗАКАЗ - НА БИРЖЕ ГРУЗОВ (ЗЕЛЁНАЯ ЗОНА У СКЛАДА)", 5); } }
   if (msgT <= 0 && rig.gear >= 0 && rig.v < 0.1f && pedGas > 0.5f && !G.manual && rig.gear == 0) shiftTo(1);
 }
 static void frameRoad(float dt) {
@@ -16281,7 +17442,7 @@ static void frameRoad(float dt) {
   rigStep(dt); updateTraffic(dt); updateCrossing(dt);
   saveT += dt; if (saveT > 20) { saveT = 0; saveGame(); }
   setupLight(true); setDriveCamera(); fillSky(); clearDepth(); gNearZ = 0.3f; drawRoadWorld(); drawLabels();
-  drawWeather(dt);
+  drawWeather(dt); drawSkyFx();
   if (camMode == 1) drawCabOverlay();
   drawControls(); drawHud(dt); roadActions();
   sWind = clampf(fabsf(rig.v) / 25, 0, 1); sRain = R.weather == 1 ? 0.6f : (R.weather >= 2 ? 0.4f : 0.0f);
