@@ -16801,20 +16801,90 @@ static void bar(int x, int y, int w, int h, float v, u32 col, const char *txt) {
   fillRectA(x, y, w, h, RGB(10, 10, 14), 170); fillRect(x + 1, y + 1, (int)((w - 2) * clampf(v, 0, 1)), h - 2, col);
   if (txt) { int sc = h >= fs * 9 ? fs : imax(1, fs - 1); drawTextSh(x + fs * 3, y + (h - 7 * sc) / 2, txt, sc, RGB(255, 255, 255), 0); }
 }
-static void gauge(int cx, int cy, int r, float v, float vmax, const char *lbl, int ticks) {
-  fillCircle(cx, cy, r, RGB(16, 18, 22), 230); fillCircle(cx, cy, r - fs, RGB(28, 30, 36), 255);
-  for (int k = 0; k <= ticks; k++) { float a = -2.4f + 4.8f * k / ticks; drawLine(cx + (int)(sinf(a) * r * 0.78f), cy - (int)(cosf(a) * r * 0.78f), cx + (int)(sinf(a) * r * 0.92f), cy - (int)(cosf(a) * r * 0.92f), RGB(200, 200, 210), 1); }
-  float a = -2.4f + 4.8f * clampf(v / vmax, 0, 1.05f); drawLine(cx, cy, cx + (int)(sinf(a) * r * 0.85f), cy - (int)(cosf(a) * r * 0.85f), RGB(255, 80, 50), imax(1, fs / 2 + 1));
-  drawText(cx, cy + r / 3, lbl, imax(1, fs - 1), RGB(200, 200, 210), 1);
+// ---------- кабина от первого лица: стойки, козырьки, зеркало, торпеда, приборный щиток, руль ----------
+static void fillPolyY(int x0, int x1, int (*topAt)(int), int yBot, u32 c0, u32 c1) {   // заливка вертикальными линиями от кривой до низа с градиентом
+  for (int x = x0; x < x1; x++) { int t = topAt(x); if (t < yBot) for (int y = t; y < yBot; y += 2) fillRect(x, y, 1, imin(2, yBot - y), mixc(c0, c1, (y - t) / (float)imax(1, yBot - t))); }
 }
+static void drawFit(int x, int y, const char *t, int maxw, int sc, u32 col, int al) { while (sc > 1 && textW(t, sc) > maxw) sc--; drawText(x, y, t, sc, col, al); }
+static int gDashY = 0, gHoodX0 = 0, gHoodX1 = 0, gHoodY = 0;
+static int dashTop(int x) {                                                   // верх торпеды: по бокам ниже, над приборами - козырёк щитка
+  int y = gDashY; if (x > gHoodX0 && x < gHoodX1) { int e = imin(x - gHoodX0, gHoodX1 - x), rr = gDashY - gHoodY; y = gHoodY + (e < rr ? rr - (int)sqrtf((float)(rr * rr - (rr - e) * (rr - e))) : 0); }
+  return y;
+}
+static void dialNum(int cx, int cy, int r, float a, const char *t, u32 col) { drawText(cx + (int)(sinf(a) * r), cy - (int)(cosf(a) * r) - fs * 3, t, imax(1, fs - 1), col, 1); }
+// круглый прибор с подсветкой: деления, цифры, красная зона, стрелка
+static void gauge2(int cx, int cy, int r, float v, float vmax, int major, int minor, float red, const char *lbl, bool night, int numDiv) {
+  u32 face = RGB(14, 16, 20), lit = night ? RGB(255, 190, 110) : RGB(235, 235, 240), dim = night ? RGB(160, 110, 60) : RGB(150, 150, 160);
+  fillCircle(cx, cy, r + fs * 2, RGB(70, 72, 80), 255); fillCircle(cx, cy, r + fs, RGB(150, 152, 160), 255); fillCircle(cx, cy, r, face, 255);   // хромовое кольцо
+  if (night) fillCircle(cx, cy, r - fs * 2, RGB(40, 24, 10), 90);
+  const float A0 = -2.35f, A1 = 2.35f; int nTicks = major * minor;
+  for (int k = 0; k <= nTicks; k++) { float a = A0 + (A1 - A0) * k / nTicks; bool mj = k % minor == 0; float val = vmax * k / nTicks; u32 c = red > 0 && val >= red ? RGB(230, 60, 50) : (mj ? lit : dim);
+    float r0 = r * (mj ? 0.74f : 0.82f); drawLine(cx + (int)(sinf(a) * r0), cy - (int)(cosf(a) * r0), cx + (int)(sinf(a) * r * 0.9f), cy - (int)(cosf(a) * r * 0.9f), c, mj ? imax(2, fs) : imax(1, fs / 2));
+    if (mj) { char b[8]; snprintf(b, sizeof b, "%d", (int)(val / numDiv + 0.5f)); dialNum(cx, cy, (int)(r * 0.57f), a, b, red > 0 && val >= red ? RGB(240, 90, 80) : lit); } }
+  if (red > 0) for (float a = A0 + (A1 - A0) * red / vmax; a < A1; a += 0.02f) fillRect(cx + (int)(sinf(a) * r * 0.93f), cy - (int)(cosf(a) * r * 0.93f), imax(1, fs / 2 + 1), imax(1, fs / 2 + 1), RGB(200, 40, 35));
+  drawFit(cx, cy + r * 58 / 100, lbl, r * 3 / 2, imax(1, fs - 1), dim, 1);
+  float a = A0 + (A1 - A0) * clampf(v / vmax, 0, 1.03f);
+  drawLine(cx - (int)(sinf(a) * r * 0.12f), cy + (int)(cosf(a) * r * 0.12f), cx + (int)(sinf(a) * r * 0.86f), cy - (int)(cosf(a) * r * 0.86f), RGB(255, 70, 40), imax(2, fs));   // стрелка
+  fillCircle(cx, cy, imax(3, r / 9), RGB(60, 60, 66), 255); fillCircle(cx, cy, imax(2, r / 16), RGB(200, 60, 40), 255);
+}
+static void miniGauge(int cx, int cy, int r, float frac, const char *lbl, bool warn, bool night) {   // полукруглый: топливо, температура, воздух
+  fillCircle(cx, cy, r + fs, RGB(90, 92, 100), 255); fillCircle(cx, cy, r, RGB(14, 16, 20), 255);
+  u32 lit = night ? RGB(255, 190, 110) : RGB(225, 225, 235);
+  for (int k = 0; k <= 4; k++) { float a = -1.3f + 2.6f * k / 4; drawLine(cx + (int)(sinf(a) * r * 0.62f), cy - (int)(cosf(a) * r * 0.62f), cx + (int)(sinf(a) * r * 0.86f), cy - (int)(cosf(a) * r * 0.86f), k == 0 && warn ? RGB(230, 60, 50) : lit, imax(1, fs / 2 + 1)); }
+  float a = -1.3f + 2.6f * clampf(frac, 0, 1); drawLine(cx, cy, cx + (int)(sinf(a) * r * 0.8f), cy - (int)(cosf(a) * r * 0.8f), warn ? RGB(255, 80, 50) : RGB(255, 120, 60), imax(1, fs / 2 + 1));
+  fillCircle(cx, cy, imax(2, r / 7), RGB(70, 70, 76), 255); drawText(cx, cy + r / 4, lbl, imax(1, fs - 1), lit, 1);
+}
+static void lamp(int x, int y, int r, u32 col, bool on, const char *t) { fillCircle(x, y, r, on ? col : RGB(30, 32, 36), 255); if (on) fillCircle(x, y, r * 2, col, 40); drawText(x, y + r + fs, t, imax(1, fs - 1), on ? col : RGB(80, 82, 90), 1); }
 static void drawCabOverlay() {
-  // стойки, панель, руль: всё 2D поверх картинки
-  u32 dash = RGB(34, 34, 38);
-  for (int k = 0; k < IW / 9; k++) { int x = k, y0 = 0, y1 = IH * 62 / 100 - k * 3; if (y1 > y0) fillRect(x, y0, 1, y1, dash); fillRect(IW - 1 - k, 0, 1, imax(0, IH * 62 / 100 - k * 3), dash); }
-  fillRect(0, 0, IW, IH * 4 / 100, dash);
-  int dy = IH * 78 / 100; fillRect(0, dy, IW, IH - dy, dash); fillRect(0, dy, IW, fs, RGB(60, 60, 66));
-  gauge(IW * 38 / 100, dy + (IH - dy) / 2 + fs * 2, (IH - dy) * 45 / 100, speedKmh(), 120, "КМ/Ч", 12);
-  gauge(IW * 54 / 100, dy + (IH - dy) / 2 + fs * 2, (IH - dy) * 45 / 100, rig.rpm, 2500, "ОБ/МИН", 10);
+  bool night = gNK > 0.35f || lightsOn; char b[48];
+  u32 pil = RGB(40, 40, 46), pil2 = RGB(62, 62, 70);
+  // стойки кабины: с ребром-бликом
+  for (int k = 0; k < IW / 9; k++) { int y1 = IH * 62 / 100 - k * 3; if (y1 <= 0) break; u32 c = k > IW / 9 - fs * 2 ? pil2 : mixc(pil, RGB(20, 20, 24), k / (float)(IW / 9)); fillRect(k, 0, 1, y1, c); fillRect(IW - 1 - k, 0, 1, y1, c); }
+  // козырьки и верх кабины
+  fillRect(0, 0, IW, IH * 3 / 100, RGB(30, 30, 34));
+  for (int sd = 0; sd < 2; sd++) { int vw = IW * 30 / 100, vx = sd ? IW - IW / 9 - vw + fs * 4 : IW / 9 - fs * 4, vh = IH * 7 / 100;
+    fillRect(vx, IH * 3 / 100, vw, vh, RGB(58, 56, 52)); fillRect(vx, IH * 3 / 100 + vh - fs, vw, fs, RGB(40, 38, 36)); for (int x = vx + fs * 2; x < vx + vw - fs * 2; x += fs * 3) fillRect(x, IH * 3 / 100 + vh - fs * 3, fs, imax(1, fs / 2), RGB(80, 78, 72)); }   // строчка
+  { int mw = IW * 15 / 100, mh = IH * 7 / 100, mx = IW / 2 - mw / 2, my = IH * 3 / 100 + fs * 2;                                      // зеркало заднего вида: видно прицеп и дорогу
+    fillRect(IW / 2 - fs, IH * 3 / 100, fs * 2, fs * 3, RGB(30, 30, 34)); fillRect(mx - fs, my - fs, mw + fs * 2, mh + fs * 2, RGB(25, 25, 28));
+    for (int y = 0; y < mh; y++) fillRect(mx, my + y, mw, 1, mixc(night ? RGB(20, 26, 44) : RGB(150, 180, 210), night ? RGB(30, 30, 34) : RGB(90, 92, 96), y / (float)mh));
+    if (G.job.on && G.job.hitched) fillRect(mx + mw / 2 - mw / 6, my + mh / 4, mw / 3, mh * 3 / 4, RGB(200, 200, 205));                  // прицеп сзади
+    fillRect(mx + fs * 2, my + fs, mw / 3, imax(1, fs / 2), RGB(255, 255, 255)); }
+  // торпеда: козырёк над приборами
+  gDashY = IH * 80 / 100; gHoodX0 = IW * 24 / 100; gHoodX1 = IW * 70 / 100; gHoodY = IH * 64 / 100;
+  { float dk = clampf(gNK, 0, 1) * 0.55f; fillPolyY(0, IW, dashTop, IH, mixc(RGB(48, 48, 54), RGB(0, 0, 0), dk), mixc(RGB(20, 20, 24), RGB(0, 0, 0), dk)); }   // ночью торпеда темнее
+  for (int x = 0; x < IW; x++) { int t = dashTop(x); fillRect(x, t, 1, imax(1, fs / 2 + 1), RGB(80, 80, 88)); }                          // кромка
+  fillRect(IW * 72 / 100, gDashY + fs * 4, IW * 26 / 100, fs * 2, RGB(110, 85, 55));                                                       // накладка «под дерево»
+  // приборный щиток
+  int cx0 = gHoodX0 + fs * 8, cx1 = gHoodX1 - fs * 8, cy0 = gHoodY + fs * 5, cy1 = IH - fs * 2;
+  fillRect(cx0, cy0, cx1 - cx0, cy1 - cy0, RGB(8, 9, 12)); fillRect(cx0, cy0, cx1 - cx0, fs, RGB(30, 30, 36));
+  int gr = imin((cy1 - cy0) * 45 / 100, (cx1 - cx0) * 15 / 100), gy = cy0 + (cy1 - cy0) / 2 + fs;
+  int gxL = cx0 + gr + fs * 5, gxR = cx1 - gr - fs * 5;
+  gauge2(gxL, gy, gr, speedKmh(), 140, 7, 2, 0, "КМ/Ч", night, 1);
+  gauge2(gxR, gy, gr, rig.rpm, 2500, 5, 5, 2100, "ОБ/МИН X100", night, 100);
+  // центр между приборами: экран, ряд лампочек, три маленьких прибора
+  int sxL = gxL + gr + fs * 5, sxR = gxR - gr - fs * 5, cw = sxR - sxL, sy0 = cy0 + fs * 3, sh = (cy1 - cy0) * 46 / 100;
+  if (cw > fs * 20) {
+    fillRect(sxL, sy0, cw, sh, night ? RGB(18, 28, 34) : RGB(20, 34, 40)); fillRect(sxL, sy0, cw, fs, RGB(60, 90, 100));
+    u32 lcd = night ? RGB(255, 190, 110) : RGB(150, 230, 255);
+    snprintf(b, sizeof b, "%s", rig.gear < 0 ? "R" : (rig.gear == 0 ? "N" : "")); if (rig.gear > 0) snprintf(b, sizeof b, "%s%d", G.manual ? "" : "A", rig.gear);
+    int dsz = clampi((sh - fs * 20) / 7, 1, fs * 3), ly2 = sy0 + fs * 3 + dsz * 7 + fs * 2;                         // размер цифр - под высоту экрана
+    drawFit(sxL + cw / 4, sy0 + fs * 3, b, cw / 2 - fs * 2, dsz, rig.shiftT > 0 ? RGB(255, 210, 90) : lcd, 1);
+    snprintf(b, sizeof b, "%d", (int)speedKmh()); drawFit(sxL + cw * 3 / 4, sy0 + fs * 3, b, cw / 2 - fs * 2, dsz, lcd, 1);
+    drawText(sxL + cw * 3 / 4, ly2, "КМ/Ч", imax(1, fs - 1), shadec(lcd, 0.8f), 1); drawText(sxL + cw / 4, ly2, G.manual ? "РУЧН" : "АВТО", imax(1, fs - 1), shadec(lcd, 0.8f), 1);
+    int hh = (int)hourNow(), mm = (int)(fmodf(G.clock, 60.0f)); snprintf(b, sizeof b, "%06d КМ   %02d:%02d", (int)G.kmTotal % 1000000, hh, mm); drawFit(sxL + cw / 2, sy0 + sh - fs * 8, b, cw - fs * 4, imax(1, fs - 1), shadec(lcd, 0.75f), 1);
+    float fuelF = G.fuel / fmaxv(1.0f, tankSize()), temp = 0.45f + 0.35f * clampf(rig.rpm / 2300.0f, 0, 1) * clampf(totalMass() / 30.0f, 0.3f, 1.3f), air = clampf(0.85f - pedBrake * 0.35f + 0.1f * sinf(gTime * 0.7f), 0.3f, 1.0f);
+    int lr = imax(fs * 2, cw / 28), ly = sy0 + sh + lr + fs * 3, st = cw / 6;                                       // лампочки
+    lamp(sxL + st / 2, ly, lr, RGB(80, 160, 255), lightsOn, ""); lamp(sxL + st * 3 / 2, ly, lr, RGB(255, 190, 40), retOn, ""); lamp(sxL + st * 5 / 2, ly, lr, RGB(240, 60, 50), pedBrake > 0.35f, "");
+    lamp(sxL + st * 7 / 2, ly, lr, RGB(255, 170, 40), fuelF < 0.15f, ""); lamp(sxL + st * 9 / 2, ly, lr, RGB(255, 170, 40), G.awake > 14, ""); lamp(sxL + st * 11 / 2, ly, lr, RGB(240, 60, 50), G.tr[G.truck].engineHP < 40, "");
+    int mr = imin(cw / 7, (cy1 - ly - lr - fs * 6) * 55 / 100), my = cy1 - mr - fs * 2;                              // топливо, температура, воздух
+    if (mr > fs * 3) { miniGauge(sxL + cw / 6, my, mr, fuelF, "ТОПЛ", fuelF < 0.15f, night); miniGauge(sxL + cw / 2, my, mr, temp, "ТЕМП", temp > 0.9f, night); miniGauge(sxL + cw * 5 / 6, my, mr, air, "ВОЗД", air < 0.45f, night); } }
+  // руль: обод вокруг спидометра, спицы вниз, поворачивается вместе с рулём
+  if (ctrlArrows) { int wr = gr + fs * 14, wcx = gxL, wcy = gy + fs * 18, th = imax(fs * 3, wr / 9);
+    for (int k = 0; k < 220; k++) { float a = k * 6.2832f / 220 + wheelAng; int x = wcx + (int)(sinf(a) * wr), y = wcy - (int)(cosf(a) * wr); if (y > IH + th) continue;
+      fillRect(x - th / 2, y - th / 2, th, th, RGB(28, 28, 32)); if (cosf(a) > 0.3f) fillRect(x - th / 2, y - th / 2, th, imax(1, th / 3), RGB(70, 70, 78)); }
+    for (int k = 0; k < 3; k++) { float a = wheelAng + 3.14159f + (k - 1) * 1.6f; drawLine(wcx + (int)(sinf(a) * wr * 0.35f), wcy - (int)(cosf(a) * wr * 0.35f), wcx + (int)(sinf(a) * (wr - th / 2)), wcy - (int)(cosf(a) * (wr - th / 2)), RGB(36, 36, 40), th); }
+    int hx = wcx + (int)(sinf(wheelAng + 3.14159f) * wr * 0.32f), hy = wcy - (int)(cosf(wheelAng + 3.14159f) * wr * 0.32f); fillCircle(hx, hy, wr / 4, RGB(34, 34, 38), 255); fillCircle(hx, hy, wr / 9, RGB(170, 170, 180), 255);
+    fillCircle(wcx + (int)(sinf(wheelAng) * wr), wcy - (int)(cosf(wheelAng) * wr), th * 2 / 3, RGB(200, 70, 50), 255); }   // метка верха руля
 }
 static void drawControls() {
   int wx, wy, wr, gx, gy, gw, gh, bx, by, bw, bh; wheelGeo(wx, wy, wr); pedalGeo(gx, gy, gw, gh, bx, by, bw, bh);
@@ -17047,10 +17117,10 @@ static void drawHud(float dt) {
   // скорость, передача, обороты, ограничение
   int sx = IW / 2, sy = IH - fs * 34;
   if (camMode != 1) { snprintf(b, sizeof b, "%d", (int)speedKmh()); drawTextSh(sx, sy, b, fs * 4, RGB(255, 255, 255), 1); drawText(sx, sy + fs * 30, "КМ/Ч", fs, RGB(200, 200, 210), 1); }
-  snprintf(b, sizeof b, "%s", rig.gear < 0 ? "R" : (rig.gear == 0 ? "N" : "")); if (rig.gear > 0) snprintf(b, sizeof b, "%s%d", G.manual ? "" : "A", rig.gear);
-  drawTextSh(sx + fs * 44, sy + fs * 6, b, fs * 3, rig.shiftT > 0 ? RGB(255, 200, 80) : RGB(140, 220, 255), 0);
-  bar(sx - fs * 30, sy - fs * 10, fs * 60, fs * 5, rig.rpm / 2300, rig.rpm > 1900 ? RGB(230, 70, 50) : (rig.rpm > 1000 ? RGB(90, 200, 90) : RGB(200, 180, 60)), NULL);
-  if (gs == GS_ROAD) { int lim = playerLimit(), r = fs * 11, lx = camMode == 1 ? IW / 2 : sx - fs * 48, ly = camMode == 1 ? fs * 36 : sy + fs * 12; fillCircle(lx, ly, r, RGB(220, 30, 30), 255); fillCircle(lx, ly, r * 4 / 5, RGB(250, 250, 250), 255); snprintf(b, sizeof b, "%d", lim); drawText(lx, ly - fs * 3 - fs / 2, b, fs, RGB(10, 10, 10), 1);
+  if (camMode != 1) { snprintf(b, sizeof b, "%s", rig.gear < 0 ? "R" : (rig.gear == 0 ? "N" : "")); if (rig.gear > 0) snprintf(b, sizeof b, "%s%d", G.manual ? "" : "A", rig.gear);   /* в кабине это показывает щиток */
+  drawTextSh(sx + fs * 44, sy + fs * 6, b, fs * 3, rig.shiftT > 0 ? RGB(255, 200, 80) : RGB(140, 220, 255), 0); }
+  if (camMode != 1) bar(sx - fs * 30, sy - fs * 10, fs * 60, fs * 5, rig.rpm / 2300, rig.rpm > 1900 ? RGB(230, 70, 50) : (rig.rpm > 1000 ? RGB(90, 200, 90) : RGB(200, 180, 60)), NULL);
+  if (gs == GS_ROAD) { int lim = playerLimit(), r = fs * 11, lx = camMode == 1 ? IW / 2 + IW * 12 / 100 : sx - fs * 48, ly = camMode == 1 ? fs * 20 : sy + fs * 12; fillCircle(lx, ly, r, RGB(220, 30, 30), 255); fillCircle(lx, ly, r * 4 / 5, RGB(250, 250, 250), 255); snprintf(b, sizeof b, "%d", lim); drawText(lx, ly - fs * 3 - fs / 2, b, fs, RGB(10, 10, 10), 1);
     if (speedKmh() > lim + 5) fillCircle(lx, ly, r + fs * 2, RGB(255, 60, 40), (int)(80 + 60 * sinf(gTime * 10))); }
   // топливо, машина, груз, бодрость (слева под деньгами)
   int x = fs * 4, y = fs * 32, w = fs * 92, bh = fs * 10, st = fs * 12;
