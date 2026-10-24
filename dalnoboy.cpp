@@ -16615,7 +16615,8 @@ static void drawTownTransit() {
   for (float x = TXS[0] - ST_HW; x < TXS[4] + ST_HW; x += 8) { if (tDist2(x, z0) > R2 || !seen(v3(x + 4, 0, z0), 8)) continue;
     for (int lane = -1; lane <= 1; lane += 2) for (int r = -1; r <= 1; r += 2) { float zz = z0 + lane * 1.9f + r * 0.76f; quad4(v3(x, 0.03f, zz - 0.05f), v3(x + 8, 0.03f, zz - 0.05f), v3(x + 8, 0.03f, zz + 0.05f), v3(x, 0.03f, zz + 0.05f), rail); }
     for (int lane = -1; lane <= 1; lane += 2) drawBox(v3(x + 4, 6.2f, z0 + lane * 1.9f), v3(4, 0.015f, 0.015f), 0, RGB(40, 40, 44), false);   // контактный провод
-    if (((int)(x / 8)) % 4 == 0) for (int sd = -1; sd <= 1; sd += 2) { drawBox(v3(x, 3.5f, z0 + sd * (ST_HW + 0.5f)), v3(0.1f, 3.5f, 0.1f), 0, RGB(90, 92, 96), true); drawBox(v3(x, 6.5f, z0 + sd * (ST_HW * 0.5f)), v3(0.04f, 0.04f, ST_HW * 0.5f + 0.4f), 0, RGB(60, 60, 64), true); } }
+    bool onCross = false; for (int k = 0; k < 5; k++) if (fabsf(x - TXS[k]) < ST_HW + 2.0f) onCross = true;   // опоры не ставим на поперечные улицы
+    if (!onCross && ((int)(x / 8)) % 4 == 0) for (int sd = -1; sd <= 1; sd += 2) { drawBox(v3(x, 3.5f, z0 + sd * (ST_HW + 0.5f)), v3(0.1f, 3.5f, 0.1f), 0, RGB(90, 92, 96), true); drawBox(v3(x, 6.5f, z0 + sd * (ST_HW * 0.5f)), v3(0.04f, 0.04f, ST_HW * 0.5f + 0.4f), 0, RGB(60, 60, 64), true); } }
 }
 // морской порт Новороссийска: контейнеры, краны, корабль
 static void drawPort() {
@@ -16664,7 +16665,7 @@ static void drawTown() {
   for (int g = 0; g < 3; g++) { float gx, gz; townGatePos(g, gx, gz); if (tDist2(gx, gz) > R2 + 20000) continue;
     if (g > 0) { float xa = g == 1 ? T_X0 - 95 : T_X1, xb = g == 1 ? T_X0 : T_X1 + 95; tQuad(xa, TZS[2] - 9, xb, TZS[2] + 9, 0.0f, asph); for (float x = xa; x < xb; x += 8) tQuad(x, TZS[2] - 0.08f, x + 4, TZS[2] + 0.08f, 0.02f, RGB(230, 230, 225)); }
     char b[96]; townGateLabel(g, b, sizeof b); bool route = townRouteGate() == g;
-    for (int k = -1; k <= 1; k += 2) drawBox(g == 0 ? v3(k * 8.0f, 3.2f, gz) : v3(gx, 3.2f, gz + k * 8.0f), v3(0.15f, 3.2f, 0.15f), 0, RGB(150, 152, 158), true);
+    for (int k = -1; k <= 1; k += 2) drawBox(g == 0 ? v3(k * 10.2f, 3.2f, gz) : v3(gx, 3.2f, gz + k * 10.2f), v3(0.15f, 3.2f, 0.15f), 0, RGB(150, 152, 158), true);   /* стойки указателя - за краем дороги */
     addLabel(v3(gx, 6.6f, gz), b, route ? RGB(30, 110, 60) : RGB(30, 80, 170), RGB(255, 255, 255), 0); }
   for (size_t i = 0; i < tbld.size(); i++) { const TBld &b = tbld[i]; float mx = (b.x0 + b.x1) * 0.5f, mz = (b.z0 + b.z1) * 0.5f; if (tDist2(mx, mz) > R2 + 4000) continue; drawTBld(b); }
   for (size_t i = 0; i < ttree.size(); i++) { const TTree &t = ttree[i]; if (tDist2(t.x, t.z) > 170 * 170) continue; drawTTree(t); }
