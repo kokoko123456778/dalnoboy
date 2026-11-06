@@ -1059,6 +1059,8 @@ static bool hitR(int x, int y, int w, int h) {
   if (P.cx >= x && P.cx < x + w && P.cy >= y && P.cy < y + h && P.sx >= x && P.sx < x + w && P.sy >= y && P.sy < y + h) { P.clicked = false; return true; }
   return false;
 }
+static std::vector<SDL_Rect> gBtnNow, gBtnPrev;   // кнопки, нарисованные в этом и прошлом кадре (для выбора геймпадом)
+static int padFocus = -1; static bool padNav = false;
 static bool button(int x, int y, int w, int h, const char *label, bool en, u32 col) {
   u32 c = en ? col : RGB(58, 60, 70);
   fillRect(x, y, w, h, shadec(c, 0.55f));
@@ -1072,6 +1074,8 @@ static bool button(int x, int y, int w, int h, const char *label, bool en, u32 c
   int sc = fs; while (sc > 1 && textW(lines[0], sc) > w - 4) sc--;
   int lh = 9 * sc, y0 = y + (h - n * lh + 2 * sc) / 2;
   for (int i = 0; i < n; i++) drawText(x + w / 2, y0 + i * lh, lines[i], sc, en ? RGB(255, 255, 255) : RGB(140, 142, 152), 1);
+  if (en) { if (padNav && (int)gBtnNow.size() == padFocus) { u32 hc = RGB(255, 220, 60); int t = imax(2, fs); fillRect(x - t, y - t, w + 2 * t, t, hc); fillRect(x - t, y + h, w + 2 * t, t, hc); fillRect(x - t, y, t, h, hc); fillRect(x + w, y, t, h, hc); }
+    SDL_Rect r = {x, y, w, h}; gBtnNow.push_back(r); }
   return en && hitR(x, y, w, h);
 }
 static void drawLine(int x0, int y0, int x1, int y1, u32 c, int th) {
@@ -16730,6 +16734,7 @@ static bool ctrlArrows = true;                                              // �
 static void revGeo(int &x, int &y, int &w, int &h) { int gx, gy, gw, gh, bx, by, bw, bh; pedalGeo(gx, gy, gw, gh, bx, by, bw, bh); w = IW * 30 / 400; h = IH * 15 / 100; x = bx - w - fs * 3; y = IH - h - fs * 3; }
 static void arrowGeo(int &lx, int &rx, int &y, int &w, int &h) { w = IW * 39 / 400; h = IH * 22 / 100; lx = fs * 3; rx = lx + w + fs * 3; y = IH - h - fs * 3; }
 static void fingerDown(long long id, int x, int y) {
+  padNav = false;                                                            // коснулись экрана - рамка геймпада прячется
   for (int i = 0; i < 8; i++) if (!fing[i].on) {
     Finger &f = fing[i]; f.on = true; f.id = id; f.x = f.sx = x; f.y = f.sy = y;
     int wx, wy, wr, gx, gy, gw, gh, bx, by, bw, bh; wheelGeo(wx, wy, wr); pedalGeo(gx, gy, gw, gh, bx, by, bw, bh);
@@ -16745,6 +16750,17 @@ static void fingerDown(long long id, int x, int y) {
     return; }
 }
 static int lookDX = 0, lookDY = 0;
+static float padSteer = 0, padGas = 0, padBrake = 0; static bool padRev = false, padHorn = false;   // геймпад (DualSense и др.)
+#if SDL_MODE == 2
+static SDL_GameController *gPad = NULL;
+#endif
+static bool padConnected() {
+#if SDL_MODE == 2
+  return gPad != NULL;
+#else
+  return false;
+#endif
+}
 static void fingerMove(long long id, int x, int y) {
   for (int i = 0; i < 8; i++) if (fing[i].on && fing[i].id == id) { Finger &f = fing[i];
     if (f.role == 0) { int wx, wy, wr; wheelGeo(wx, wy, wr); if ((x - wx) * (x - wx) + (y - wy) * (y - wy) > (wr / 5) * (wr / 5)) { float a = atan2f((float)(x - wx), (float)(wy - y)); wheelAng = clampf(wheelAng + wrapA(a - f.a0), -2.6f, 2.6f); f.a0 = a; } }
@@ -16760,10 +16776,15 @@ static float gasHold = 0, revHold = 0;
 static void readControls(float dt) {
   bool steer = false, gas = false, brk = false, rev = false, left = false, right = false;
   for (int i = 0; i < 8; i++) if (fing[i].on) { int r = fing[i].role; if (r == 0) steer = true; if (r == 3) gas = true; if (r == 4) brk = true; if (r == 5) left = true; if (r == 6) right = true; if (r == 7) rev = true; }
+  bool tGas = gas, tBrk = brk, tRev = rev;                                   // нажато на экране
+  if (padGas > 0.04f) gas = true; if (padBrake > 0.04f) brk = true; if (padRev) rev = true;
   if (left != right) {                                                       // стрелки: руль крутится, пока держишь (на скорости медленнее)
     float rate = 2.6f / (0.6f + fabsf(rig.v) / 10.0f), dir = left ? -1.0f : 1.0f;
     if (wheelAng * dir < 0) rate *= 2.0f;                                    // в обратную сторону - быстрее
     wheelAng = clampf(wheelAng + dir * rate * dt, -2.6f, 2.6f); steer = true; }
+  if (!steer && fabsf(padSteer) > 0.001f) {                                  // левый стик: руль сразу в положение стика (мягче у центра)
+    float t = (padSteer > 0 ? 1.0f : -1.0f) * powf(fabsf(padSteer), 1.4f) * 2.6f; wheelAng += (t - wheelAng) * fminv(1.0f, dt * 9.0f); steer = true; }
+  else if (!steer && padConnected()) { wheelAng *= expf(-dt * 9.0f); steer = true; }   // стик отпущен - руль в центр
   if (!steer) wheelAng *= expf(-dt * (fabsf(rig.v) > 3 ? 3.5f : 1.2f));          // руль сам возвращается
   joySteer = clampf(wheelAng / 2.6f, -1, 1);
   // педаль НАЗАД: едет назад сама (на ходу вперёд - тормозит); ГАЗ при задней - включает переднюю
@@ -16772,9 +16793,11 @@ static void readControls(float dt) {
   if (gas && !rev && rig.gear < 0) { if (rig.v < -0.8f) brakeBy = true; else shiftTo(G.manual ? 1 : 1); }
   bool drive = (gas && rig.gear >= 0) || (rev && rig.gear < 0);
   if (brakeBy) drive = false;
-  gasHold = drive ? fminv(1.0f, gasHold + dt * 2.2f) : 0; pedGas = gasHold; revHold = rev ? 1.0f : 0.0f;
+  float gT = (tGas || tRev) ? 1.0f : (rig.gear < 0 && padRev ? 0.75f : padGas);   // курок R2 - газ с силой нажатия
+  gasHold = drive ? fminv(gT, gasHold + dt * 2.2f) : 0; pedGas = gasHold; revHold = rev ? 1.0f : 0.0f;
   bool b2 = brk || brakeBy;
-  pedBrake = b2 ? fminv(1.0f, pedBrake + dt * 4.0f) : fmaxv(0.0f, pedBrake - dt * 6);
+  float bT = (tBrk || brakeBy) ? 1.0f : padBrake;                           // курок L2 - тормоз с силой нажатия
+  pedBrake = b2 ? (pedBrake < bT ? fminv(bT, pedBrake + dt * 4.0f) : fmaxv(bT, pedBrake - dt * 6)) : fmaxv(0.0f, pedBrake - dt * 6);
   if (!gas && !b2 && !rev && fabsf(rig.v) < 0.3f && rig.gear != 0 && pedGas < 0.05f) pedBrake = fmaxv(pedBrake, 0.3f);   // удержание на месте
 }
 
@@ -16920,7 +16943,7 @@ static void drawControls() {
   if (ub(sx, sy, sw, sh, lightsOn ? "ФАРЫ ВКЛ" : "ФАРЫ", true, lightsOn ? RGB(180, 160, 60) : RGB(70, 70, 80))) lightsOn = !lightsOn;
   snprintf(b, sizeof b, G.tr[G.truck].up[UP_RETARDER] ? "РЕТАРДЕР" : "ТОРМ.ДВИГ.");
   if (ub(sx + sw + fs * 3, sy, sw, sh, b, true, retOn ? RGB(60, 140, 180) : RGB(70, 70, 80))) retOn = !retOn;
-  bool hornHeld = heldIn(sx + (sw + fs * 3) * 2, sy, sw, sh); ub(sx + (sw + fs * 3) * 2, sy, sw, sh, "СИГНАЛ", true, RGB(70, 70, 80)); sHorn = hornHeld ? 1.0f : 0.0f;
+  bool hornHeld = heldIn(sx + (sw + fs * 3) * 2, sy, sw, sh); ub(sx + (sw + fs * 3) * 2, sy, sw, sh, "СИГНАЛ", true, RGB(70, 70, 80)); sHorn = (hornHeld || padHorn) ? 1.0f : 0.0f;
 }
 // ---------- навигатор (экранчик в углу) ----------
 static int navSize = 0;                                   // 0 обычный, 1 крупный, 2 свёрнут
@@ -17532,6 +17555,11 @@ static void framePause() {
   qualityButton(x, y, bw, bh); y += bh + fs * 4;
   if (ub(x, y, bw, bh, ctrlArrows ? "УПРАВЛЕНИЕ: СТРЕЛКИ" : "УПРАВЛЕНИЕ: РУЛЬ", true, RGB(90, 80, 140))) { ctrlArrows = !ctrlArrows; saveCfgT(); } y += bh + fs * 4;
   if (ub(x, y, bw, bh, "СОХРАНИТЬ И ВЫЙТИ", true, RGB(90, 90, 110))) { saveGame(); hasSave = true; gs = GS_TITLE; }
+  if (padConnected()) { int sc = imax(1, fs - 1), ty = IH - fs * 30;
+    const char *L[3] = {"ГЕЙМПАД: ЛЕВЫЙ СТИК - РУЛЬ, R2 - ГАЗ, L2 - ТОРМОЗ, КРУЖОК - НАЗАД, КРЕСТ - СИГНАЛ",
+                        "КВАДРАТ - ФАРЫ, ТРЕУГОЛЬНИК - КАМЕРА, R1/L1 - ПЕРЕДАЧИ, КРЕСТОВИНА ВНИЗ - АВТО/РУЧН",
+                        "КРЕСТОВИНА ВВЕРХ - ТОРМОЗ ДВИГ., ВЛЕВО - НАВИГАТОР, ВПРАВО/ТАЧПАД - КАРТА, OPTIONS - ПАУЗА"};
+    for (int i = 0; i < 3; i++) { int s2 = sc; while (s2 > 1 && textW(L[i], s2) > IW - fs * 6) s2--; drawText(IW / 2, ty + i * fs * 9, L[i], s2, RGB(170, 180, 200), 1); } }
 }
 static void frameTitle(float dt) {
   uiRects.clear();
@@ -17556,6 +17584,80 @@ static void frameTitle(float dt) {
   qualityButton(IW / 2 + fs * 2, y, sw, fs * 14);
   if (msgT > 0) { msgT -= dt; drawText(IW / 2, IH - fs * 16, msg, fs, RGB(255, 220, 140), 1); }
 }
+
+// ---------- геймпад (DualSense, Xbox и любой совместимый) ----------
+#if SDL_MODE == 2
+static bool padPrev[SDL_CONTROLLER_BUTTON_MAX]; static int padDirPrev = 0, padGsPrev = -1; static float padRepT = 0, padThudPrev = 0;
+static void padOpen(int idx) {
+  if (gPad || !SDL_IsGameController(idx)) return;
+  gPad = SDL_GameControllerOpen(idx); if (!gPad) return;
+  for (int b = 0; b < SDL_CONTROLLER_BUTTON_MAX; b++) padPrev[b] = true;          // уже нажатые кнопки не срабатывают при подключении
+  say("ГЕЙМПАД ПОДКЛЮЧЁН. КНОПКИ - В ПАУЗЕ", 4);
+}
+static void padClose(int inst) {
+  if (!gPad || SDL_JoystickInstanceID(SDL_GameControllerGetJoystick(gPad)) != inst) return;
+  SDL_GameControllerClose(gPad); gPad = NULL; padNav = false; padSteer = padGas = padBrake = 0; padRev = padHorn = false;
+  say("ГЕЙМПАД ОТКЛЮЧЁН");
+}
+static float padAxis(SDL_GameControllerAxis a, float dead) {
+  float v = SDL_GameControllerGetAxis(gPad, a) / 32767.0f; if (v > 1) v = 1; if (v < -1) v = -1;
+  if (fabsf(v) < dead) return 0; return (v > 0 ? 1.0f : -1.0f) * (fabsf(v) - dead) / (1.0f - dead);
+}
+static void padBack() {                                    // кружок / OPTIONS в меню: как кнопка «Назад»
+  if (gs == GS_TITLE) return;
+  if (gs == GS_PAUSE) gs = pauseFrom; else if (gs == GS_MAP) gs = G.onRoad ? GS_ROAD : (mapFrom == GS_YARD ? GS_YARD : GS_CITY); else { pauseFrom = gs; gs = GS_PAUSE; }
+}
+static void padMoveFocus(int dir) {                         // 1 вверх, 2 вниз, 3 влево, 4 вправо
+  int n = (int)gBtnPrev.size(); if (!n) return;
+  if (!padNav || padFocus < 0 || padFocus >= n) { padNav = true; padFocus = 0; return; }
+  const SDL_Rect &f = gBtnPrev[padFocus]; float fx = f.x + f.w * 0.5f, fy = f.y + f.h * 0.5f, best = 1e9f; int bi = -1;
+  for (int j = 0; j < n; j++) { if (j == padFocus) continue; const SDL_Rect &r = gBtnPrev[j]; float dx = r.x + r.w * 0.5f - fx, dy = r.y + r.h * 0.5f - fy;
+    float along = dir == 1 ? -dy : dir == 2 ? dy : dir == 3 ? -dx : dx, perp = dir <= 2 ? fabsf(dx) : fabsf(dy);
+    if (along < 4) continue; float sc = along + perp * 2.5f; if (sc < best) { best = sc; bi = j; } }
+  if (bi >= 0) padFocus = bi;
+}
+static void padUpdate(float dt) {
+  if (!gPad) { padSteer = padGas = padBrake = 0; padRev = padHorn = false; return; }
+  bool btn[SDL_CONTROLLER_BUTTON_MAX], pr[SDL_CONTROLLER_BUTTON_MAX];
+  for (int b = 0; b < SDL_CONTROLLER_BUTTON_MAX; b++) { btn[b] = SDL_GameControllerGetButton(gPad, (SDL_GameControllerButton)b) != 0; pr[b] = btn[b] && !padPrev[b]; padPrev[b] = btn[b]; }
+  float lx = padAxis(SDL_CONTROLLER_AXIS_LEFTX, 0.08f), ly = padAxis(SDL_CONTROLLER_AXIS_LEFTY, 0.25f), rx = padAxis(SDL_CONTROLLER_AXIS_RIGHTX, 0.15f), ry = padAxis(SDL_CONTROLLER_AXIS_RIGHTY, 0.15f);
+  float l2 = padAxis(SDL_CONTROLLER_AXIS_TRIGGERLEFT, 0.04f), r2 = padAxis(SDL_CONTROLLER_AXIS_TRIGGERRIGHT, 0.04f);
+  if (driving()) {
+    padNav = false;
+    padSteer = lx; padGas = r2; padBrake = l2; padRev = btn[SDL_CONTROLLER_BUTTON_B]; padHorn = btn[SDL_CONTROLLER_BUTTON_A];
+    if (rx != 0) lookDX += (int)(rx * dt * IW * 0.9f); if (ry != 0) lookDY += (int)(ry * dt * IH * 0.9f);
+    if (pr[SDL_CONTROLLER_BUTTON_X]) lightsOn = !lightsOn;
+    if (pr[SDL_CONTROLLER_BUTTON_Y]) { camMode = (camMode + 1) % 3; camYawOff = 0; }
+    if (pr[SDL_CONTROLLER_BUTTON_RIGHTSHOULDER]) { if (G.manual) shiftTo(rig.gear + 1); else say("ПЕРЕДАЧИ ВРУЧНУЮ: КРЕСТОВИНА ВНИЗ - РУЧНАЯ КОРОБКА"); }
+    if (pr[SDL_CONTROLLER_BUTTON_LEFTSHOULDER]) { if (G.manual) shiftTo(rig.gear - 1); else say("ПЕРЕДАЧИ ВРУЧНУЮ: КРЕСТОВИНА ВНИЗ - РУЧНАЯ КОРОБКА"); }
+    if (pr[SDL_CONTROLLER_BUTTON_DPAD_DOWN]) { G.manual = !G.manual; say(G.manual ? "РУЧНАЯ КОРОБКА: R1 И L1 ПЕРЕКЛЮЧАЮТ" : "АВТОМАТ"); }
+    if (pr[SDL_CONTROLLER_BUTTON_DPAD_UP]) retOn = !retOn;
+    if (pr[SDL_CONTROLLER_BUTTON_DPAD_LEFT]) navSize = (navSize + 1) % 3;
+    if (pr[SDL_CONTROLLER_BUTTON_DPAD_RIGHT] || pr[SDL_CONTROLLER_BUTTON_BACK] || pr[SDL_CONTROLLER_BUTTON_TOUCHPAD]) { mapFrom = gs; gs = GS_MAP; }
+    if (pr[SDL_CONTROLLER_BUTTON_START]) { pauseFrom = gs; gs = GS_PAUSE; }
+  } else {
+    padSteer = padGas = padBrake = 0; padRev = padHorn = false;
+    if (gs != padGsPrev) padFocus = 0;                                          // новый экран - рамка на первую кнопку
+    int dir = 0;
+    if (btn[SDL_CONTROLLER_BUTTON_DPAD_UP] || ly < -0.5f) dir = 1; else if (btn[SDL_CONTROLLER_BUTTON_DPAD_DOWN] || ly > 0.5f) dir = 2;
+    else if (btn[SDL_CONTROLLER_BUTTON_DPAD_LEFT] || lx < -0.6f) dir = 3; else if (btn[SDL_CONTROLLER_BUTTON_DPAD_RIGHT] || lx > 0.6f) dir = 4;
+    padRepT -= dt;
+    if (dir && (dir != padDirPrev || padRepT <= 0)) { padMoveFocus(dir); padRepT = dir != padDirPrev ? 0.35f : 0.13f; }
+    padDirPrev = dir;
+    int n = (int)gBtnPrev.size(); if (padFocus >= n) padFocus = n - 1;
+    if (pr[SDL_CONTROLLER_BUTTON_A]) {
+      if (padNav && padFocus >= 0 && padFocus < n) { const SDL_Rect &r = gBtnPrev[padFocus]; int cx = r.x + r.w / 2, cy = r.y + r.h / 2; P.clicked = true; P.cx = P.sx = P.x = cx; P.cy = P.sy = P.y = cy; }
+      else if (n) { padNav = true; if (padFocus < 0) padFocus = 0; } }
+    if (pr[SDL_CONTROLLER_BUTTON_B] || pr[SDL_CONTROLLER_BUTTON_START]) padBack();
+    if (rx != 0 || ry != 0) { lookDX += (int)(rx * dt * IW * 0.9f); lookDY += (int)(ry * dt * IH * 0.9f); }
+  }
+  padGsPrev = gs;
+  float th = sThud; if (th > padThudPrev + 0.05f) SDL_GameControllerRumble(gPad, (Uint16)(clampf(th, 0, 1) * 65535), (Uint16)(clampf(th, 0, 1) * 45000), 160 + (Uint32)(th * 220));   // удар, яма, рельсы - вибрация
+  padThudPrev = th;
+}
+#else
+static void padUpdate(float) {}
+#endif
 
 // =====================================================================
 //  ДАЛЬНОБОЙЩИК: звук (дизель, пневматика, сигнал, ветер) и главный цикл
@@ -17639,6 +17741,10 @@ int main(int argc, char **argv) {
 #endif
   { FILE *g = fopen(pth("truck_gl.cfg"), "r"); if (g) { int v = 1; if (fscanf(g, "%d", &v) == 1) gWantGL = v != 0; fclose(g); } }
   if (!gfxInit()) return 1;
+#if SDL_MODE == 2
+  SDL_SetHint("SDL_JOYSTICK_HIDAPI_PS5_RUMBLE", "1"); SDL_SetHint("SDL_JOYSTICK_HIDAPI_PS4_RUMBLE", "1");
+  SDL_InitSubSystem(SDL_INIT_GAMECONTROLLER);                                // геймпады: DualSense, DualShock, Xbox
+#endif
   rotMode = SH > SW; LW = rotMode ? SH : SW; LH = rotMode ? SW : SH;
   loadCfgT(); computeSize(); if (!allocBuffers()) return 1;
   { fillRect(0, 0, IW, IH, RGB(10, 8, 12)); drawTextSh(IW / 2, IH / 2 - fs * 20, "ДАЛЬНОБОЙЩИК", fs * 3, RGB(240, 180, 60), 1); drawText(IW / 2, IH / 2 + fs * 6, "ЗАГРУЗКА...", fs * 2, RGB(200, 200, 210), 1); gfxPresent(); }
@@ -17660,6 +17766,8 @@ int main(int argc, char **argv) {
         case SDL_QUIT: running = false; break;
         case SDL_APP_WILLENTERBACKGROUND: case SDL_APP_TERMINATING: if (gs != GS_TITLE) { saveGame(); hasSave = true; if (gs == GS_ROAD || gs == GS_YARD) { pauseFrom = gs; gs = GS_PAUSE; } } break;
         case SDL_KEYDOWN: if (ev.key.keysym.sym == SDLK_ESCAPE) { if (gs == GS_TITLE) running = false; else if (gs == GS_PAUSE) gs = pauseFrom; else if (gs == GS_MAP) gs = G.onRoad ? GS_ROAD : (mapFrom == GS_YARD ? GS_YARD : GS_CITY); else { pauseFrom = gs; gs = GS_PAUSE; } } break;
+        case SDL_CONTROLLERDEVICEADDED: padOpen(ev.cdevice.which); break;
+        case SDL_CONTROLLERDEVICEREMOVED: padClose(ev.cdevice.which); break;
         case SDL_FINGERDOWN: mapPt((int)(ev.tfinger.x * SW), (int)(ev.tfinger.y * SH), mx, my); fingerDown((long long)ev.tfinger.fingerId, mx, my); break;
         case SDL_FINGERMOTION: mapPt((int)(ev.tfinger.x * SW), (int)(ev.tfinger.y * SH), mx, my); fingerMove((long long)ev.tfinger.fingerId, mx, my); break;
         case SDL_FINGERUP: mapPt((int)(ev.tfinger.x * SW), (int)(ev.tfinger.y * SH), mx, my); fingerUp((long long)ev.tfinger.fingerId, mx, my); break;
@@ -17678,6 +17786,8 @@ int main(int argc, char **argv) {
       else { int mx, my; mapPt(e.x, e.y, mx, my); if (e.type == 1) fingerDown(-1, mx, my); else if (e.type == 3) fingerMove(-1, mx, my); else fingerUp(-1, mx, my); }
     }
 #endif
+    gBtnPrev.swap(gBtnNow); gBtnNow.clear();
+    padUpdate(dt);
     frameAll(dt);
     drawFps();
     gfxPresent();
