@@ -16720,6 +16720,9 @@ struct Finger { long long id; int role, x, y, sx, sy; bool on; float a0; };   //
 static Finger fing[8];
 static std::vector<SDL_Rect> uiRects;
 static float wheelAng = 0;                                                  // угол руля (рад), ±2.6
+static int steerSens = 5;                                                   // чувствительность руля 1..10 (5 - как было)
+static float sensK() { return 0.5f + 0.1f * steerSens; }                    // 1 - 0.6, 5 - 1.0, 10 - 1.5
+static bool padCursor = false;                                              // геймпад: рамка по кнопкам на экране во время езды
 static bool overUI(int x, int y) { for (size_t i = 0; i < uiRects.size(); i++) { const SDL_Rect &r = uiRects[i]; if (x >= r.x && y >= r.y && x < r.x + r.w && y < r.y + r.h) return true; } return false; }
 static bool ub(int x, int y, int w, int h, const char *l, bool en, u32 c) { SDL_Rect r = {x, y, w, h}; uiRects.push_back(r); return button(x, y, w, h, l, en, c); }
 static bool heldIn(int x, int y, int w, int h) { for (int i = 0; i < 8; i++) if (fing[i].on && fing[i].role == 2 && fing[i].sx >= x && fing[i].sx < x + w && fing[i].sy >= y && fing[i].sy < y + h) return true; return false; }
@@ -16763,7 +16766,7 @@ static bool padConnected() {
 }
 static void fingerMove(long long id, int x, int y) {
   for (int i = 0; i < 8; i++) if (fing[i].on && fing[i].id == id) { Finger &f = fing[i];
-    if (f.role == 0) { int wx, wy, wr; wheelGeo(wx, wy, wr); if ((x - wx) * (x - wx) + (y - wy) * (y - wy) > (wr / 5) * (wr / 5)) { float a = atan2f((float)(x - wx), (float)(wy - y)); wheelAng = clampf(wheelAng + wrapA(a - f.a0), -2.6f, 2.6f); f.a0 = a; } }
+    if (f.role == 0) { int wx, wy, wr; wheelGeo(wx, wy, wr); if ((x - wx) * (x - wx) + (y - wy) * (y - wy) > (wr / 5) * (wr / 5)) { float a = atan2f((float)(x - wx), (float)(wy - y)); wheelAng = clampf(wheelAng + wrapA(a - f.a0) * sensK(), -2.6f, 2.6f); f.a0 = a; } }
     if (f.role == 1) { lookDX += x - f.x; lookDY += y - f.y; }
     if (f.role == 2) { P.x = x; P.y = y; }
     f.x = x; f.y = y; }
@@ -16779,11 +16782,11 @@ static void readControls(float dt) {
   bool tGas = gas, tBrk = brk, tRev = rev;                                   // нажато на экране
   if (padGas > 0.04f) gas = true; if (padBrake > 0.04f) brk = true; if (padRev) rev = true;
   if (left != right) {                                                       // стрелки: руль крутится, пока держишь (на скорости медленнее)
-    float rate = 2.6f / (0.6f + fabsf(rig.v) / 10.0f), dir = left ? -1.0f : 1.0f;
+    float rate = 2.6f / (0.6f + fabsf(rig.v) / 10.0f) * sensK(), dir = left ? -1.0f : 1.0f;
     if (wheelAng * dir < 0) rate *= 2.0f;                                    // в обратную сторону - быстрее
     wheelAng = clampf(wheelAng + dir * rate * dt, -2.6f, 2.6f); steer = true; }
   if (!steer && fabsf(padSteer) > 0.001f) {                                  // левый стик: руль сразу в положение стика (мягче у центра)
-    float t = (padSteer > 0 ? 1.0f : -1.0f) * powf(fabsf(padSteer), 1.4f) * 2.6f; wheelAng += (t - wheelAng) * fminv(1.0f, dt * 9.0f); steer = true; }
+    float t = clampf((padSteer > 0 ? 1.0f : -1.0f) * powf(fabsf(padSteer), 1.4f + (5 - steerSens) * 0.1f) * 2.6f * sensK(), -2.6f, 2.6f); wheelAng += (t - wheelAng) * fminv(1.0f, dt * 9.0f); steer = true; }
   else if (!steer && padConnected()) { wheelAng *= expf(-dt * 9.0f); steer = true; }   // стик отпущен - руль в центр
   if (!steer) wheelAng *= expf(-dt * (fabsf(rig.v) > 3 ? 3.5f : 1.2f));          // руль сам возвращается
   joySteer = clampf(wheelAng / 2.6f, -1, 1);
@@ -17262,8 +17265,8 @@ static void iceFail() {
 //  ДАЛЬНОБОЙЩИК: город, карта, меню, звук, сохранение, главный цикл
 // =====================================================================
 static const char *QN[3] = {"НИЗКАЯ (БЫСТРО)", "СРЕДНЯЯ", "ВЫСОКАЯ"};
-static void saveCfgT() { FILE *f = fopen(pth("truck.cfg"), "w"); if (!f) return; fprintf(f, "%d %d %d\n", soundOn ? 1 : 0, quality, ctrlArrows ? 1 : 0); fclose(f); }
-static void loadCfgT() { FILE *f = fopen(pth("truck.cfg"), "r"); if (!f) return; int s = 1, q = 1, a = 1; int n = fscanf(f, "%d %d %d", &s, &q, &a); if (n >= 2) { soundOn = s != 0; quality = clampi(q, 0, 2); } if (n == 3) ctrlArrows = a != 0; fclose(f); }
+static void saveCfgT() { FILE *f = fopen(pth("truck.cfg"), "w"); if (!f) return; fprintf(f, "%d %d %d %d\n", soundOn ? 1 : 0, quality, ctrlArrows ? 1 : 0, steerSens); fclose(f); }
+static void loadCfgT() { FILE *f = fopen(pth("truck.cfg"), "r"); if (!f) return; int s = 1, q = 1, a = 1, se = 5; int n = fscanf(f, "%d %d %d %d", &s, &q, &a, &se); if (n >= 2) { soundOn = s != 0; quality = clampi(q, 0, 2); } if (n >= 3) ctrlArrows = a != 0; if (n >= 4) steerSens = clampi(se, 1, 10); fclose(f); }
 static bool qualityButton(int x, int y, int w, int h) { char b[64]; snprintf(b, sizeof b, "ГРАФИКА: %s", QN[quality]);
   if (ub(x, y, w, h, b, true, quality == 0 ? RGB(60, 130, 80) : (quality == 1 ? RGB(150, 120, 40) : RGB(170, 70, 50)))) { quality = (quality + 2) % 3; gResDrop = 0; computeSize(); allocBuffers(); saveCfgT(); return true; } return false; }
 
@@ -17546,7 +17549,7 @@ static bool hasSave = false; static int pauseFrom = GS_CITY;
 static void framePause() {
   uiRects.clear(); fillRect(0, 0, IW, IH, RGB(12, 14, 20));
   drawTextSh(IW / 2, IH / 8, "ПАУЗА", fs * 4, RGB(255, 255, 255), 1);
-  int bw = IW / 3, bh = fs * 17, x = IW / 2 - bw / 2, y = IH / 4 + fs * 10;
+  int bw = IW / 3, bh = fs * 15, x = IW / 2 - bw / 2, y = IH / 4 + fs * 4;
   if (ub(x, y, bw, bh, "ПРОДОЛЖИТЬ", true, RGB(60, 150, 70))) gs = pauseFrom;
   y += bh + fs * 4;
   if (G.onRoad && G.fuel < 30) { if (ub(x, y, bw, bh, "ВЫЗВАТЬ ЗАПРАВЩИК\n100 Л ЗА 12 000 Р", true, RGB(200, 120, 40))) { G.fuel += 100; G.money -= 12000; gs = GS_ROAD; say("ЗАПРАВЩИК ПРИЕХАЛ: +100 Л"); } y += bh + fs * 4; }
@@ -17554,12 +17557,18 @@ static void framePause() {
   char b[64]; snprintf(b, sizeof b, "ЗВУК: %s", soundOn ? "ВКЛ" : "ВЫКЛ"); if (ub(x, y, bw, bh, b, true, soundOn ? RGB(60, 120, 170) : RGB(90, 90, 100))) { soundOn = !soundOn; saveCfgT(); } y += bh + fs * 4;
   qualityButton(x, y, bw, bh); y += bh + fs * 4;
   if (ub(x, y, bw, bh, ctrlArrows ? "УПРАВЛЕНИЕ: СТРЕЛКИ" : "УПРАВЛЕНИЕ: РУЛЬ", true, RGB(90, 80, 140))) { ctrlArrows = !ctrlArrows; saveCfgT(); } y += bh + fs * 4;
+  { int mw = bh * 3 / 2; snprintf(b, sizeof b, "РУЛЬ: %d ИЗ 10", steerSens);                // - и + по краям
+    if (ub(x, y, mw, bh, "-", steerSens > 1, RGB(70, 80, 110))) { steerSens--; saveCfgT(); }
+    fillRect(x + mw + fs * 2, y, bw - mw * 2 - fs * 4, bh, RGB(40, 46, 64)); for (int k = 0; k < 10; k++) fillRect(x + mw + fs * 4 + k * (bw - mw * 2 - fs * 8) / 10, y + bh - fs * 4, (bw - mw * 2 - fs * 8) / 10 - fs, fs * 2, k < steerSens ? RGB(240, 180, 60) : RGB(70, 76, 96));
+    { int s2 = fs; while (s2 > 1 && textW(b, s2) > bw - mw * 2 - fs * 8) s2--; drawText(IW / 2, y + bh / 2 - s2 * 5, b, s2, RGB(255, 255, 255), 1); }
+    if (ub(x + bw - mw, y, mw, bh, "+", steerSens < 10, RGB(70, 80, 110))) { steerSens++; saveCfgT(); } }
+  y += bh + fs * 4;
   if (ub(x, y, bw, bh, "СОХРАНИТЬ И ВЫЙТИ", true, RGB(90, 90, 110))) { saveGame(); hasSave = true; gs = GS_TITLE; }
-  if (padConnected()) { int sc = imax(1, fs - 1), ty = IH - fs * 30;
+  if (padConnected()) { int sc = imax(1, fs - 1), ty = IH - fs * 26;
     const char *L[3] = {"ГЕЙМПАД: ЛЕВЫЙ СТИК - РУЛЬ, R2 - ГАЗ, L2 - ТОРМОЗ, КРУЖОК - НАЗАД, КРЕСТ - СИГНАЛ",
                         "КВАДРАТ - ФАРЫ, ТРЕУГОЛЬНИК - КАМЕРА, R1/L1 - ПЕРЕДАЧИ, КРЕСТОВИНА ВНИЗ - АВТО/РУЧН",
-                        "КРЕСТОВИНА ВВЕРХ - ТОРМОЗ ДВИГ., ВЛЕВО - НАВИГАТОР, ВПРАВО/ТАЧПАД - КАРТА, OPTIONS - ПАУЗА"};
-    for (int i = 0; i < 3; i++) { int s2 = sc; while (s2 > 1 && textW(L[i], s2) > IW - fs * 6) s2--; drawText(IW / 2, ty + i * fs * 9, L[i], s2, RGB(170, 180, 200), 1); } }
+                        "ТАЧПАД - ВЫБОР КНОПОК НА ЭКРАНЕ (ЗАПРАВКА, СЦЕПКА...), ВПРАВО - КАРТА, OPTIONS - ПАУЗА"};
+    for (int i = 0; i < 3; i++) { int s2 = sc; while (s2 > 1 && textW(L[i], s2) > IW - fs * 6) s2--; drawText(IW / 2, ty + i * fs * 8, L[i], s2, RGB(170, 180, 200), 1); } }
 }
 static void frameTitle(float dt) {
   uiRects.clear();
@@ -17607,6 +17616,11 @@ static void padBack() {                                    // кружок / OPT
   if (gs == GS_TITLE) return;
   if (gs == GS_PAUSE) gs = pauseFrom; else if (gs == GS_MAP) gs = G.onRoad ? GS_ROAD : (mapFrom == GS_YARD ? GS_YARD : GS_CITY); else { pauseFrom = gs; gs = GS_PAUSE; }
 }
+static int padCenterBtn() {                                 // кнопка ближе всего к центру экрана (там всплывают заправка, сцепка и т.п.)
+  int bi = 0; float best = 1e18f;
+  for (int j = 0; j < (int)gBtnPrev.size(); j++) { const SDL_Rect &r = gBtnPrev[j]; float dx = r.x + r.w * 0.5f - IW * 0.5f, dy = r.y + r.h * 0.5f - IH * 0.45f, d = dx * dx + dy * dy; if (d < best) { best = d; bi = j; } }
+  return bi;
+}
 static void padMoveFocus(int dir) {                         // 1 вверх, 2 вниз, 3 влево, 4 вправо
   int n = (int)gBtnPrev.size(); if (!n) return;
   if (!padNav || padFocus < 0 || padFocus >= n) { padNav = true; padFocus = 0; return; }
@@ -17622,7 +17636,24 @@ static void padUpdate(float dt) {
   for (int b = 0; b < SDL_CONTROLLER_BUTTON_MAX; b++) { btn[b] = SDL_GameControllerGetButton(gPad, (SDL_GameControllerButton)b) != 0; pr[b] = btn[b] && !padPrev[b]; padPrev[b] = btn[b]; }
   float lx = padAxis(SDL_CONTROLLER_AXIS_LEFTX, 0.08f), ly = padAxis(SDL_CONTROLLER_AXIS_LEFTY, 0.25f), rx = padAxis(SDL_CONTROLLER_AXIS_RIGHTX, 0.15f), ry = padAxis(SDL_CONTROLLER_AXIS_RIGHTY, 0.15f);
   float l2 = padAxis(SDL_CONTROLLER_AXIS_TRIGGERLEFT, 0.04f), r2 = padAxis(SDL_CONTROLLER_AXIS_TRIGGERRIGHT, 0.04f);
-  if (driving()) {
+  bool panel = fuelPanel || townPanel >= 0;                                  // открыта заправка или меню в городе
+  bool centerBtn = false; for (size_t j = 0; j < gBtnPrev.size(); j++) { const SDL_Rect &r = gBtnPrev[j]; int cx = r.x + r.w / 2, cy = r.y + r.h / 2; if (cx > IW / 4 && cx < IW * 3 / 4 && cy > IH / 5 && cy < IH * 3 / 4) centerBtn = true; }
+  bool autoCur = driving() && (panel || (centerBtn && fabsf(rig.v) < 0.5f));    // стоим, а посреди экрана кнопка (ЗАПРАВИТЬСЯ, СЦЕПИТЬ...) - рамка сама на ней
+  static bool autoPrev = false; static int refocus = 0; if (autoCur && !autoPrev) { padNav = true; refocus = 2; } autoPrev = autoCur;
+  if (refocus > 0 && --refocus == 0) padFocus = padCenterBtn();               // кнопки панели появляются кадром позже - тогда и ставим рамку
+  if (pr[SDL_CONTROLLER_BUTTON_TOUCHPAD] && driving()) { padCursor = !padCursor; if (padCursor) { padNav = true; padFocus = padCenterBtn(); } else padNav = false; }
+  if (driving() && (padCursor || autoCur)) {                                   // езда, но крестовина и крест - по кнопкам экрана
+    if (!padNav) { padNav = true; padFocus = padCenterBtn(); }
+    padSteer = lx; padGas = r2; padBrake = l2; padRev = !panel && btn[SDL_CONTROLLER_BUTTON_B]; padHorn = false;
+    if (rx != 0) lookDX += (int)(rx * dt * IW * 0.9f);
+    int dir = 0;
+    if (btn[SDL_CONTROLLER_BUTTON_DPAD_UP]) dir = 1; else if (btn[SDL_CONTROLLER_BUTTON_DPAD_DOWN]) dir = 2; else if (btn[SDL_CONTROLLER_BUTTON_DPAD_LEFT]) dir = 3; else if (btn[SDL_CONTROLLER_BUTTON_DPAD_RIGHT]) dir = 4;
+    padRepT -= dt; if (dir && (dir != padDirPrev || padRepT <= 0)) { padMoveFocus(dir); padRepT = dir != padDirPrev ? 0.35f : 0.13f; } padDirPrev = dir;
+    int n = (int)gBtnPrev.size(); if (padFocus >= n) padFocus = n - 1;
+    if (pr[SDL_CONTROLLER_BUTTON_A] && padFocus >= 0 && padFocus < n) { const SDL_Rect &r = gBtnPrev[padFocus]; int cx = r.x + r.w / 2, cy = r.y + r.h / 2; P.clicked = true; P.cx = P.sx = P.x = cx; P.cy = P.sy = P.y = cy; }
+    if (pr[SDL_CONTROLLER_BUTTON_B] && (panel || padCursor)) { padCursor = false; if (fuelPanel) fuelPanel = false; else if (townPanel >= 0) townPanel = -1; else padNav = false; }
+    if (pr[SDL_CONTROLLER_BUTTON_START]) { pauseFrom = gs; gs = GS_PAUSE; }
+  } else if (driving()) {
     padNav = false;
     padSteer = lx; padGas = r2; padBrake = l2; padRev = btn[SDL_CONTROLLER_BUTTON_B]; padHorn = btn[SDL_CONTROLLER_BUTTON_A];
     if (rx != 0) lookDX += (int)(rx * dt * IW * 0.9f); if (ry != 0) lookDY += (int)(ry * dt * IH * 0.9f);
@@ -17633,10 +17664,10 @@ static void padUpdate(float dt) {
     if (pr[SDL_CONTROLLER_BUTTON_DPAD_DOWN]) { G.manual = !G.manual; say(G.manual ? "РУЧНАЯ КОРОБКА: R1 И L1 ПЕРЕКЛЮЧАЮТ" : "АВТОМАТ"); }
     if (pr[SDL_CONTROLLER_BUTTON_DPAD_UP]) retOn = !retOn;
     if (pr[SDL_CONTROLLER_BUTTON_DPAD_LEFT]) navSize = (navSize + 1) % 3;
-    if (pr[SDL_CONTROLLER_BUTTON_DPAD_RIGHT] || pr[SDL_CONTROLLER_BUTTON_BACK] || pr[SDL_CONTROLLER_BUTTON_TOUCHPAD]) { mapFrom = gs; gs = GS_MAP; }
+    if (pr[SDL_CONTROLLER_BUTTON_DPAD_RIGHT] || pr[SDL_CONTROLLER_BUTTON_BACK]) { mapFrom = gs; gs = GS_MAP; }
     if (pr[SDL_CONTROLLER_BUTTON_START]) { pauseFrom = gs; gs = GS_PAUSE; }
   } else {
-    padSteer = padGas = padBrake = 0; padRev = padHorn = false;
+    padSteer = padGas = padBrake = 0; padRev = padHorn = false; padCursor = false;
     if (gs != padGsPrev) padFocus = 0;                                          // новый экран - рамка на первую кнопку
     int dir = 0;
     if (btn[SDL_CONTROLLER_BUTTON_DPAD_UP] || ly < -0.5f) dir = 1; else if (btn[SDL_CONTROLLER_BUTTON_DPAD_DOWN] || ly > 0.5f) dir = 2;
